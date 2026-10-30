@@ -1,0 +1,62 @@
+{
+  "name": "crafted-figures",
+  "version": "0.6.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.13.0 || >=24.0.0"
+  },
+  "bin": {
+    "crafted-figures": "scripts/figures.mjs"
+  },
+  "types": "./types/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.mts",
+      "import": "./kit/index.mjs"
+    },
+    "./contracts": {
+      "types": "./types/contracts.d.mts",
+      "import": "./kit/contracts.mjs"
+    },
+    "./three": {
+      "types": "./types/three/index.d.mts",
+      "import": "./kit/three/index.mjs"
+    },
+    "./react/client": {
+      "types": "./types/react/client.d.mts",
+      "import": "./kit/react/client.mjs"
+    },
+    "./react/server": {
+      "types": "./types/react/server.d.mts",
+      "import": "./kit/react/server.mjs"
+    },
+    "./config": {
+      "types": "./types/config.d.mts",
+      "import": "./kit/config.mjs"
+    }
+  },
+  "peerDependencies": {
+    "react": ">=19.3.1 <20",
+    "@types/three": "0.186.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "@types/three": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "three": "0.186.1",
+    "playwright-core": "1.64.1",
+    "vite": "8.3.5",
+    "rolldown": "1.2.15",
+    "@rolldown/binding-wasm32-wasi": "1.2.15"
+  },
+  "scripts": {
+    "runtime:build": "node scripts/build-runtime.mjs"
+  }
+}

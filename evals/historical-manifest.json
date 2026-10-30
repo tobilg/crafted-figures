@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "replacement-0.3.0",
+  "scope": "Historical frozen-package R01-R10 trial records, not current-package evaluations. Linked screenshots/source/traces remain in the original evidence archive.",
+  "toolkitVersion": "0.3.0",
+  "report": "report.json",
+  "archiveName": "crafted-figures-evaluations-0.3.0.zip",
+  "files": {
+    "R01/evaluation.md": "92b1457aaae0a937ef3c694f2762ee48141ca4c938eac8316f2e81b6e312e48c",
+    "R02/evaluation.md": "4026faf640d076a54d57bc910d8422294a0639ae9e2b5de87596bab1536f481b",
+    "R03/evaluation.md": "364522c09652d265cdfbf9603c142f665451fb66dd559d47e673e04e9d937528",
+    "R04-corrected/evaluation.md": "37f45103dbf31bb2fff8bb6fc13b4403a48504e08f7b9fdbcec539804e4efa3d",
+    "R04/evaluation.md": "22ac75befc00e46ae52cdbf71aa15c880a1aeca5bbd0659347850e0c4a557346",
+    "R05/evaluation.md": "3efe23b42ac5ed9854cb9dab450106bb5f2d4fb04b230ce476dd5763003adba3",
+    "R06/evaluation.md": "111f219b2149800712e6a1c6cd1d5bba433fb335f4a663cf569c14b87420cf35",
+    "R07/evaluation.md": "f111e689bce45b254889b3bde799125897ad2ff2bd92a5cc14629814ac3d0593",
+    "R08/trial.json": "6f950a81e464f4f515e8e56e54685e663f899d62b86f3592ed1a1d685123249c",
+    "R09-corrected/evaluation.md": "9f031c2c2ace0cd969df91b6b3592042b85eb4e9e8e24d8b00fde7b856075d9f",
+    "R09/evaluation.md": "14d8f1536e20d1db5b05fd3b0cb76da1010cd76c6cd7f6ec19e8246e63896f7d",
+    "R10/evaluation.md": "daace4014fb1d3b3a47222f01c787c934d4970ca8b00a8ceba15ffec9720eee2",
+    "corrected-snapshot.json": "36ec39ff5718f1a25c2c5d554cf1cef769a93f046acc52fee81efaa6cd476ad4",
+    "report.json": "4fd1c757f8fa57dcb8af1d8c702aef89fc003532ef54960570b4d135c75b9917",
+    "snapshot.json": "2fe1d9285b176444ac3a1fa1723ab1ebe1d342b699a8dfa60e873beb04cd6ffe"
+  }
+}

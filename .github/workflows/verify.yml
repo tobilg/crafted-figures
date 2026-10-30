@@ -1,0 +1,246 @@
+name: Test and build skill
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  fast:
+    name: Contracts, types and geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            skill/crafted-figures/package-lock.json
+      - run: npm ci
+      - run: npm --prefix skill/crafted-figures ci
+      - run: npm run prepare:dev
+      - run: npm test
+      - run: npm run test:types
+      - run: npm run test:audit
+      - run: npm run test:construction
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          retention-days: 7
+          name: fast-evidence
+          path: |
+            out/reports/
+            out/three-hybrid/
+  browser-effects:
+    name: Browser, interaction and effects
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            skill/crafted-figures/package-lock.json
+      - run: npm ci
+      - run: npm --prefix skill/crafted-figures ci
+      - run: npm run prepare:dev
+      - run: node skill/crafted-figures/runtime/playwright-core/cli.js install --with-deps chromium
+      - run: npm run test:browser
+      - run: npm run test:owned
+      - run: npm run test:gaps
+      - run: npm run test:migration
+      - run: npm run test:fidelity
+      - run: npm run test:materials
+      - run: npm run test:effects
+      - run: node tests/changing-browser.mjs
+      - run: node tests/spring-browser.mjs
+      - run: node tests/drive-suite.mjs
+      - run: node tests/diagnostics-browser.mjs
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          retention-days: 7
+          name: browser-effects-evidence
+          path: |
+            out/reports/
+            out/three-hybrid/
+  framework-print:
+    name: React, print and capacity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            skill/crafted-figures/package-lock.json
+      - run: npm ci
+      - run: npm --prefix skill/crafted-figures ci
+      - run: npm run prepare:dev
+      - run: node skill/crafted-figures/runtime/playwright-core/cli.js install --with-deps chromium
+      - run: npm run test:react
+      - run: npm run test:react:dev
+      - run: npm run test:print
+      - run: npm run test:print:references
+      - run: npm run bench:capacity
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          retention-days: 7
+          name: framework-print-evidence
+          path: |
+            out/reports/
+            out/three-hybrid/
+  package-compatibility:
+    name: Build and verify candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            skill/crafted-figures/package-lock.json
+      - run: npm ci
+      - run: npm --prefix skill/crafted-figures ci
+      - run: npm run package:skill
+      - run: node skill/crafted-figures/runtime/playwright-core/cli.js install --with-deps chromium
+      - run: npm run test:distribution
+      - run: npm run test:source-package
+      - run: npm run test:bundled
+      - run: npm run test:compat
+      - run: npm run test:release -- gap-followups source-migration
+      - run: npm run prototype:build
+      - run: npm run test:prototype
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          retention-days: 7
+          name: package-compatibility-evidence
+          path: |
+            out/reports/
+            out/three-hybrid/
+
+      # This candidate is also the input to the OS/Node matrix. Only the final
+      # job exposes the installable ZIP as verified by the complete workflow.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: crafted-figures-candidate
+          path: |
+            dist/crafted-figures/
+            dist/crafted-figures-*.zip
+            dist/crafted-figures-*.zip.sha256
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  portable-runtime:
+    name: No-install consumer (${{ matrix.os }}, Node ${{ matrix.node }})
+    needs: package-compatibility
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest, windows-latest]
+        node: ['22.13.0', '24']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          package-manager-cache: false
+      # Consumers receive the built artifact, with no dependency installation.
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: crafted-figures-candidate
+          path: dist
+      - run: node tests/bundled-runtime.mjs
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          retention-days: 7
+          name: portable-${{ matrix.os }}-${{ matrix.node }}
+          path: out/reports/bundled-runtime/
+
+  skill-artifact:
+    name: Verified skill artifact
+    needs: [fast, browser-effects, framework-print, package-compatibility, portable-runtime]
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Require every test job to pass
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped') }}
+        run: exit 1
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: crafted-figures-candidate
+          path: dist
+      - name: Verify release checksum
+        working-directory: dist
+        run: sha256sum --check crafted-figures-*.zip.sha256
+      - name: Upload installable skill
+        id: skill
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: crafted-figures-release-zip
+          path: |
+            dist/crafted-figures-*.zip
+            dist/crafted-figures-*.zip.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Add download instructions
+        env:
+          ARTIFACT_URL: ${{ steps.skill.outputs.artifact-url }}
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ## Installable skill
+
+          [Download the verified ZIP and checksum]($ARTIFACT_URL).
+
+          Extract the versioned ZIP's crafted-figures/ folder into your skill directory.
+          Standalone authoring needs Node 22.13+ or Node 24+, with no npm installation.
+          Browser checks and PDF printing need a separate Chrome/Chromium executable.
+
+          This artifact passed the automated jobs in this workflow. Fresh agent trials
+          and historical full-release/parity qualification are separate evidence.
+          EOF

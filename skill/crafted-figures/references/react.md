@@ -1,0 +1,13 @@
+# React and Next.js
+
+The optional integration is tested in Next 16.4.2 with React 19.3.1 and TypeScript 7.0.2. Standalone CLI use does not import React. Use Node 22.13+ or Node 24+ and install React/Next in your application. The copied toolkit already includes its standalone runtime. Checked TS consumers also need `@types/three` 0.186.0; it is an optional peer. Declarations are generated from the JavaScript/JSDoc, not a second implementation.
+
+On the server, import `prepareFigure` from `crafted-figures/react/server` and your pure figure module. Call `prepareFigure({id:'probe-a',figure,pose:'mid',config:{schemaVersion:2}})`. This returns serializable HTML/config/tokens/state/poses without a DOM or WebGL. Choose a unique stable instance ID; do not generate it from a clock/random value during hydration.
+
+In a small `'use client'` wrapper import `LiveFigure` from `crafted-figures/react/client` and your figure's `mount`. Render `<LiveFigure {...prepared} mount={mount}/>`. The mount function is imported in the client module, not passed across the server boundary. Keep its identity stable. Static artwork remains server markup; the live geometry code ships only with that interactive wrapper. For static figures, render the prepared HTML in an article carrying its `data-instance` and `data-figure` attributes without mounting a client.
+
+`useFigure` supports custom wrappers. `state` provides caller-controlled model input; `onState` receives displayed-state events. The controller updates the SVG imperatively without a React render per part. Cleanup releases listeners, controllers, observers and canvases. Initial hydration uses exactly the prepared pose, including mid/max. IDs, display clip paths and styles are instance-scoped.
+
+Test more than one instance, different themes, a long streamed page, navigation and remount. The repository fixture does this for spring, merging-surface and hybrid figures. The public adapter does not establish support for every React version or alternate renderer.
+
+For an executable starter, copy `assets/templates/react-next/` into a new application directory and copy this installed skill into that directory as `toolkit/` (excluding node_modules). Run `npm ci`, `npm run check:types`, `npm run build`, then `npm start`. Its own lockfile pins the framework/compiler and local toolkit dependency. This exact outside-repository workflow is exercised by the package integration test. Keep the React starter optional; do not add its dependencies to a standalone user's install.

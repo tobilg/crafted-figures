@@ -1,0 +1,45 @@
+{
+  "id": "technical",
+  "defaults": {
+    "detail": "standard",
+    "frame": "card",
+    "stroke": {
+      "width": 0.6
+    },
+    "motion": {
+      "idleTour": false
+    }
+  },
+  "themes": {
+    "light": {
+      "page": "#edf1f6",
+      "card": "#ffffff",
+      "text": "#202b3d",
+      "muted": "#526176",
+      "surface": "#c4cfdd",
+      "top": "#f4f7fb",
+      "side0": "#8d9fb7",
+      "side1": "#a2b2c7",
+      "side2": "#b8c6d7",
+      "side3": "#d4dfea",
+      "accent": "#5965e8",
+      "stroke": "#4c607a",
+      "halo": "#d6dfec"
+    },
+    "dark": {
+      "page": "#101722",
+      "card": "#192333",
+      "text": "#eef4ff",
+      "muted": "#b2c2d9",
+      "surface": "#34445a",
+      "top": "#637891",
+      "side0": "#24344b",
+      "side1": "#32465f",
+      "side2": "#405874",
+      "side3": "#506b89",
+      "accent": "#5965e8",
+      "stroke": "#94a9c6",
+      "halo": "#0b111b"
+    }
+  }
+}

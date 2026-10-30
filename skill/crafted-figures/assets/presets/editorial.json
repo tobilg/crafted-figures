@@ -1,0 +1,46 @@
+{
+  "id": "editorial",
+  "defaults": {
+    "detail": "compact",
+    "frame": "minimal",
+    "stroke": {
+      "width": 0.8
+    },
+    "accent": "#ad593d",
+    "motion": {
+      "idleTour": false
+    }
+  },
+  "themes": {
+    "light": {
+      "page": "#f7f4ef",
+      "card": "#fdfbf7",
+      "text": "#342d27",
+      "muted": "#6b5d50",
+      "surface": "#d8cdbd",
+      "top": "#faf5eb",
+      "side0": "#b19c82",
+      "side1": "#c2ae96",
+      "side2": "#d3c0a9",
+      "side3": "#e5d6c1",
+      "accent": "#ad593d",
+      "stroke": "#78634d",
+      "halo": "#e7dfd3"
+    },
+    "dark": {
+      "page": "#211d1a",
+      "card": "#2c2722",
+      "text": "#f8efe1",
+      "muted": "#cdbba4",
+      "surface": "#53483b",
+      "top": "#85735e",
+      "side0": "#3b332b",
+      "side1": "#514537",
+      "side2": "#645340",
+      "side3": "#78644e",
+      "accent": "#ad593d",
+      "stroke": "#bea88e",
+      "halo": "#171411"
+    }
+  }
+}

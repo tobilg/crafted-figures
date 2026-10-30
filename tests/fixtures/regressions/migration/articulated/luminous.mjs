@@ -1,0 +1,14 @@
+import {sampleBurst} from './particles.mjs';
+/** Supported glow/spark recipes, with world-fixed seeded particle motion and vector fallback.
+ * The package's fixed cyan glow palette is an explicit visual approximation. */
+export function addLuminous({kit,k,s,config,dial,led}){
+ const put=(o,p,parent)=>{o.position.set(...p);parent.add(o);return o;};
+ const local=led.point.map((v,i)=>v-led.origin[i]),normal=new k.Vector3(...led.normal),tip=put(k.cylinder('led-core',{radius:.62,height:.04,segments:32}),local.map((v,i)=>v+led.normal[i]*.03),led.parent);tip.quaternion.setFromUnitVectors(new k.Vector3(0,0,1),normal);k.material(tip,'cable-green');k.port(tip,'light',{at:[0,0,.021],direction:[0,0,1],radius:.62});
+ const halo=k.annulus('led-vector-halo',{radius:1.15,innerRadius:.68,height:.01,segments:48,tone:'accent'});halo.quaternion.copy(tip.quaternion);put(kit.effects.fallback(halo,'led-halo'),local.map((v,i)=>v+led.normal[i]*.06),led.parent);k.material(halo,'cable-green');
+ const glow=kit.effects.effect('led-halo',{kind:'glow',size:[4.5,4.5,1],layer:1,intensity:.8,theme:config.theme});put(glow,local.map((v,i)=>v+led.normal[i]*.08),led.parent);
+ const pool=kit.effects.effect('dial-light-pool',{kind:'glow',size:[6,6,1],layer:0,intensity:.35,theme:config.theme});pool.userData.craftedEffect.billboard=false;dial.add(pool);
+ const sparkBodies=[],sparkHalos=[];for(let i=0;i<24;i++){const h=kit.effects.effect('spark-halo-'+i,{kind:'spark',size:[3,1.6,1],layer:1,intensity:.75,theme:config.theme});h.userData.craftedEffect.billboard=false;s.scene.add(h);sparkHalos.push(h);}
+ let particles=[];
+ function update(state){s.scene.updateMatrixWorld(true);const tipWorld=tip.getWorldPosition(new k.Vector3()),tipLocal=dial.worldToLocal(tipWorld.clone()),r=Math.hypot(tipLocal.x,tipLocal.y),radial=Math.min(41.5,Math.max(16,r));pool.position.set(tipLocal.x/(r||1)*radial,tipLocal.y/(r||1)*radial,17.64);pool.material.uniforms.uIntensity.value=.6/(1+Math.max(0,tipLocal.z-17.6)/3);particles=sampleBurst(state.burstTime??-1,state.burstDial??state.dial,state.burstSeed??7);const byId=new Map(particles.map(p=>[p.index,p]));for(let i=0;i<24;i++){const p=byId.get(i),h=sparkHalos[i];h.visible=!!p;if(!p)continue;const head=new k.Vector3(...p.position),tail=new k.Vector3(...p.tail),dir=head.clone().sub(tail),length=dir.length();h.position.copy(head.clone().add(tail).multiplyScalar(.5));const localDirection=dir.clone().applyQuaternion(s.camera.quaternion.clone().invert()),angle=Math.atan2(localDirection.y,localDirection.x);h.quaternion.copy(s.camera.quaternion).multiply(new k.Quaternion().setFromAxisAngle(new k.Vector3(0,0,1),angle));h.scale.set(Math.max(.2,length/3),1,1);h.material.uniforms.uIntensity.value=1.2*p.heat;}s.scene.updateMatrixWorld(true);return {particles,tipWorld:tipWorld.toArray(),pool:pool.position.toArray()};}
+ return {update,tip,pool,glow,sparkBodies,sparkHalos,getParticles:()=>particles};
+}

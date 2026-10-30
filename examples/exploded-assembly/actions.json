@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 960,
+    "height": 1050
+  },
+  "reducedMotion": true,
+  "actions": [
+    {
+      "type": "key",
+      "selector": "input[type=range]",
+      "key": "Home"
+    },
+    {
+      "type": "order"
+    },
+    {
+      "type": "samples",
+      "name": "sequence",
+      "states": [
+        {
+          "time": 0
+        },
+        {
+          "time": 0.2
+        },
+        {
+          "time": 0.28
+        },
+        {
+          "time": 0.65
+        },
+        {
+          "time": 0.72
+        },
+        {
+          "time": 1.4
+        },
+        {
+          "time": 2.2
+        },
+        {
+          "time": 3.5
+        },
+        {
+          "time": 4
+        },
+        {
+          "time": 5
+        },
+        {
+          "time": 7
+        }
+      ],
+      "maxStep": 160
+    },
+    {
+      "type": "pose",
+      "name": "mid"
+    },
+    {
+      "type": "crop",
+      "name": "junction-4x",
+      "region": [
+        0.2,
+        0.2,
+        0.6,
+        0.65
+      ],
+      "scale": 4
+    },
+    {
+      "type": "capture",
+      "name": "whole"
+    },
+    {
+      "type": "dispose"
+    }
+  ]
+}

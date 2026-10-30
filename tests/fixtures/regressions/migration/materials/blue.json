@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "cable-blue",
+  "themes": {
+    "light": {
+      "surface": "#3e63dd",
+      "top": "#3e63dd",
+      "side0": "#3351b5",
+      "side1": "#2a4396",
+      "side2": "#203373",
+      "side3": "#192858",
+      "stroke": "#16234d",
+      "ink": "#0c142c"
+    },
+    "dark": {
+      "surface": "#6b9bff",
+      "top": "#6b9bff",
+      "side0": "#587fd1",
+      "side1": "#4969ad",
+      "side2": "#385185",
+      "side3": "#2b3e66",
+      "stroke": "#253659",
+      "ink": "#151f33"
+    }
+  }
+}

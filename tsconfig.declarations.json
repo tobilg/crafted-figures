@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "skill/crafted-figures/types",
+    "rootDir": "skill/crafted-figures/kit",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "skill/crafted-figures/kit/**/*.mjs"
+  ],
+  "exclude": [
+    "skill/crafted-figures/kit/build.mjs",
+    "skill/crafted-figures/kit/bundle.mjs",
+    "skill/crafted-figures/kit/verify.mjs",
+    "skill/crafted-figures/kit/print",
+    "skill/crafted-figures/kit/audit/run.mjs",
+    "skill/crafted-figures/kit/drive.mjs",
+    "skill/crafted-figures/kit/browser.mjs",
+    "skill/crafted-figures/kit/bundler.mjs",
+    "skill/crafted-figures/kit/package-files.mjs"
+  ]
+}

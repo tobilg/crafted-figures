@@ -1,0 +1,9 @@
+# Third-party notices
+
+Versions before 0.5.0 included selected Anatomy helpers, copyright (c) 2026 Ryan, MIT. Those implementations are removed from this package. Anatomy remains a design reference at https://github.com/wheresryan22/anatomy, commit `1482e8469b0a9e0d8cc18ea2740a01423d29ae80`. Its [complete historical notice](licenses/anatomy-MIT.txt) is retained for provenance. Current toolkit exports contain no Anatomy-derived runtime module; the wrapper no longer labels every new SVG as containing one. Authors who independently reuse third-party source must retain its notices in their source and artifacts.
+
+Three.js 0.186.1 supplies scene transforms, camera, mesh geometry and raycasting. Its complete MIT notice is in [licenses/three-MIT.txt](licenses/three-MIT.txt) and is included in generated browser bundles. The illustration adapter is independently authored; Three.js internals are not patched.
+
+The shipped runtime is built with Vite 8.3.5 and Rolldown 1.2.15, including the portable WASI binding. It also embeds Ajv 8.20.0 and Playwright Core 1.64.1. Their notices and those of the locked build dependency closure are preserved in [runtime/licenses](runtime/licenses/); Playwright's original notices also remain inside `runtime/playwright-core/`. [runtime/manifest.json](runtime/manifest.json) records versions and file hashes. The Vite API bundle converts two literal `createRequire` loader sites for picomatch to static imports and selects the local WASI binding; the WASI worker similarly imports its bundled runtime. The upstream WASM binary and selected Playwright runtime assets are copied unchanged. Unused Playwright UI assets (`lib/vite`) and separate skill guides (`lib/tools/skills`) are excluded; notices and supported browser automation assets are retained. No native compiler is distributed. esbuild is no longer used by this package.
+
+Newly authored project code has no owner-selected distribution license yet; this file does not assign one.

@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "scope": "Immutable minimal regression inputs extracted from historical trials. Running these is maintainer regression verification, not a fresh agent evaluation.",
+  "referenceCommit": "1482e8469b0a9e0d8cc18ea2740a01423d29ae80",
+  "files": [
+    {
+      "file": "migration/basic/client.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/basic/client.mjs",
+      "sha256": "0ac8b752745d2aa3246b243da5f5f8b47dd9f55630448b96670c3fb94b3fbd38"
+    },
+    {
+      "file": "migration/basic/figure.config.json",
+      "source": "out/reports/replacement-evals/R09-corrected/basic/figure.config.json",
+      "sha256": "776bdecaa22e0e558a79c10a7493f831c5671942f39730584942a17ebb2636e0"
+    },
+    {
+      "file": "migration/basic/figure.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/basic/figure.mjs",
+      "sha256": "0078109b9f885d992f556a2105a47da9475d18b7654e643cd5f23c74e110f485"
+    },
+    {
+      "file": "migration/basic/model.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/basic/model.mjs",
+      "sha256": "91c7405225f1f25c85a57ac3787a88f3c9644a7430718137be2dd70b2d4f496c"
+    },
+    {
+      "file": "migration/basic/scene.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/basic/scene.mjs",
+      "sha256": "359268e86bce7591e7f438dbfd0c03fce95117d998de3e5620ce688587b9ceb4"
+    },
+    {
+      "file": "migration/articulated/client.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/client.mjs",
+      "sha256": "4144a26d84a7cbdcac272e2041592000f0aedd2e849ec6bb74720088975ead88"
+    },
+    {
+      "file": "migration/articulated/details.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/details.mjs",
+      "sha256": "5ce114144d0d4340e0b7a50a01a1de1fe0aa4503ce92ee2c7c187134bce94404"
+    },
+    {
+      "file": "migration/articulated/figure.config.json",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/figure.config.json",
+      "sha256": "93ad618f3426e3a5eb35cabc1c18705a1796cac89b2de6d38ece0ab465288cd9"
+    },
+    {
+      "file": "migration/articulated/figure.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/figure.mjs",
+      "sha256": "d7d81d8586f3b9b402e999b41ac7fd51b84d9975147c872b64b043043fdee526"
+    },
+    {
+      "file": "migration/articulated/luminous.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/luminous.mjs",
+      "sha256": "a558528f02f1fcfe4ea1e1a042a72044fa4994a1d4939a6183b59f291362b172"
+    },
+    {
+      "file": "migration/articulated/model.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/model.mjs",
+      "sha256": "3c5df5c7ce319916a1b112e3128a46a5a442f9b46934ac623c8172616c4ac750"
+    },
+    {
+      "file": "migration/articulated/particles.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/particles.mjs",
+      "sha256": "9d3a0b2d3bcb6a2bef2422a9c5ea30ca8137644385dc06adfdeaeec0e652cf9a"
+    },
+    {
+      "file": "migration/articulated/plate.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/plate.mjs",
+      "sha256": "5494191fdd26e94179443ae4ca7ad4af5838a7fb226557f0c6e705af5659672f"
+    },
+    {
+      "file": "migration/articulated/routes.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/routes.mjs",
+      "sha256": "9c9bff0bae5db6722df508379eb9a2216b480d6008de9bc525ffd05a55520d69"
+    },
+    {
+      "file": "migration/articulated/scene.mjs",
+      "source": "out/reports/replacement-evals/R09-corrected/articulated/scene.mjs",
+      "sha256": "d8e8fd8078933389a66ca4d96bbd045a9b1c9fc81b05add8fa29af5826b48644"
+    },
+    {
+      "file": "migration/materials/blue.json",
+      "source": "out/reports/replacement-evals/R09-corrected/materials/blue.json",
+      "sha256": "59fcab2b554362977dd413c5ad578100778d01b84d8c8a58046fb0ef541c661b"
+    },
+    {
+      "file": "migration/materials/green.json",
+      "source": "out/reports/replacement-evals/R09-corrected/materials/green.json",
+      "sha256": "e27d6085367ca16c0d82cabb8aa02e0515cb16589759e0f4c715f148f67e1122"
+    },
+    {
+      "file": "migration/materials/red.json",
+      "source": "out/reports/replacement-evals/R09-corrected/materials/red.json",
+      "sha256": "1f5a120ef5dfad8dbf570c300dec412b845c158a7aec5f047b81e3c20d0455fe"
+    },
+    {
+      "file": "migration/materials/spark.json",
+      "source": "out/reports/replacement-evals/R09-corrected/materials/spark.json",
+      "sha256": "2aea18dd439e35d49cd6c8d38a13d595b467ca32fa02b412afb307f5dd729350"
+    },
+    {
+      "file": "migration/UPSTREAM-LICENSE",
+      "source": "out/reports/replacement-evals/R09-corrected/UPSTREAM-LICENSE",
+      "sha256": "87c078ab9d90a3044f359e6b563d4e6afea7aa060897cf4f21618687b3856796"
+    },
+    {
+      "file": "migration/THIRD_PARTY_NOTICES.md",
+      "source": "out/reports/replacement-evals/R09-corrected/THIRD_PARTY_NOTICES.md",
+      "sha256": "bb620ebf38b43f68404ce47eab0806c305306fbf193257b77dcaab5f8e3c3c5f"
+    },
+    {
+      "file": "construction/figure.mjs",
+      "source": "out/reports/gap-evals/construction/source/figure.mjs",
+      "sha256": "2137a645c01f13b8ce3c4f194b55b7dcf6c70147bc890d0eccbbab5ff1b0b2d0"
+    },
+    {
+      "file": "construction/scene.mjs",
+      "source": "out/reports/gap-evals/construction/source/scene.mjs",
+      "sha256": "434d50681e5de1e227c4c1539e5063f58ab8504b24da73e22e240c88eac91882"
+    },
+    {
+      "file": "construction/client.mjs",
+      "source": "out/reports/gap-evals/construction/source/client.mjs",
+      "sha256": "d9309543a8f2bf1dec4918247e5f9545dfc23903882b06ce2f266c1f8fb2174a"
+    },
+    {
+      "file": "construction/model.mjs",
+      "source": "out/reports/gap-evals/construction/source/model.mjs",
+      "sha256": "373a29183a801c6cc307aaf242e2a32f939cca16512973d26011ebf6444078df"
+    },
+    {
+      "file": "construction/figure.config.json",
+      "source": "out/reports/gap-evals/construction/source/figure.config.json",
+      "sha256": "d9763f2a29b4e3293ad08177c3e40d2b749db260e9accf05543c4a66d712b9bf"
+    },
+    {
+      "file": "construction/static-figure.mjs",
+      "source": "out/reports/gap-evals/construction/source/static-figure.mjs",
+      "sha256": "3d48668059f7526927971f04dc00de3324b2016b5b531aaa8acb64dfd6ac1037"
+    },
+    {
+      "file": "construction/print.config.json",
+      "source": "out/reports/gap-evals/construction/source/print.config.json",
+      "sha256": "506bf8c73880ca0855d381ecee28a2f53a6a50f85bdce56501b4deaf55cfa78c"
+    },
+    {
+      "file": "construction/sheet.mjs",
+      "source": "out/reports/gap-evals/construction/source/sheet.mjs",
+      "sha256": "e662ec4bdb6d3767e46e12bc5071860b4736ca6a3d111a2508a77ea8349c5300"
+    },
+    {
+      "file": "construction/audit.json",
+      "source": "out/reports/gap-evals/construction/source/audit.json",
+      "sha256": "99fd5bac797dfb29ee95b5b6619d5302ecff7ee6c308d60af3e16dae1c3226c1"
+    },
+    {
+      "file": "particles/unavailable.json",
+      "source": "out/reports/gap-evals/verification/reports/observed-failure-t231/unavailable.json",
+      "sha256": "2df25a59260ffd06b740defad759f8e6aad6a1f316ff418e7f14fac695f9d110"
+    },
+    {
+      "file": "particles/context-loss.json",
+      "source": "out/reports/gap-evals/verification/reports/observed-failure-t231/context-loss.json",
+      "sha256": "28554a41b0046713105bf93a374b7e1c58ad3b297ad4a1cc07c068a74fdce28d"
+    },
+    {
+      "file": "particles/model.mjs",
+      "source": "out/reports/gap-evals/verification/figure/model.mjs",
+      "sha256": "dae91c90c743e998627b792bcb641116153d09ad01d3af5e277bd8a133b87b13"
+    }
+  ]
+}

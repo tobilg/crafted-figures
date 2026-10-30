@@ -1,0 +1,1263 @@
+{
+  "schemaVersion": 1,
+  "fixtures": [
+    {
+      "id": "F01",
+      "capabilities": [
+        "C01",
+        "C04",
+        "C06",
+        "C12",
+        "C13",
+        "C15"
+      ],
+      "entries": [
+        "examples/dial-indicator/figure.mjs"
+      ],
+      "shapes": [
+        "prism",
+        "cylinder",
+        "surface marks"
+      ],
+      "materials": [
+        "preset surface and semantic accent"
+      ],
+      "cameras": [
+        "fixed authored -42/30"
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "displacementMm": 0
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "displacementMm": 5
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "displacementMm": 10
+          }
+        }
+      ],
+      "clipTimes": [],
+      "controls": [
+        "displacementMm: 0..10 mm; pointer drag, range, rest/mid/max"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/model.test.mjs",
+        "tests/export.test.mjs",
+        "tests/browser.mjs"
+      ],
+      "negativeTests": [
+        "tests/config.test.mjs"
+      ],
+      "reports": [
+        "out/reports/browser/report.json",
+        "out/reports/package/report.json"
+      ],
+      "visualReview": "docs/visual-review.md"
+    },
+    {
+      "id": "F02",
+      "capabilities": [
+        "C02",
+        "C03",
+        "C06",
+        "C09"
+      ],
+      "entries": [
+        "examples/terminal-cabinet/figure.mjs"
+      ],
+      "shapes": [
+        "concave assembly",
+        "tubes",
+        "tilted clipped display"
+      ],
+      "materials": [
+        "preset surface and semantic accent"
+      ],
+      "cameras": [
+        "fixed authored -48/30"
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "temperatureC": 10,
+            "text": "READY",
+            "time": 0
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "temperatureC": 30,
+            "text": "CHECK",
+            "time": 1
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "temperatureC": 50,
+            "text": "RUN",
+            "time": 2
+          }
+        }
+      ],
+      "clipTimes": [
+        0,
+        0.3,
+        0.6,
+        0.9,
+        1
+      ],
+      "controls": [
+        "temperatureC: 10..50 \u00b0C; time: 0..2 s; text: up to 64 characters"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/drive-suite.mjs"
+      ],
+      "negativeTests": [
+        "tests/diagnostics-browser.mjs"
+      ],
+      "reports": [
+        "out/reports/drive/terminal-cabinet/report.json",
+        "out/reports/fidelity/report.json"
+      ],
+      "visualReview": "docs/visual-review.md"
+    },
+    {
+      "id": "F03",
+      "capabilities": [
+        "C02",
+        "C03",
+        "C04",
+        "C08"
+      ],
+      "entries": [
+        "examples/valve-assembly/figure.mjs",
+        "examples/construction-details/figure.mjs"
+      ],
+      "shapes": [
+        "revolved bonnet",
+        "annular seat",
+        "pipes",
+        "collars",
+        "physical bevel",
+        "braided and striped tube",
+        "profile seams and grooves",
+        "weld engraving",
+        "open vents",
+        "curved saddle seat and matched coupling rims"
+      ],
+      "materials": [
+        {
+          "role": "subject",
+          "id": "steel"
+        },
+        {
+          "role": "hoses",
+          "id": "rubber"
+        },
+        {
+          "role": "poppet",
+          "id": "brass"
+        }
+      ],
+      "cameras": [
+        {
+          "azimuth": 45,
+          "elevation": 30
+        },
+        {
+          "azimuth": 35,
+          "elevation": 30
+        },
+        {
+          "azimuth": 45,
+          "elevation": 44
+        }
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "liftMm": 0
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "liftMm": 6
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "liftMm": 12
+          }
+        }
+      ],
+      "clipTimes": [],
+      "controls": [
+        "liftMm: 0..12 mm; pointer/range and Closed/Half/Open"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard",
+        "detailed"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/audit-envelopes.mjs",
+        "tests/construction.mjs",
+        "tests/gap-browser.mjs"
+      ],
+      "negativeTests": [
+        "tests/geometry.test.mjs",
+        "tests/gap-contract.test.mjs"
+      ],
+      "reports": [
+        "out/reports/audit-envelopes/report.json",
+        "out/reports/fidelity/report.json",
+        "out/reports/construction/report.json",
+        "out/reports/gap-closure/report.json"
+      ],
+      "visualReview": "docs/visual-review.md",
+      "cameraDefault": {
+        "azimuth": 45,
+        "elevation": 30,
+        "padding": 36
+      }
+    },
+    {
+      "id": "F04",
+      "capabilities": [
+        "C02",
+        "C06",
+        "C07",
+        "C08",
+        "C09"
+      ],
+      "entries": [
+        "examples/exploded-assembly/figure.mjs"
+      ],
+      "shapes": [
+        "analytic waist",
+        "flanges",
+        "bolts",
+        "tube",
+        "fire/steam volumes"
+      ],
+      "materials": [
+        {
+          "role": "stand",
+          "id": "gunmetal"
+        },
+        {
+          "role": "engine",
+          "id": "steel"
+        },
+        {
+          "role": "hoses",
+          "id": "rubber"
+        }
+      ],
+      "cameras": [
+        {
+          "azimuth": 45,
+          "elevation": 30
+        },
+        {
+          "azimuth": 35,
+          "elevation": 30
+        },
+        {
+          "azimuth": 45,
+          "elevation": 44
+        }
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "time": 0
+          }
+        },
+        {
+          "name": "reversal",
+          "state": {
+            "time": 0.72
+          }
+        },
+        {
+          "name": "apart",
+          "state": {
+            "time": 3.7
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "time": 3.5
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "time": 7
+          }
+        }
+      ],
+      "clipTimes": [
+        0,
+        0.28,
+        0.65,
+        0.72,
+        1.4,
+        2.2,
+        3.5,
+        4,
+        7
+      ],
+      "controls": [
+        "time: 0..7 s; Assembled/Reversal/Apart/Seated; play/pause/reset"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard",
+        "detailed"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/motion.test.mjs",
+        "tests/audit-envelopes.mjs",
+        "tests/effects.mjs",
+        "tests/drive-suite.mjs"
+      ],
+      "negativeTests": [
+        "tests/volume-depth.mjs",
+        "tests/diagnostics-browser.mjs"
+      ],
+      "reports": [
+        "out/reports/production-effects/report.json",
+        "out/reports/audit-envelopes/report.json",
+        "out/reports/fidelity/report.json"
+      ],
+      "visualReview": "docs/visual-review.md",
+      "cameraDefault": {
+        "azimuth": 45,
+        "elevation": 30,
+        "padding": 36
+      }
+    },
+    {
+      "id": "F05",
+      "capabilities": [
+        "C07",
+        "C11"
+      ],
+      "entries": [
+        "examples/ripple-tank/figure.mjs"
+      ],
+      "shapes": [
+        "sphere",
+        "receiving plane",
+        "water/caustics/shadow",
+        "interleaved SVG"
+      ],
+      "materials": [
+        {
+          "role": "tank",
+          "id": "paper"
+        }
+      ],
+      "cameras": [
+        {
+          "azimuth": 45,
+          "elevation": 30
+        },
+        {
+          "azimuth": 35,
+          "elevation": 30
+        },
+        {
+          "azimuth": 45,
+          "elevation": 44
+        }
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "time": 0
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "time": 3
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "time": 6
+          }
+        }
+      ],
+      "clipTimes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "controls": [
+        "time: 0..6 s; play/pause/reset"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/effects.mjs",
+        "tests/print.mjs",
+        "tests/optics.mjs"
+      ],
+      "negativeTests": [
+        "tests/effect-registration.mjs"
+      ],
+      "reports": [
+        "out/reports/production-effects/report.json",
+        "out/reports/print-suite/report.json",
+        "out/reports/optics/report.json"
+      ],
+      "visualReview": "docs/visual-review.md",
+      "cameraDefault": {
+        "azimuth": 45,
+        "elevation": 30,
+        "padding": 25
+      }
+    },
+    {
+      "id": "F06",
+      "capabilities": [
+        "C06",
+        "C07",
+        "C08",
+        "C09"
+      ],
+      "entries": [
+        "examples/turning-mechanism/figure.mjs"
+      ],
+      "shapes": [
+        "hierarchical links",
+        "local/world anchors",
+        "detached rigid tool",
+        "glow/sparks"
+      ],
+      "materials": [
+        {
+          "role": "base",
+          "id": "gunmetal"
+        },
+        {
+          "role": "links",
+          "id": "steel"
+        }
+      ],
+      "cameras": [
+        {
+          "azimuth": 45,
+          "elevation": 30
+        },
+        {
+          "azimuth": 35,
+          "elevation": 30
+        },
+        {
+          "azimuth": 45,
+          "elevation": 44
+        }
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "time": 0
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "time": 2
+          }
+        },
+        {
+          "name": "release",
+          "state": {
+            "time": 3
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "time": 6
+          }
+        }
+      ],
+      "clipTimes": [
+        0,
+        1.4,
+        2,
+        2.99,
+        3,
+        3.01,
+        4,
+        5,
+        6
+      ],
+      "controls": [
+        "time: 0..6 s; hinges, detach at 3 s, seat at 5 s; play/pause/reset"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/audit-envelopes.mjs",
+        "tests/drive-suite.mjs",
+        "tests/effects.mjs",
+        "tests/gap-browser.mjs"
+      ],
+      "negativeTests": [
+        "tests/diagnostics-browser.mjs"
+      ],
+      "reports": [
+        "out/reports/audit-envelopes/report.json",
+        "out/reports/production-effects/report.json",
+        "out/reports/fidelity/report.json",
+        "out/reports/gap-closure/report.json"
+      ],
+      "visualReview": "docs/visual-review.md",
+      "cameraDefault": {
+        "azimuth": 45,
+        "elevation": 30,
+        "padding": 24
+      }
+    },
+    {
+      "id": "F07",
+      "capabilities": [
+        "C02",
+        "C06",
+        "C10"
+      ],
+      "entries": [
+        "examples/merging-surfaces/figure.mjs"
+      ],
+      "shapes": [
+        "analytic merging profiles"
+      ],
+      "materials": [
+        "preset surface and semantic accent"
+      ],
+      "cameras": [
+        {
+          "azimuth": 45,
+          "elevation": 30
+        },
+        {
+          "azimuth": 45,
+          "elevation": 44
+        }
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "separation": 50
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "separation": 30
+          }
+        },
+        {
+          "name": "merged",
+          "state": {
+            "separation": 0
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "separation": 0
+          }
+        }
+      ],
+      "clipTimes": [],
+      "controls": [
+        "separation: 0..50; Separate/Neck/Merged"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/changing-browser.mjs",
+        "tests/react.mjs",
+        "tests/react-package.mjs"
+      ],
+      "negativeTests": [
+        "tests/types.mts"
+      ],
+      "reports": [
+        "out/reports/react-package/report.json",
+        "out/reports/react-dev/report.json",
+        "out/reports/fidelity/report.json",
+        "out/reports/changing-geometry/report.json",
+        "out/reports/react/report.json"
+      ],
+      "visualReview": "docs/visual-review.md",
+      "cameraDefault": {
+        "azimuth": 45,
+        "elevation": 30,
+        "padding": 30
+      }
+    },
+    {
+      "id": "F08",
+      "capabilities": [
+        "C03",
+        "C06",
+        "C10"
+      ],
+      "entries": [
+        "examples/spring-probe/figure.mjs"
+      ],
+      "shapes": [
+        "helix",
+        "split annular platen",
+        "probe"
+      ],
+      "materials": [
+        {
+          "role": "metal",
+          "id": "steel"
+        }
+      ],
+      "cameras": [
+        {
+          "azimuth": 45,
+          "elevation": 30
+        },
+        {
+          "azimuth": 45,
+          "elevation": 44
+        }
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "compression": 0
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "compression": 7
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "compression": 14
+          }
+        }
+      ],
+      "clipTimes": [],
+      "controls": [
+        "compression: 0..14 mm; Free/Middle/Compressed"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/changing-browser.mjs",
+        "tests/react.mjs",
+        "tests/react-package.mjs",
+        "tests/spring-browser.mjs"
+      ],
+      "negativeTests": [
+        "tests/types.mts"
+      ],
+      "reports": [
+        "out/reports/react-package/report.json",
+        "out/reports/react-dev/report.json",
+        "out/reports/fidelity/report.json",
+        "out/reports/changing-geometry/report.json",
+        "out/reports/react/report.json",
+        "out/reports/spring-refinement/report.json"
+      ],
+      "visualReview": "docs/visual-review.md",
+      "cameraDefault": {
+        "azimuth": 45,
+        "elevation": 30,
+        "padding": 30
+      }
+    },
+    {
+      "id": "F09",
+      "capabilities": [
+        "C03",
+        "C04",
+        "C05",
+        "C13"
+      ],
+      "entries": [
+        "examples/material-sheet/figure.mjs",
+        "examples/construction-details/figure.mjs"
+      ],
+      "shapes": [
+        "all eight materials",
+        "knurl",
+        "scale",
+        "face text",
+        "physical bevel",
+        "braided and striped tube",
+        "profile seams and grooves",
+        "weld engraving",
+        "open vents",
+        "curved saddle seat and matched coupling rims"
+      ],
+      "materials": [
+        {
+          "role": "paper",
+          "id": "paper"
+        },
+        {
+          "role": "steel",
+          "id": "steel"
+        },
+        {
+          "role": "chrome",
+          "id": "chrome"
+        },
+        {
+          "role": "gunmetal",
+          "id": "gunmetal"
+        },
+        {
+          "role": "gold",
+          "id": "gold"
+        },
+        {
+          "role": "brass",
+          "id": "brass"
+        },
+        {
+          "role": "copper",
+          "id": "copper"
+        },
+        {
+          "role": "rubber",
+          "id": "rubber"
+        }
+      ],
+      "cameras": [
+        {
+          "azimuth": 45,
+          "elevation": 30
+        },
+        {
+          "azimuth": 35,
+          "elevation": 30
+        },
+        {
+          "azimuth": 45,
+          "elevation": 44
+        }
+      ],
+      "poses": [
+        {
+          "name": "rest",
+          "state": {
+            "turnDeg": 0
+          }
+        },
+        {
+          "name": "mid",
+          "state": {
+            "turnDeg": 15
+          }
+        },
+        {
+          "name": "max",
+          "state": {
+            "turnDeg": 30
+          }
+        },
+        {
+          "name": "min",
+          "state": {
+            "turnDeg": -30
+          }
+        }
+      ],
+      "clipTimes": [],
+      "controls": [
+        "turnDeg: -30..30\u00b0; Left/Front/Right"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "compact",
+        "standard",
+        "detailed"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/materials.mjs",
+        "tests/construction.mjs",
+        "tests/gap-browser.mjs"
+      ],
+      "negativeTests": [
+        "tests/geometry.test.mjs",
+        "tests/diagnostics-browser.mjs",
+        "tests/gap-contract.test.mjs"
+      ],
+      "reports": [
+        "out/reports/materials/report.json",
+        "out/reports/fidelity/report.json",
+        "out/reports/construction/report.json",
+        "out/reports/gap-closure/report.json"
+      ],
+      "visualReview": "docs/visual-review.md",
+      "cameraDefault": {
+        "azimuth": 45,
+        "elevation": 30,
+        "padding": 28
+      }
+    },
+    {
+      "id": "F10",
+      "capabilities": [
+        "C11"
+      ],
+      "entries": [
+        "examples/dial-indicator/sheet.mjs",
+        "examples/control-cabinet/sheet.mjs",
+        "examples/exploded-assembly/sheet.mjs",
+        "examples/ripple-tank/sheet.mjs"
+      ],
+      "shapes": [
+        "vector PDF",
+        "bounded effect rasters"
+      ],
+      "materials": [
+        "preset surface/accent; gunmetal/steel/rubber on F04"
+      ],
+      "cameras": [
+        {
+          "sheet": "examples/dial-indicator/sheet.mjs",
+          "camera": "fixed authored -42/30"
+        },
+        {
+          "sheet": "examples/control-cabinet/sheet.mjs",
+          "camera": "fixed authored -42/30"
+        },
+        {
+          "sheet": "examples/exploded-assembly/sheet.mjs",
+          "camera": {
+            "azimuth": 45,
+            "elevation": 30,
+            "padding": 36
+          }
+        },
+        {
+          "sheet": "examples/ripple-tank/sheet.mjs",
+          "camera": {
+            "azimuth": 45,
+            "elevation": 30,
+            "padding": 25
+          }
+        }
+      ],
+      "poses": [
+        {
+          "sheet": "examples/dial-indicator/sheet.mjs",
+          "views": {
+            "main": {
+              "pose": "mid"
+            },
+            "start": {
+              "pose": "rest"
+            },
+            "end": {
+              "pose": "max"
+            },
+            "detail": {
+              "pose": "mid",
+              "around": [
+                "gauge"
+              ],
+              "focus": [
+                "gauge",
+                "needle-hub"
+              ]
+            }
+          }
+        },
+        {
+          "sheet": "examples/control-cabinet/sheet.mjs",
+          "views": {
+            "main": {
+              "pose": "mid"
+            },
+            "start": {
+              "pose": "rest"
+            },
+            "end": {
+              "pose": "max"
+            },
+            "detail": {
+              "pose": "mid",
+              "focus": [
+                "relay-1",
+                "bridge-1",
+                "pusher-1"
+              ],
+              "around": [
+                "relay-1",
+                "bridge-1",
+                "pusher-1"
+              ],
+              "hide": [
+                "left-wall"
+              ]
+            }
+          }
+        },
+        {
+          "sheet": "examples/exploded-assembly/sheet.mjs",
+          "views": {
+            "apart": {
+              "pose": "mid",
+              "effects": true
+            },
+            "assembled": {
+              "pose": "rest"
+            },
+            "reversal": {
+              "actions": [
+                {
+                  "type": "time",
+                  "value": 0.72
+                }
+              ],
+              "effects": true
+            },
+            "seated": {
+              "actions": [
+                {
+                  "type": "time",
+                  "value": 7
+                }
+              ]
+            },
+            "detail": {
+              "pose": "mid",
+              "around": [
+                "chamber",
+                "nozzle"
+              ],
+              "focus": [
+                "chamber",
+                "nozzle"
+              ],
+              "effects": true
+            }
+          }
+        },
+        {
+          "sheet": "examples/ripple-tank/sheet.mjs",
+          "views": {
+            "main": {
+              "pose": "mid",
+              "effects": true
+            },
+            "start": {
+              "pose": "rest",
+              "effects": true
+            },
+            "end": {
+              "pose": "max",
+              "effects": true
+            },
+            "detail": {
+              "pose": "mid",
+              "effects": true,
+              "around": [
+                "float"
+              ]
+            }
+          }
+        }
+      ],
+      "clipTimes": [],
+      "controls": [],
+      "themes": [
+        "light print"
+      ],
+      "detail": [
+        "standard"
+      ],
+      "outputs": [
+        "a4/letter poster",
+        "a4/letter drawing",
+        "a4/letter detailed",
+        "pdf",
+        "html",
+        "png"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/print.mjs",
+        "tests/render-pdfs.mjs",
+        "tests/gap-browser.mjs",
+        "tests/static-print.mjs"
+      ],
+      "negativeTests": [
+        "tests/print.mjs"
+      ],
+      "reports": [
+        "out/reports/print-suite/report.json",
+        "out/reports/gap-closure/report.json",
+        "out/reports/static-print/report.json"
+      ],
+      "visualReview": "docs/visual-review.md"
+    },
+    {
+      "id": "F11",
+      "capabilities": [
+        "C14"
+      ],
+      "entries": [
+        "examples/dense-cutaway/figure.mjs",
+        "examples/dense-rack/figure.mjs",
+        "examples/dial-indicator/figure.mjs",
+        "tests/fixtures/next/app/page.jsx"
+      ],
+      "shapes": [
+        "702 static solids",
+        "381 moving-scene solids",
+        "50 static routes",
+        "Next: one static server dial and four independent live React figures, two WebGL passes"
+      ],
+      "materials": [
+        "steel terminals",
+        "copper jumpers",
+        "preset surface/accent"
+      ],
+      "cameras": [
+        {
+          "workload": "dense-cutaway/dense-rack",
+          "azimuth": 45,
+          "elevation": 44
+        },
+        {
+          "workload": "dial",
+          "azimuth": -42,
+          "elevation": 30
+        },
+        {
+          "workload": "Next spring/merging/tank",
+          "azimuth": 45,
+          "elevation": 30
+        }
+      ],
+      "poses": [
+        "rest and mid from each fixture; 64 deterministic samples per interactive workload"
+      ],
+      "clipTimes": [],
+      "controls": [
+        "dial displacement 0..10",
+        "dense static: none",
+        "dense rack time 0..3",
+        "Next page: two compression controls, separation, articulated clip"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [
+        "standard"
+      ],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/capacity.mjs",
+        "tests/react.mjs"
+      ],
+      "negativeTests": [],
+      "reports": [
+        "out/reports/capacity/report.json",
+        "out/reports/react-dev/report.json",
+        "out/reports/capacity-mixed/report.json"
+      ],
+      "visualReview": "docs/visual-review.md"
+    },
+    {
+      "id": "F12",
+      "capabilities": [
+        "C01",
+        "C15",
+        "C16"
+      ],
+      "entries": [
+        "evals/replacement-results.md"
+      ],
+      "shapes": [
+        "unfamiliar authored and migrated scenes"
+      ],
+      "materials": [
+        "teal accent (R01)",
+        "supplied copper override (R07)",
+        "trial-authored palettes in archived figure.config.json"
+      ],
+      "cameras": [],
+      "poses": [
+        "trial-authored pose states in archived source"
+      ],
+      "clipTimes": [],
+      "controls": [],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "detail": [],
+      "outputs": [
+        "html",
+        "svg"
+      ],
+      "exceptions": [],
+      "positiveTests": [
+        "tests/bundle.mjs",
+        "tests/compat.mjs",
+        "tests/source-migration.mjs",
+        "tests/gap-followups.mjs"
+      ],
+      "negativeTests": [],
+      "reports": [
+        "out/reports/sharing/report.json",
+        "evals/historical-manifest.json",
+        "out/reports/source-migration-current/report.json",
+        "out/reports/gap-followups/report.json"
+      ],
+      "visualReview": "docs/visual-review.md"
+    }
+  ],
+  "introducedWithToolkitVersion": "0.3.1"
+}

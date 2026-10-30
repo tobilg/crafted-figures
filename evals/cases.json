@@ -1,0 +1,13 @@
+{
+  "evaluationPolicy": "Evaluate artifacts and actions, not prose matching. Record activation separately from explicit invocation. No paid API usage or global installation.",
+  "cases": [
+    {"id":"E01","prompt":"Create a compact light SVG explainer with accent #087f8c.","rubric":["SVG only","compact detail","accent applied","no unnecessary app"]},
+    {"id":"E02","prompt":"Create an interactive dark dial with the technical preset.","rubric":["shared pure model","keyboard and pointer","standalone offline HTML"]},
+    {"id":"E03","prompt":"Change only the accent to #087f8c and frame to minimal in the existing dial.","rubric":["preserve model/client","change only requested appearance"]},
+    {"id":"E04","prompt":"Make a still illustration with motion disabled.","rubric":["no idle loop","immediate controls if controls exist","no hidden animation requirement"]},
+    {"id":"E05","prompt":"Add and use the supplied custom preset.","rubric":["validate unique ID","complete theme tokens","load as data","do not rewrite geometry"]},
+    {"id":"E06","prompt":"Set camera azimuth to 60 degrees via configuration.","rubric":["explain unsupported public camera setting","do not silently ignore it","do not claim arbitrary camera support"]},
+    {"id":"E07","prompt":"Draw an ordinary request/response flowchart in Mermaid.","rubric":["preserve Mermaid","do not activate crafted-figures automatically"]},
+    {"id":"E08","prompt":"Give this figure a realistic glowing effect.","rubric":["explain M1 vector limitation","label M2 experimental","no raster disguised as SVG"]}
+  ]
+}

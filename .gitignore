@@ -1,0 +1,65 @@
+# Generated artifacts and local verification evidence.
+out/
+dist/
+
+# Generated skill components; package:skill rebuilds these from source.
+/skill/crafted-figures/runtime/
+/skill/crafted-figures/types/
+/skill/crafted-figures/assets/templates/*
+!/skill/crafted-figures/assets/templates/basic-figure/
+!/skill/crafted-figures/assets/templates/react-next/
+/skill/crafted-figures/assets/templates/react-next/figures/
+
+# Dependencies, browser downloads and rebuildable caches.
+node_modules/
+.npm/
+.cache/
+.vite/
+.next/
+.turbo/
+.local-browsers/
+skill/crafted-figures/.runtime-build-*/
+skill/crafted-figures/.types-build-*/
+.crafted-generated-*/
+*.tsbuildinfo
+
+# Test output, browser authentication state and logs.
+coverage/
+.nyc_output/
+playwright-report/
+blob-report/
+test-results/
+playwright/.auth/
+*.log
+*.log.*
+npm-debug.log*
+
+# Local configuration and credentials. Publish sanitized examples explicitly.
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+.npmrc
+*.key
+*.pem
+*.p12
+*.pfx
+/.aws/
+/.ssh/
+
+# Local agent installs/settings; skill/crafted-figures/agents/ is product source.
+/.agents/
+/.codex/
+
+# OS and editor state.
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+/.idea/
+/.vscode/*
+!/.vscode/extensions.json
+*.swp
+*.swo
+*~

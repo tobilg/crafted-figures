@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "spark-orange",
+  "themes": {
+    "light": {
+      "surface": "#e27620",
+      "top": "#e27620",
+      "side0": "#b9611a",
+      "side1": "#9a5016",
+      "side2": "#763d11",
+      "side3": "#5a2f0d",
+      "stroke": "#4f290b",
+      "ink": "#2d1806"
+    },
+    "dark": {
+      "surface": "#ffc17a",
+      "top": "#ffc17a",
+      "side0": "#d19e64",
+      "side1": "#ad8353",
+      "side2": "#85643f",
+      "side3": "#664d31",
+      "stroke": "#59442b",
+      "ink": "#332718"
+    }
+  }
+}
