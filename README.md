@@ -1,8 +1,8 @@
-# Painter / Crafted Figures
+# Crafted Figures
 
-This repository builds **crafted-figures 0.6.1**, an independent skill for crafted isometric SVG explainers. Three.js owns the scene, geometry and orthographic camera; the packaged illustration renderer produces vector artwork, and matching WebGL depth passes support authored effects. It includes mechanisms, profiles/routes/materials, geometric diagnostics, React/Next adapters, print layouts and portable source bundles.
+This repository builds **crafted-figures 0.7.0**, an independent skill for crafted isometric SVG explainers. Three.js owns the scene, geometry and orthographic camera; the packaged illustration renderer produces vector artwork, and matching WebGL depth passes support authored effects. It includes mechanisms, profiles/routes/materials, geometric diagnostics, React/Next adapters, print layouts and portable source bundles.
 
-The [skill source](skill/crafted-figures/SKILL.md) builds into `dist/crafted-figures/`, `dist/crafted-figures-0.6.1.zip` and its `.sha256` checksum. Install the **built ZIP**, extracting its `crafted-figures/` folder into your chosen skill location. The artifact contains its Vite/Three.js/Ajv/Playwright runtime and needs no npm installation. A raw GitHub source-folder copy requires a build first.
+The [skill source](skill/crafted-figures/SKILL.md) builds into `dist/crafted-figures/`, `dist/crafted-figures-0.7.0.zip` and its `.sha256` checksum. Install the **built ZIP**, extracting its `crafted-figures/` folder into your chosen skill location. The artifact contains its Vite/Three.js/Ajv/Playwright runtime and needs no npm installation. A raw GitHub source-folder copy requires a build first.
 
 Use Node 22.13+ or Node 24+. To build from a source checkout:
 
@@ -16,7 +16,7 @@ Packaging generates the runtime, TypeScript declarations and copied recipes befo
 
 The [Test and build skill workflow](.github/workflows/verify.yml) runs on pushes, pull requests and manual dispatch. It runs contract/type/geometry, browser/effect, React/print/capacity and package/prototype checks, then tests the built package without npm installation on Linux, macOS and Windows with Node 22.13 and 24. All jobs must pass before the final installable artifact is uploaded.
 
-On GitHub, open **Actions → Test and build skill → a successful run → Artifacts → crafted-figures-release-zip**. That download contains the versioned skill ZIP and its checksum; extract the inner ZIP's `crafted-figures/` folder to install it. The workflow summary also links the download. Installable artifacts are retained for 30 days; intermediate candidates and diagnostic evidence for 7 days. Uploads are workflow artifacts, not published GitHub Releases. Remote execution is pending until the repository is pushed and Actions runs.
+On GitHub, open **Actions → Test and build skill → a successful run → Artifacts → crafted-figures-release-zip**. That download contains the versioned skill ZIP and its checksum; extract the inner ZIP's `crafted-figures/` folder to install it. The workflow summary also links the download. Installable artifacts are retained for 30 days; intermediate candidates and diagnostic evidence for 7 days. Uploads are workflow artifacts, not published GitHub Releases. The first hosted run ([41101188344](https://github.com/tobilg/crafted-figures/actions/runs/41101188344), on the initial commit) failed: the browser job did not build the package it reads, and every Windows build failed. Both are addressed in 0.7.0 but need a new hosted run to confirm; until a run succeeds there is no verified ZIP to download, and **Windows remains unverified**.
 
 After that setup, repository wrappers work as usual:
 
@@ -27,6 +27,8 @@ npm run check -- --dir out/dial --report out/reports/dial
 ```
 
 Browser checks and printing need Chrome/Chromium. Set `CRAFTED_CHROMIUM_EXECUTABLE` to an existing executable, or explicitly run `node skill/crafted-figures/runtime/playwright-core/cli.js install chromium`. Preview stays running; run checks in another terminal. After building, open `out/dial/figure.html` directly or its static `out/dial/figure.svg`. Generated HTML/SVG needs no npm installation or network access. The dial's 0–10 mm travel and 0–300° mapping are illustrative, with no calibration claim.
+
+[Biome](https://biomejs.dev) 2 formats and lints the code and JSON: `npm run lint` checks without changing anything (CI runs it), `npm run lint:fix` applies safe fixes, and `npm run format` formats. Markdown, generated output, the reference checkout and frozen regression inputs are excluded in [biome.json](biome.json).
 
 Build all fourteen examples in both themes with `npm run build:examples`. Sources are in [examples](examples/); outputs are `out/examples/<name>-light/figure.html` and corresponding dark/SVG files. Advanced examples include the [cabinet](examples/terminal-cabinet/figure.mjs), [valve](examples/valve-assembly/figure.mjs), [exploded assembly](examples/exploded-assembly/figure.mjs), [optics tank](examples/ripple-tank/figure.mjs), [turning tool](examples/turning-mechanism/figure.mjs), [merging surfaces](examples/merging-surfaces/figure.mjs), [spring rig](examples/spring-probe/figure.mjs) and [material sheet](examples/material-sheet/figure.mjs). The real [Next fixture](tests/fixtures/next) demonstrates multiple server/client figures; the independent package includes its own React starter.
 
@@ -42,8 +44,12 @@ npm run bundle -- --entry examples/exploded-assembly/figure.mjs --config example
 Local print evidence at `out/reports/print-suite/report.json` records the required paper/layout combinations. Reviewed outputs include `out/print/exploded-assembly-letter/detailed-letter.pdf` and `out/print/ripple-tank-a4/drawing-a4.pdf`, with their HTML/PNG counterparts beside them. Bundles contain sources, artifacts, notices, lockfiles and a rebuild command. Their generated artwork opens offline.
 
 ```sh
+npm run lint
 npm test
+npm run test:types
 npm run test:browser
+npm run test:interaction
+npm run test:wasm
 npm run test:geometry
 npm run test:motion
 npm run test:audit

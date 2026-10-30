@@ -34,6 +34,7 @@ jobs:
             skill/crafted-figures/package-lock.json
       - run: npm ci
       - run: npm --prefix skill/crafted-figures ci
+      - run: npm run lint
       - run: npm run prepare:dev
       - run: npm test
       - run: npm run test:types
@@ -65,9 +66,11 @@ jobs:
             skill/crafted-figures/package-lock.json
       - run: npm ci
       - run: npm --prefix skill/crafted-figures ci
-      - run: npm run prepare:dev
+      # The owned-renderer report binds its results to the assembled package.
+      - run: npm run package:skill
       - run: node skill/crafted-figures/runtime/playwright-core/cli.js install --with-deps chromium
       - run: npm run test:browser
+      - run: npm run test:interaction
       - run: npm run test:owned
       - run: npm run test:gaps
       - run: npm run test:migration
@@ -192,6 +195,7 @@ jobs:
         with:
           name: crafted-figures-candidate
           path: dist
+      - run: node tests/wasm-independence.mjs
       - run: node tests/bundled-runtime.mjs
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()

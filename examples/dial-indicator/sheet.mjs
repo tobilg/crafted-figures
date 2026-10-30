@@ -1,1 +1,40 @@
-export default {schemaVersion:1,figure:'figure.mjs',config:'figure.config.json',title:'Displacement on a dial',description:'An illustrative displacement model: 0–10 mm maps to 0–300 degrees. This is an explanatory mechanism, not a calibration claim.',maxPages:2,views:{main:{pose:'mid'},start:{pose:'rest'},end:{pose:'max'},detail:{pose:'mid',around:['gauge'],focus:['gauge','needle-hub']}},parts:[{id:'carriage',label:'Moving carriage',description:'Displacement raises the shared probe contact.'},{id:'base',label:'Base',description:'Supports the moving stage and fixed stand.'},{id:'arm',label:'Arm',description:'Holds the gauge in the fixed frame.'}],details:[{view:'detail',title:'Needle and scale',text:'Half travel turns the needle 150 degrees from zero.'}],steps:[{view:'start',title:'Zero displacement',text:'The carriage and probe share their initial contact point.'},{view:'main',title:'Half travel',text:'The displayed 5.00 mm maps to 150 degrees.'},{view:'end',title:'Full travel',text:'The displayed 10.00 mm maps to 300 degrees.'}]};
+export default {
+  schemaVersion: 1,
+  figure: 'figure.mjs',
+  config: 'figure.config.json',
+  title: 'Displacement on a dial',
+  description:
+    'An illustrative displacement model: 0–10 mm maps to 0–300 degrees. This is an explanatory mechanism, not a calibration claim.',
+  maxPages: 2,
+  views: {
+    main: { pose: 'mid' },
+    start: { pose: 'rest' },
+    end: { pose: 'max' },
+    detail: { pose: 'mid', around: ['gauge'], focus: ['gauge', 'needle-hub'] },
+  },
+  parts: [
+    {
+      id: 'carriage',
+      label: 'Moving carriage',
+      description: 'Displacement raises the shared probe contact.',
+    },
+    { id: 'base', label: 'Base', description: 'Supports the moving stage and fixed stand.' },
+    { id: 'arm', label: 'Arm', description: 'Holds the gauge in the fixed frame.' },
+  ],
+  details: [
+    {
+      view: 'detail',
+      title: 'Needle and scale',
+      text: 'Half travel turns the needle 150 degrees from zero.',
+    },
+  ],
+  steps: [
+    {
+      view: 'start',
+      title: 'Zero displacement',
+      text: 'The carriage and probe share their initial contact point.',
+    },
+    { view: 'main', title: 'Half travel', text: 'The displayed 5.00 mm maps to 150 degrees.' },
+    { view: 'end', title: 'Full travel', text: 'The displayed 10.00 mm maps to 300 degrees.' },
+  ],
+};

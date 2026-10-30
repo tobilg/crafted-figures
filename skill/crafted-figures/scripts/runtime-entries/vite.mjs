@@ -1,1 +1,1 @@
-export {build,version} from 'vite';
+export { build, version } from 'vite';

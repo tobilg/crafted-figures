@@ -1,8 +1,95 @@
-import {chromium} from 'playwright';import {inspectLines} from '../skill/crafted-figures/kit/drive.mjs';import {sampleStates} from '../skill/crafted-figures/kit/capture.mjs';import {mkdir,writeFile} from 'node:fs/promises';import path from 'node:path';import {pathToFileURL} from 'node:url';import assert from 'node:assert/strict';
-const out='out/reports/diagnostic-faults';await mkdir(out,{recursive:true});const report={status:'running',checks:[],errors:[],environment:{node:process.version}};let browser;
-try{browser=await chromium.launch();report.environment.browser=browser.version();const page=await browser.newPage({viewport:{width:960,height:1050}});await page.goto(pathToFileURL(path.resolve('out/drive/exploded-assembly/figure.html')).href);await page.locator('[data-ready=true]').waitFor();const valid=await page.locator('[data-figure]').evaluate(root=>root.__stage.inspectOrder(root));assert.equal(valid.status,'passed');assert.ok(valid.checked>10);
-const empty=await page.locator('[data-figure]').evaluate(root=>{root.style.transform='translateY(200vh)';try{return root.__stage.inspectOrder(root);}finally{root.style.removeProperty('transform');}});assert.equal(empty.status,'failed');assert.equal(empty.checked,0);assert.ok(empty.findings.some(f=>f.code==='ORDER_NO_SAMPLES'));report.checks.push({kind:'offscreen order check cannot pass without samples',empty});
-const wrong=await page.locator('[data-figure]').evaluate(root=>{const group=root.querySelector('[data-scene]');group.replaceChildren(...[...group.children].reverse());return root.__stage.inspectOrder(root,{columns:96,rows:72});});assert.equal(wrong.status,'failed');assert.ok(wrong.findings.some(f=>f.code==='PAINTED_ORDER'));report.checks.push({kind:'actual SVG painter inversion',valid,wrong});
-await page.reload();await page.locator('[data-ready=true]').waitFor();await page.locator('[data-figure]').evaluate(root=>{const s=root.__stage,update=s.update;s.update=state=>{const m=update(state);if(state.time>.3&&state.time<.5)s.scene.getObjectByName('chamber').position.y+=70;else s.scene.getObjectByName('chamber').position.y=0;return m;};});const pop=await sampleStates(page,{name:'known-pop',states:[{time:.29},{time:.31},{time:.51}],maxStep:30},out);assert.ok(pop.findings.some(f=>f.code==='TEMPORAL_POP'));report.checks.push({kind:'mid-only temporal pop',findings:pop.findings});
-await page.setContent('<svg width="400" height="300"><path class="line" d="M20 20 C80 20 80 80 140 80" fill="none" stroke="black"/><path class="line" d="M200 100 A30 30 0 0 1 260 100" fill="none" stroke="black"/></svg>');const lines=await inspectLines(page);assert.equal(lines.status,'failed');assert.equal(lines.findings.filter(f=>f.code==='LINE_END').length,4);report.checks.push({kind:'curve/arc dangling endpoints',lines});await page.locator('path').evaluateAll(els=>els.forEach(e=>e.setAttribute('data-line-reason','isolated printed demonstration curve')));assert.equal((await inspectLines(page)).status,'passed');await page.setContent('<svg width="400" height="300"><g data-object="plate"><path class="edge" d="M20 20H180V180H20Z" fill="none" stroke="black"/><path class="line" d="M20 80Q100 100 180 80" fill="none" stroke="black"/></g><defs><clipPath id="window"><rect x="220" y="20" width="80" height="80"/></clipPath></defs><g clip-path="url(#window)"><path class="line" d="M190 60H340" stroke="black"/></g></svg>');const joined=await inspectLines(page);assert.equal(joined.status,'passed',JSON.stringify(joined));report.checks.push({kind:'host boundary and genuinely clipped endpoints',joined});report.status='passed';
-}catch(e){report.status='failed';report.errors.push(e.stack);process.exitCode=1;}finally{await browser?.close();await writeFile(`${out}/report.json`,JSON.stringify(report,null,2)+'\n');console.log(report.status,report.errors);}
+import { chromium } from 'playwright';
+import { inspectLines } from '../skill/crafted-figures/kit/drive.mjs';
+import { sampleStates } from '../skill/crafted-figures/kit/capture.mjs';
+import { mkdir, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import assert from 'node:assert/strict';
+const out = 'out/reports/diagnostic-faults';
+await mkdir(out, { recursive: true });
+const report = {
+  status: 'running',
+  checks: [],
+  errors: [],
+  environment: { node: process.version },
+};
+let browser;
+try {
+  browser = await chromium.launch();
+  report.environment.browser = browser.version();
+  const page = await browser.newPage({ viewport: { width: 960, height: 1050 } });
+  await page.goto(pathToFileURL(path.resolve('out/drive/exploded-assembly/figure.html')).href);
+  await page.locator('[data-ready=true]').waitFor();
+  const valid = await page
+    .locator('[data-figure]')
+    .evaluate(root => root.__stage.inspectOrder(root));
+  assert.equal(valid.status, 'passed');
+  assert.ok(valid.checked > 10);
+  const empty = await page.locator('[data-figure]').evaluate(root => {
+    root.style.transform = 'translateY(200vh)';
+    try {
+      return root.__stage.inspectOrder(root);
+    } finally {
+      root.style.removeProperty('transform');
+    }
+  });
+  assert.equal(empty.status, 'failed');
+  assert.equal(empty.checked, 0);
+  assert.ok(empty.findings.some(f => f.code === 'ORDER_NO_SAMPLES'));
+  report.checks.push({ kind: 'offscreen order check cannot pass without samples', empty });
+  const wrong = await page.locator('[data-figure]').evaluate(root => {
+    const group = root.querySelector('[data-scene]');
+    group.replaceChildren(...[...group.children].reverse());
+    return root.__stage.inspectOrder(root, { columns: 96, rows: 72 });
+  });
+  assert.equal(wrong.status, 'failed');
+  assert.ok(wrong.findings.some(f => f.code === 'PAINTED_ORDER'));
+  report.checks.push({ kind: 'actual SVG painter inversion', valid, wrong });
+  await page.reload();
+  await page.locator('[data-ready=true]').waitFor();
+  await page.locator('[data-figure]').evaluate(root => {
+    const s = root.__stage,
+      update = s.update;
+    s.update = state => {
+      const m = update(state);
+      if (state.time > 0.3 && state.time < 0.5) s.scene.getObjectByName('chamber').position.y += 70;
+      else s.scene.getObjectByName('chamber').position.y = 0;
+      return m;
+    };
+  });
+  const pop = await sampleStates(
+    page,
+    { name: 'known-pop', states: [{ time: 0.29 }, { time: 0.31 }, { time: 0.51 }], maxStep: 30 },
+    out,
+  );
+  assert.ok(pop.findings.some(f => f.code === 'TEMPORAL_POP'));
+  report.checks.push({ kind: 'mid-only temporal pop', findings: pop.findings });
+  await page.setContent(
+    '<svg width="400" height="300"><path class="line" d="M20 20 C80 20 80 80 140 80" fill="none" stroke="black"/><path class="line" d="M200 100 A30 30 0 0 1 260 100" fill="none" stroke="black"/></svg>',
+  );
+  const lines = await inspectLines(page);
+  assert.equal(lines.status, 'failed');
+  assert.equal(lines.findings.filter(f => f.code === 'LINE_END').length, 4);
+  report.checks.push({ kind: 'curve/arc dangling endpoints', lines });
+  await page.locator('path').evaluateAll(els =>
+    els.forEach(e => {
+      e.setAttribute('data-line-reason', 'isolated printed demonstration curve');
+    }),
+  );
+  assert.equal((await inspectLines(page)).status, 'passed');
+  await page.setContent(
+    '<svg width="400" height="300"><g data-object="plate"><path class="edge" d="M20 20H180V180H20Z" fill="none" stroke="black"/><path class="line" d="M20 80Q100 100 180 80" fill="none" stroke="black"/></g><defs><clipPath id="window"><rect x="220" y="20" width="80" height="80"/></clipPath></defs><g clip-path="url(#window)"><path class="line" d="M190 60H340" stroke="black"/></g></svg>',
+  );
+  const joined = await inspectLines(page);
+  assert.equal(joined.status, 'passed', JSON.stringify(joined));
+  report.checks.push({ kind: 'host boundary and genuinely clipped endpoints', joined });
+  report.status = 'passed';
+} catch (e) {
+  report.status = 'failed';
+  report.errors.push(e.stack);
+  process.exitCode = 1;
+} finally {
+  await browser?.close();
+  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
+  console.log(report.status, report.errors);
+}

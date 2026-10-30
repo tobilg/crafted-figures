@@ -18,7 +18,7 @@ The public figure contract accepts generated SVG children. A valid figure using 
 
 Use consistent reference rewriting at both namespace boundaries, including fragment `href`/`xlink:href`, supported `url(#…)` references and ARIA ID lists. Add regressions for a reused local shape and multiple appearances of one view. Print validation should detect unresolved local references rather than reporting successful output with missing artwork.
 
-Evidence: [probe report](../out/reports/project-review-2026-10-23/print-use/report.json), [working screen](../out/reports/project-review-2026-10-23/print-use/screen.png), [blank PDF page](../out/reports/project-review-2026-10-23/print-use/pdf-page.png), [actual PDF](../out/reports/project-review-2026-10-23/print-use/printed/poster-a4.pdf), [reproduction script](../out/reports/project-review-2026-10-23/reproduce-print.mjs).
+Evidence: probe report (local evidence: `out/reports/project-review-2026-10-23/print-use/report.json`), working screen (local evidence: `out/reports/project-review-2026-10-23/print-use/screen.png`), blank PDF page (local evidence: `out/reports/project-review-2026-10-23/print-use/pdf-page.png`), actual PDF (local evidence: `out/reports/project-review-2026-10-23/print-use/printed/poster-a4.pdf`), reproduction script (local evidence: `out/reports/project-review-2026-10-23/reproduce-print.mjs`).
 
 ### R2 — P1: full release/parity verification requires ignored local history
 
@@ -30,7 +30,7 @@ The same isolated source copy successfully assembled a byte-identical package wi
 
 Move the minimal distributable regression inputs into tracked test fixtures, and make historical evaluation evidence an explicit, versioned input with an acquisition/checking procedure. Keep historical trials distinguishable from current package receipts. Do not resolve this by dropping required checks or committing all of `out/`.
 
-Evidence: [isolated-copy report](../out/reports/project-review-2026-10-23/packaging-probes.json), [release failure](../out/reports/project-review-2026-10-23/release-clean.log), [parity failure](../out/reports/project-review-2026-10-23/parity-clean.log).
+Evidence: isolated-copy report (local evidence: `out/reports/project-review-2026-10-23/packaging-probes.json`), release failure (local evidence: `out/reports/project-review-2026-10-23/release-clean.log`), parity failure (local evidence: `out/reports/project-review-2026-10-23/parity-clean.log`).
 
 ### R3 — P2: obsolete generated recipe files can ship in the next package
 
@@ -43,7 +43,7 @@ Template synchronization copies the current expected files into existing directo
 
 Generate recipe trees in staging from an explicit ownership inventory, or safely reconcile previous generated files. Preserve the authored basic/React scaffold and handle unexpected edits explicitly. Test that a stale generated recipe is excluded or causes a clear conflict, and that clean and previously built workspaces produce the same intended artifact.
 
-Evidence: [packaging probe](../out/reports/project-review-2026-10-23/packaging-probes.json), [reproduction script](../out/reports/project-review-2026-10-23/reproduce-packaging.mjs).
+Evidence: packaging probe (local evidence: `out/reports/project-review-2026-10-23/packaging-probes.json`), reproduction script (local evidence: `out/reports/project-review-2026-10-23/reproduce-packaging.mjs`).
 
 ### R4 — P2: the full-release test registry has drifted from current tests
 
@@ -55,7 +55,7 @@ Separately, parity assigns `toolkitVersion` from the fixture manifest, which sti
 
 Maintain a shared suite inventory or test that the release registry covers the intended current suites. Derive current toolkit identity from the package, while retaining explicit historical fixture/trial versions. Do not rewrite old reports as new executions.
 
-Evidence: [inventory](../out/reports/project-review-2026-10-23/inventory.json).
+Evidence: inventory (local evidence: `out/reports/project-review-2026-10-23/inventory.json`).
 
 ### R5 — P3: package rebuild treats a generator marker as permission to delete all contents
 
@@ -65,7 +65,7 @@ The packager accepts an existing directory when its manifest has the expected `g
 
 Replacing a generated output directory is a common build convention, so this is lower priority than R1–R4. It does not erase source examples or establish a defect in the figure-output ownership guard. However, the current marker check offers less protection than a content ownership check. Either document this folder as disposable prominently, or reject/preserve modified and unowned content before replacement; add a focused regression for the chosen policy.
 
-Evidence: [packaging probe](../out/reports/project-review-2026-10-23/packaging-probes.json).
+Evidence: packaging probe (local evidence: `out/reports/project-review-2026-10-23/packaging-probes.json`).
 
 ## Overall assessment against the PRD
 
@@ -86,10 +86,10 @@ Environment: Node **22.13.0**, Darwin x64; print reproduction used Chromium **15
 
 | Check | Actual result |
 | --- | --- |
-| `npm test` | Passed: 38 tests, zero failures/skips. [Log](../out/reports/project-review-2026-10-23/unit.log). |
-| `npm run test:types` | Passed. [Log](../out/reports/project-review-2026-10-23/types.log). |
-| Root and skill `npm audit --json` | Both exited 0; zero known advisories returned for their dependency trees at review time. [Root](../out/reports/project-review-2026-10-23/npm-audit-root.json), [skill](../out/reports/project-review-2026-10-23/npm-audit-skill.json). |
-| Workflow/skill metadata | actionlint 1.7.12 and the skill-creator metadata validator passed. [Workflow log](../out/reports/project-review-2026-10-23/actionlint.log), [skill log](../out/reports/project-review-2026-10-23/skill-validation.log). |
+| `npm test` | Passed: 38 tests, zero failures/skips. Log (local evidence: `out/reports/project-review-2026-10-23/unit.log`). |
+| `npm run test:types` | Passed. Log (local evidence: `out/reports/project-review-2026-10-23/types.log`). |
+| Root and skill `npm audit --json` | Both exited 0; zero known advisories returned for their dependency trees at review time. Root (local evidence: `out/reports/project-review-2026-10-23/npm-audit-root.json`), skill (local evidence: `out/reports/project-review-2026-10-23/npm-audit-skill.json`). |
+| Workflow/skill metadata | actionlint 1.7.12 and the skill-creator metadata validator passed. Workflow log (local evidence: `out/reports/project-review-2026-10-23/actionlint.log`), skill log (local evidence: `out/reports/project-review-2026-10-23/skill-validation.log`). |
 | Package integrity | All 258 listed package file hashes checked. Manifest lists 25,420,847 bytes. Archive is 6,964,740 bytes. |
 | Isolated source packaging | Passed without generated source-tree artifacts or the reference checkout; resulting ZIP matched the existing ZIP exactly. Installed pinned dependencies were filesystem-cloned into the temporary copy, not freshly downloaded for this review. |
 | Clean-source release/parity probes | Both failed as described in R2. This is a product workflow limitation, not a browser/environment blocker. |
@@ -100,9 +100,9 @@ Package manifest SHA-256: `526e2ed7cea367df5a1fdd459ee50b30b1265a60fdd0082c21d13
 
 ZIP SHA-256: `d939a15b0430020c7e7597133ad724b22c3955bd9f4f929c232dfc1dc2ab7e5e`.
 
-The [aggregate review record](../out/reports/project-review-2026-10-23/report.json) binds findings and logs to these artifacts. An initial packaging harness used symlinked dependencies; that setup produced different paths and was replaced with filesystem-cloned dependencies before the deterministic comparison above. Its preliminary record is retained but is not counted as a product determinism failure.
+The aggregate review record (local evidence: `out/reports/project-review-2026-10-23/report.json`) binds findings and logs to these artifacts. An initial packaging harness used symlinked dependencies; that setup produced different paths and was replaced with filesystem-cloned dependencies before the deterministic comparison above. Its preliminary record is retained but is not counted as a product determinism failure.
 
-**Existing evidence inspected, not newly executed here:** the [0.6.0 packaging report](../out/reports/artifact-packaging.json) covers the browser matrix, offline/distribution checks, independent package, Next/React consumer and source-bundle/print rebuilds. The [workflow report](../out/reports/workflow/report.json) records a previous clean-source run with both fresh locked installs, packaging, 38 unit tests, strict types, four distribution cases, six offline cases, 14 dial cases and nine owned-renderer cases. Historical 0.3.1 full-release/agent evidence is not a fresh 0.6.0 qualification.
+**Existing evidence inspected, not newly executed here:** the 0.6.0 packaging report (local evidence: `out/reports/artifact-packaging.json`) covers the browser matrix, offline/distribution checks, independent package, Next/React consumer and source-bundle/print rebuilds. The workflow report (local evidence: `out/reports/workflow/report.json`) records a previous clean-source run with both fresh locked installs, packaging, 38 unit tests, strict types, four distribution cases, six offline cases, 14 dial cases and nine owned-renderer cases. Historical 0.3.1 full-release/agent evidence is not a fresh 0.6.0 qualification.
 
 ## Public-release limitations and next work
 

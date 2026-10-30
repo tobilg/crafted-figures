@@ -1,2 +1,42 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,writeFile,readFile,access} from 'node:fs/promises';import path from 'node:path';import os from 'node:os';import {bundleFigure} from '../skill/crafted-figures/kit/bundle.mjs';
-test('source bundle preserves an explicit SVG-only output choice',async()=>{const dir=await mkdtemp(path.join(os.tmpdir(),'cf-bundle-svg-')),entry=path.join(dir,'figure.mjs'),config=path.join(dir,'figure.config.json');await writeFile(entry,`export default {id:'static-fixture',capabilities:{detail:['standard']},initialState:{},poses:{rest:{}},render(){return {viewBox:[0,0,100,100],title:'Static fixture',description:'Vector square',body:'<path d="M10 10H90V90H10Z" class="top"/>'};}};`);await writeFile(config,JSON.stringify({output:'svg'}));await bundleFigure({entry,config,out:path.join(dir,'bundle')});await access(path.join(dir,'bundle/artifacts/figure.svg'));await assert.rejects(access(path.join(dir,'bundle/artifacts/figure.html')),/ENOENT/);const manifest=JSON.parse(await readFile(path.join(dir,'bundle/artifacts/build-manifest.json')));assert.deepEqual(Object.keys(manifest.outputHashes).sort(),['figure.svg','resolved-config.json']);await writeFile(path.join(dir,'bundle/user-note.txt'),'keep me');await bundleFigure({entry,config,out:path.join(dir,'bundle'),overrides:{output:'html'}});await access(path.join(dir,'bundle/artifacts/figure.html'));await assert.rejects(access(path.join(dir,'bundle/artifacts/figure.svg')),/ENOENT/);assert.equal(await readFile(path.join(dir,'bundle/user-note.txt'),'utf8'),'keep me');await writeFile(path.join(dir,'bundle/artifacts/figure.html'),'user edit');await assert.rejects(bundleFigure({entry,config,out:path.join(dir,'bundle'),overrides:{output:'svg'}}),/edited output/);assert.equal(await readFile(path.join(dir,'bundle/artifacts/figure.html'),'utf8'),'user edit');});
+import { tempDir } from './temp.mjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { writeFile, readFile, access } from 'node:fs/promises';
+import path from 'node:path';
+import { bundleFigure } from '../skill/crafted-figures/kit/bundle.mjs';
+test('source bundle preserves an explicit SVG-only output choice', async () => {
+  const dir = await tempDir('cf-bundle-svg-'),
+    entry = path.join(dir, 'figure.mjs'),
+    config = path.join(dir, 'figure.config.json');
+  await writeFile(
+    entry,
+    `export default {id:'static-fixture',capabilities:{detail:['standard']},initialState:{},poses:{rest:{}},render(){return {viewBox:[0,0,100,100],title:'Static fixture',description:'Vector square',body:'<path d="M10 10H90V90H10Z" class="top"/>'};}};`,
+  );
+  await writeFile(config, JSON.stringify({ output: 'svg' }));
+  await bundleFigure({ entry, config, out: path.join(dir, 'bundle') });
+  await access(path.join(dir, 'bundle/artifacts/figure.svg'));
+  await assert.rejects(access(path.join(dir, 'bundle/artifacts/figure.html')), /ENOENT/);
+  const manifest = JSON.parse(
+    await readFile(path.join(dir, 'bundle/artifacts/build-manifest.json')),
+  );
+  assert.deepEqual(Object.keys(manifest.outputHashes).sort(), [
+    'figure.svg',
+    'resolved-config.json',
+  ]);
+  await writeFile(path.join(dir, 'bundle/user-note.txt'), 'keep me');
+  await bundleFigure({
+    entry,
+    config,
+    out: path.join(dir, 'bundle'),
+    overrides: { output: 'html' },
+  });
+  await access(path.join(dir, 'bundle/artifacts/figure.html'));
+  await assert.rejects(access(path.join(dir, 'bundle/artifacts/figure.svg')), /ENOENT/);
+  assert.equal(await readFile(path.join(dir, 'bundle/user-note.txt'), 'utf8'), 'keep me');
+  await writeFile(path.join(dir, 'bundle/artifacts/figure.html'), 'user edit');
+  await assert.rejects(
+    bundleFigure({ entry, config, out: path.join(dir, 'bundle'), overrides: { output: 'svg' } }),
+    /edited output/,
+  );
+  assert.equal(await readFile(path.join(dir, 'bundle/artifacts/figure.html'), 'utf8'), 'user edit');
+});

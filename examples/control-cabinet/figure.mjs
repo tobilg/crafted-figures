@@ -1,3 +1,25 @@
-import {poses} from './model.mjs';
-import {createCabinet} from './scene.mjs';
-export default {id:'control-cabinet',capabilities:{detail:['compact','standard']},initialState:poses.rest,poses,clientEntry:new URL('./client.mjs',import.meta.url),render({kit,config,state}){const stage=createCabinet({kit,config});try{const m=stage.update(state);return {renderer:'three-illustration',viewBox:[0,0,600,420],title:'Three thresholds, three contacts',description:'The cabinet front and roof are removed. Each bridge closes its two terminals at its labeled threshold: 20, 30 or 40 °C. Wiring is illustrative; this is not an electrical installation diagram.',body:`<g data-scene="three">${stage.render()}</g><text class="reading" data-part="static-readout" x="28" y="380">${m.reading}</text><text class="caption" x="28" y="405">Lifted bridge = open · seated bridge = closed</text>`};}finally{stage.dispose();}}};
+import { poses } from './model.mjs';
+import { createCabinet } from './scene.mjs';
+export default {
+  id: 'control-cabinet',
+  capabilities: { detail: ['compact', 'standard'] },
+  initialState: poses.rest,
+  poses,
+  clientEntry: new URL('./client.mjs', import.meta.url),
+  render({ kit, config, state }) {
+    const stage = createCabinet({ kit, config });
+    try {
+      const m = stage.update(state);
+      return {
+        renderer: 'three-illustration',
+        viewBox: [0, 0, 600, 420],
+        title: 'Three thresholds, three contacts',
+        description:
+          'The cabinet front and roof are removed. Each bridge closes its two terminals at its labeled threshold: 20, 30 or 40 °C. Wiring is illustrative; this is not an electrical installation diagram.',
+        body: `<g data-scene="three">${stage.render()}</g><text class="reading" data-part="static-readout" x="28" y="380">${m.reading}</text><text class="caption" x="28" y="405">Lifted bridge = open · seated bridge = closed</text>`,
+      };
+    } finally {
+      stage.dispose();
+    }
+  },
+};

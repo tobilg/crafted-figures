@@ -1,2 +1,36 @@
-import {poses} from './model.mjs';import {createScene} from './scene.mjs';
-export default {id:'spring-probe',capabilities:{detail:['compact','standard'],camera:{default:{azimuth:45,elevation:30,padding:30},views:[{azimuth:45,elevation:30},{azimuth:45,elevation:44}]},materials:{metal:'steel'}},initialState:poses.rest,poses,createScene,clientEntry:new URL('./client.mjs',import.meta.url),render(args){const s=createScene(args);try{const m=s.update(args.state);return {renderer:'three-illustration',viewBox:[0,0,600,400],title:'A spring measures displacement',description:'A 2 N/mm illustrative spring law drives the force readout. The coil compresses around the probe rod; the mechanism retains its contact surfaces.',body:`<g data-scene="three">${s.render()}</g><text class="reading" data-part="static-readout" x="24" y="376">${m.reading}</text>`};}finally{s.dispose();}}};
+import { poses } from './model.mjs';
+import { createScene } from './scene.mjs';
+export default {
+  id: 'spring-probe',
+  capabilities: {
+    detail: ['compact', 'standard'],
+    camera: {
+      default: { azimuth: 45, elevation: 30, padding: 30 },
+      views: [
+        { azimuth: 45, elevation: 30 },
+        { azimuth: 45, elevation: 44 },
+      ],
+    },
+    materials: { metal: 'steel' },
+  },
+  initialState: poses.rest,
+  poses,
+  createScene,
+  clientEntry: new URL('./client.mjs', import.meta.url),
+  render(args) {
+    const s = createScene(args);
+    try {
+      const m = s.update(args.state);
+      return {
+        renderer: 'three-illustration',
+        viewBox: [0, 0, 600, 400],
+        title: 'A spring measures displacement',
+        description:
+          'A 2 N/mm illustrative spring law drives the force readout. The coil compresses around the probe rod; the mechanism retains its contact surfaces.',
+        body: `<g data-scene="three">${s.render()}</g><text class="reading" data-part="static-readout" x="24" y="376">${m.reading}</text>`,
+      };
+    } finally {
+      s.dispose();
+    }
+  },
+};

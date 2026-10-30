@@ -1,1 +1,14 @@
-{"name":"crafted-next-fixture","private":true,"type":"module","scripts":{"build":"next build --webpack","start":"next start -H 127.0.0.1 -p 4184"},"dependencies":{"next":"16.4.2","react":"19.3.1","react-dom":"19.3.1"}}
+{
+  "name": "crafted-next-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "next build --webpack",
+    "start": "next start -H 127.0.0.1 -p 4184"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}

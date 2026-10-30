@@ -1,6 +1,6 @@
 # Print and local delivery
 
-Run `node scripts/figures.mjs print --spec path/to/sheet.mjs --paper a4 --format all --png --out out/print` from the installed toolkit. Paper is `a4|letter`; formats are `poster|drawing|detailed|all`. Use an existing browser via `CRAFTED_CHROMIUM_EXECUTABLE`, or install pinned Chromium explicitly with `node runtime/playwright-core/cli.js install chromium`.
+Run `node scripts/figures.mjs print --spec path/to/sheet.mjs --paper a4 --format all --png --out out/print` from the installed toolkit. Paper is `a4|letter`; formats are `poster|drawing|detailed|all|available` (`available` means the layouts the sheet has content for). `--project-config`, `--preset-file` and `--material-file` supply what a custom-branded figure needs. Pages carry no product name; a sheet can set `eyebrow` and `language`. Use an existing browser via `CRAFTED_CHROMIUM_EXECUTABLE`, or install pinned Chromium explicitly with `node runtime/playwright-core/cli.js install chromium`.
 
 A trusted `sheet.mjs` default-exports a validated object:
 
@@ -21,7 +21,7 @@ Parts have id/label/description and optional `pin:[x,y]` in viewBox units. Numbe
 
 Inspect every PNG page and the PDF at high zoom. A successful print command verifies page overflow and captures actual model state; it does not substitute for visual review. The manifest records pose/action hashes, vector paths and effect raster regions. Test environment lives in print-report.json. Do not promise byte-identical PDFs across browser versions.
 
-`bundle --entry figure.mjs --config figure.config.json --sheet sheet.mjs --out share/figure` creates a local source/toolkit/artifact directory. `--sheet` is optional; repeat `--asset path` for resources not discovered by module imports. Preset/material files use the same repeatable flags as build. No publishing or telemetry occurs. Run `node rebuild.mjs` inside the bundle without npm installation; generated HTML/SVG can already be opened offline. Review the bundle manifest to ensure every required local asset is declared. Builds preserve unrelated/edited outputs instead of clearing a directory.
+`bundle --entry figure.mjs --config figure.config.json --sheet sheet.mjs --out share/figure` creates a local source/toolkit/artifact directory. `--sheet` is optional, and honors the sheet's own paper and format unless `--paper` or `--format` overrides them; repeat `--asset path` for resources not discovered by module imports. Preset/material files use the same repeatable flags as build. No publishing or telemetry occurs. Run `node rebuild.mjs` inside the bundle without npm installation; generated HTML/SVG can already be opened offline. Review the bundle manifest to ensure every required local asset is declared. Builds preserve unrelated/edited outputs instead of clearing a directory.
 
 For a meaningful close-up, set `around: ['semantic-part-or-assembly-id']` on a view. It fits the visible named geometry plus 8% padding; `focus` independently dims other parts. `around` and a numeric `crop` are mutually exclusive. Hidden or empty subjects fail. Pins outside the selected crop are omitted. The shipped dial starter includes a portable `sheet.mjs`.
 
@@ -36,3 +36,5 @@ Local SVG definitions may be reused with `href`/`xlink:href`, `url(#id)` referen
 A poster may set `maxPages:1`; detailed sheets still need at least two meaningful pages. Include `steps:[]` when a poster has no sequence. The same sheet can define details/assemblies for the other layouts.
 
 Construct a static figure through the injected `kit` passed to `render`. The print builder uses that same boundary to enable the adapter's vector seam treatment before serialization, so static curved surfaces receive the same PDF treatment as live captures. Directly importing a separate renderer bypasses that injection and needs its own print qualification. The treatment preserves vector geometry and painter order; it does not rasterize solids.
+
+Bundles copy npm packages a figure imports, with their manifests and notices, so the rebuild works without the original `node_modules`.

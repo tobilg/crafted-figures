@@ -1,8 +1,61 @@
-import {spawn} from 'node:child_process';import {mkdir,writeFile} from 'node:fs/promises';import {releaseSteps,releaseIdentity,validateReport,hash} from './release-evidence.mjs';import assert from 'node:assert/strict';
-const selection=process.argv.slice(2);for(const id of selection)assert.ok(releaseSteps.some(s=>s.id===id),`Unknown release step ${id}`);await mkdir('out/reports/release',{recursive:true});
-for(const step of releaseSteps.filter(s=>!selection.length||selection.includes(s.id))){const receipt={schemaVersion:1,status:'running',identity:null,commands:[],reports:[],environment:{node:process.version,platform:process.platform,arch:process.arch},errors:[]};
- try{const identity=await releaseIdentity();receipt.identity=identity;for(const [i,args]of step.commands.entries()){console.log(`${step.id}: node ${args.join(' ')}`);let log='';const start=performance.now(),exitCode=await new Promise((resolve,reject)=>{const child=spawn(process.execPath,args,{env:{...process.env,NEXT_TELEMETRY_DISABLED:'1'},stdio:['ignore','pipe','pipe']});child.stdout.on('data',d=>log+=d);child.stderr.on('data',d=>log+=d);child.on('error',reject);child.on('exit',resolve);});const file=`out/reports/release/${step.id}-${i}.log`;await writeFile(file,log);receipt.commands.push({args,exitCode,elapsedMs:performance.now()-start,log:file,logHash:hash(log)});assert.equal(exitCode,0,`${step.id}: see ${file}\n${log.slice(-2000)}`);}
-  receipt.reports=await Promise.all(step.reports.map(validateReport));assert.deepEqual(await releaseIdentity(),identity,'Release inputs changed during execution');receipt.status='passed';
- }catch(e){receipt.status='failed';receipt.errors.push(e.stack);process.exitCode=1;}
- await writeFile(`out/reports/release/${step.id}.json`,JSON.stringify(receipt,null,2)+'\n');console.log(`${step.id}: ${receipt.status}`,receipt.errors.join('\n'));if(receipt.status==='failed')break;
+import { spawn } from 'node:child_process';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { releaseSteps, releaseIdentity, validateReport, hash } from './release-evidence.mjs';
+import assert from 'node:assert/strict';
+const selection = process.argv.slice(2);
+for (const id of selection)
+  assert.ok(
+    releaseSteps.some(s => s.id === id),
+    `Unknown release step ${id}`,
+  );
+await mkdir('out/reports/release', { recursive: true });
+for (const step of releaseSteps.filter(s => !selection.length || selection.includes(s.id))) {
+  const receipt = {
+    schemaVersion: 1,
+    status: 'running',
+    identity: null,
+    commands: [],
+    reports: [],
+    environment: { node: process.version, platform: process.platform, arch: process.arch },
+    errors: [],
+  };
+  try {
+    const identity = await releaseIdentity();
+    receipt.identity = identity;
+    for (const [i, args] of step.commands.entries()) {
+      console.log(`${step.id}: node ${args.join(' ')}`);
+      let log = '';
+      const start = performance.now(),
+        exitCode = await new Promise((resolve, reject) => {
+          const child = spawn(process.execPath, args, {
+            env: { ...process.env, NEXT_TELEMETRY_DISABLED: '1' },
+            stdio: ['ignore', 'pipe', 'pipe'],
+          });
+          child.stdout.on('data', d => (log += d));
+          child.stderr.on('data', d => (log += d));
+          child.on('error', reject);
+          child.on('exit', resolve);
+        });
+      const file = `out/reports/release/${step.id}-${i}.log`;
+      await writeFile(file, log);
+      receipt.commands.push({
+        args,
+        exitCode,
+        elapsedMs: performance.now() - start,
+        log: file,
+        logHash: hash(log),
+      });
+      assert.equal(exitCode, 0, `${step.id}: see ${file}\n${log.slice(-2000)}`);
+    }
+    receipt.reports = await Promise.all(step.reports.map(validateReport));
+    assert.deepEqual(await releaseIdentity(), identity, 'Release inputs changed during execution');
+    receipt.status = 'passed';
+  } catch (e) {
+    receipt.status = 'failed';
+    receipt.errors.push(e.stack);
+    process.exitCode = 1;
+  }
+  await writeFile(`out/reports/release/${step.id}.json`, JSON.stringify(receipt, null, 2) + '\n');
+  console.log(`${step.id}: ${receipt.status}`, receipt.errors.join('\n'));
+  if (receipt.status === 'failed') break;
 }

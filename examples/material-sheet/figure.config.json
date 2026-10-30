@@ -1,1 +1,6 @@
-{"schemaVersion":2,"detail":"detailed","output":"both","camera":{"azimuth":45,"elevation":44}}
+{
+  "schemaVersion": 2,
+  "detail": "detailed",
+  "output": "both",
+  "camera": { "azimuth": 45, "elevation": 44 }
+}

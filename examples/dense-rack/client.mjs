@@ -1,1 +1,13 @@
-import {createScene} from './scene.mjs';export function mount({root,kit,config,tokens,initialState}){const s=createScene({kit,config,tokens});const c=kit.illustration.mountScalarScene({root,config,stage:s,initial:initialState.time,state:time=>({time}),control:{label:'Linked stroke time',min:0,max:3,step:.01}});return kit.illustration.clipControls({root,controller:c,duration:3,motion:config.motion});}
+import { createScene } from './scene.mjs';
+export function mount({ root, kit, config, tokens, initialState }) {
+  const s = createScene({ kit, config, tokens });
+  const c = kit.illustration.mountScalarScene({
+    root,
+    config,
+    stage: s,
+    initial: initialState.time,
+    state: time => ({ time }),
+    control: { label: 'Linked stroke time', min: 0, max: 3, step: 0.01 },
+  });
+  return kit.illustration.clipControls({ root, controller: c, duration: 3, motion: config.motion });
+}

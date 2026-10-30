@@ -1,1 +1,1 @@
-export default {reactStrictMode:true,serverExternalPackages:['ajv']};
+export default { reactStrictMode: true, serverExternalPackages: ['ajv'] };
