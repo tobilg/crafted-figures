@@ -14,7 +14,7 @@ The owner made the repository public on 2026-10-31. This audit ran afterwards, a
 | Secret scanning and push protection | Disabled | Nothing would flag or block a credential pushed later |
 | Dependabot security updates | Disabled | `npm audit` is clean today, but nothing would propose a fix for a later advisory |
 | `main` protection | No protection rule or ruleset | Direct and force pushes are possible for anyone with write access, and a red CI run does not block a merge |
-| Personal email in commits | The owner's address is in commit metadata on every non-web commit | It is publicly readable. Removing it means rewriting history; the repository has no forks yet. Future commits can use GitHub's noreply address |
+| Personal email in commits | The owner's address is in the author metadata of every commit | It is publicly readable. Removing it means rewriting history; the repository has no forks yet. Future commits can use GitHub's noreply address |
 | Historical evaluation archive | `test:parity` needs `crafted-figures-evaluations-0.3.0.zip`, which is not in the repository | Outside readers can run the technical checks, but they can't reproduce a full parity pass; G09, C01, C15 and C16 stay pending without it |
 
 There is no `SECURITY.md` or `CONTRIBUTING.md`, so outside contributors and vulnerability reporters have no stated process. `plan/`, `evals/` and the review records in `docs/` are public along with the code, including their lists of known limitations.
@@ -26,7 +26,7 @@ There is no `SECURITY.md` or `CONTRIBUTING.md`, so outside contributors and vuln
 | Tracked content at `ae425b0` | 333 text files, 1,742,078 bytes, no binaries, plus the `reference/anatomy` gitlink. No `out/`, `dist/`, `node_modules/`, environment files or `.DS_Store` |
 | gitleaks 8.30.1, full history | One finding, a false positive: "stable keys" in `plan/PRD.md:800` matched its generic API key rule |
 | Credential patterns, every revision | None for private keys, GitHub, AWS, OpenAI/Anthropic-style, Slack or npm tokens, or URLs with embedded credentials |
-| Personal strings, every revision | No username, home directory or email in file contents. `/Users/a` is a test value in `tests/robustness.test.mjs`, and `docs/bundled-runtime.md:39` names `/private/tmp/crafted-validator`, which identifies nobody |
+| Personal strings, every revision | No local username, home directory or email in file contents; the public GitHub handle appears in repository URLs. `/Users/a` is a test value in `tests/robustness.test.mjs`, and `docs/bundled-runtime.md:39` names `/private/tmp/crafted-validator`, which identifies nobody |
 | Session identifiers and UUIDs, at `ae425b0` | None in any tracked file; the only match was the phrase "session identifiers" in this document |
 | `npm audit` | 0 vulnerabilities in the root and skill lockfiles, including development dependencies |
 | Workflow exposure | No repository secrets or variables. The workflow reads no secrets, does not use `pull_request_target`, and has read-only `contents` permission. Fork PRs from first-time contributors need approval to run |
