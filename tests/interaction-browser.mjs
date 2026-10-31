@@ -88,9 +88,10 @@ const movingScene = body => `export function createScene({ kit, config }) {
 `;
 let browser;
 const pages = [];
-async function open(file, options = {}) {
+async function open(file, { initScript, ...options } = {}) {
   const context = await browser.newContext({ viewport: { width: 960, height: 1000 }, ...options }),
     page = await context.newPage();
+  if (initScript) await page.addInitScript(initScript);
   page.errorsSeen = [];
   page.on('pageerror', e => page.errorsSeen.push(e.message));
   page.on('console', m => {
@@ -482,6 +483,52 @@ window.__figures = window.__boot.map(b => {
     } finally {
       await rm(root, { recursive: true, force: true });
     }
+  });
+  await test('a viewport that collapses for one frame is not the reader leaving', async () => {
+    const dir = path.join(temp, 'collapse');
+    await buildFigure({
+      entry: 'examples/ripple-tank/figure.mjs',
+      config: 'examples/ripple-tank/figure.config.json',
+      out: dir,
+    });
+    const page = await open(path.join(dir, 'figure.html'), {
+      initScript: () => {
+        const Native = window.IntersectionObserver;
+        window.IntersectionObserver = class extends Native {
+          constructor(callback, options) {
+            super(callback, options);
+            if (options?.rootMargin === '100%') window.__nearViewport = callback;
+          }
+        };
+      },
+    });
+    await ready(page);
+    const observe = (isIntersecting, height) =>
+      page.evaluate(
+        ([isIntersecting, height]) => {
+          window.__nearViewport([
+            { isIntersecting, rootBounds: { width: innerWidth * 3, height } },
+          ]);
+          return document.querySelector('[data-figure]').__craftedController.effects.stats.mode;
+        },
+        [isIntersecting, height],
+      );
+    const full = 3000,
+      collapsed = 3;
+    assert.equal(await observe(false, collapsed), 'webgl', 'a live figure keeps its contexts');
+    assert.equal(await observe(true, full), 'webgl');
+    await page.evaluate(() => {
+      const fx = document.querySelector('[data-figure]').__craftedController.effects;
+      fx.canvases[0].getContext('webgl2').getExtension('WEBGL_lose_context').loseContext();
+    });
+    await page.waitForFunction(
+      () =>
+        document.querySelector('[data-figure]').__craftedController.effects.stats.mode === 'vector',
+    );
+    assert.equal(await observe(false, collapsed), 'vector', 'the collapse is not an absence');
+    assert.equal(await observe(true, full), 'vector', 'a lost context stays in the fallback');
+    assert.equal(await observe(false, full), 'suspended', 'really leaving releases the figure');
+    assert.equal(await observe(true, full), 'webgl', 'returning to the figure retries');
   });
   await test('standalone SVGs can be inlined without restyling the page or each other', async () => {
     const light = path.join(temp, 'inline-light'),

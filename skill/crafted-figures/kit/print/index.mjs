@@ -114,6 +114,7 @@ export async function printSheet(options) {
       config = JSON.parse(await readFile(path.join(dir, 'resolved-config.json'), 'utf8'));
     browser = await launchChromium();
     report.environment.browser = browser.version();
+    report.environment.browserSource = browser.craftedSource;
     const page = await browser.newPage({
       viewport: { width: 1440, height: 1200 },
       deviceScaleFactor: 2,

@@ -39,7 +39,12 @@ export const releaseSteps = [
   {
     id: 'interaction',
     commands: [['tests/interaction-browser.mjs']],
-    reports: [evidence('interaction', 'cases', 15)],
+    reports: [evidence('interaction', 'cases', 16)],
+  },
+  {
+    id: 'zbuffer',
+    commands: [['tests/zbuffer-browser.mjs']],
+    reports: [evidence('zbuffer', 'cases', 10)],
   },
   {
     id: 'wasm',

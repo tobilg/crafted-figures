@@ -119,6 +119,25 @@ function metadataSignature(m) {
   }
   return signature;
 }
+const insideConvex = (point, polygon) =>
+  polygon.every((a, i) => cross(a, polygon[(i + 1) % polygon.length], point) >= 0);
+/** Screen points on an annulus's rim. Convex parts cannot escape the overlap samples, because
+ * the whole overlap belongs to both, but a thin rim can pass between all of them. */
+function rimPoints(item, screen) {
+  if (item.rim) return item.rim;
+  const { top, bottom, inner } = item.mesh.userData.illustration,
+    n = top.length,
+    middle = (a, b) => a.map((v, k) => (v + b[k]) / 2),
+    points = [];
+  for (let i = 0; i < n; i++) {
+    // The inner rings run in the opposite direction, so index i faces (n - i) % n.
+    const opposite = (n - i) % n;
+    points.push(screen(middle(top[i], inner.top[opposite])));
+    points.push(screen(middle(bottom[i], inner.bottom[opposite])));
+  }
+  item.rim = points;
+  return points;
+}
 /** Smallest-rank-first ready list for a deterministic topological order. */
 function pushRank(heap, value) {
   let i = heap.length;
@@ -499,6 +518,15 @@ export class IllustrationSVGRenderer {
       for (let i = 0; i < overlap.length; i += stride) {
         const p = overlap[Math.floor(i)];
         samples.push([center[0] * 0.04 + p[0] * 0.96, center[1] * 0.04 + p[1] * 0.96]);
+      }
+      for (const item of [a, b]) {
+        if (!item.mesh.userData.illustration.inner) continue;
+        const matrix = item.mesh.matrixWorld,
+          rim = rimPoints(item, p =>
+            this.project(new Vector3(...p).applyMatrix4(matrix), camera),
+          ).filter(point => insideConvex(point, overlap)),
+          spacing = Math.max(1, rim.length / MAX_PAIR_SAMPLES);
+        for (let i = 0; i < rim.length; i += spacing) samples.push(rim[Math.floor(i)]);
       }
       for (const pt of samples) {
         this.rays.setFromCamera(

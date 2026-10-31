@@ -5,6 +5,7 @@ import os from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { launchChromium, waitForFigure } from './browser.mjs';
 import { digest as hash } from './hash.mjs';
+import { zBufferOrder } from './order-check.mjs';
 /** Loopback-only, realpath-confined preview. */
 export async function preview(dir, port = 4173) {
   const base = await realpath(path.resolve(dir));
@@ -47,7 +48,7 @@ export async function preview(dir, port = 4173) {
 export const launchBrowser = launchChromium;
 /** Drive every named pose and range input through its span in the real page. Loading a figure
  * says nothing about the poses a reader can reach: an order failure or a readout that stops
- * following its control only shows up here. */
+ * following its control only shows up here. Each state is also compared with a depth buffer. */
 async function sweepFigure(browser, dir, report) {
   const context = await browser.newContext({
       viewport: { width: 960, height: 1000 },
@@ -63,47 +64,91 @@ async function sweepFigure(browser, dir, report) {
     await page.goto(pathToFileURL(path.join(dir, 'figure.html')).href);
     if (!(await page.locator('script').count())) return { status: 'not applicable' };
     await waitForFigure(page, errors);
-    const sweep = await page.evaluate(() => {
-      const root = document.querySelector('[data-figure]'),
-        controller = root.__craftedController,
-        stage = controller.stage,
-        live = root.querySelector('[data-live-readout]'),
-        drawn = root.querySelector('[data-part="static-readout"]'),
-        findings = [];
-      if (stage?.renderer) stage.renderer.verifyOrder = true;
-      const inspect = label => {
-        if (live.textContent && drawn && live.textContent !== drawn.textContent)
-          findings.push(
-            `${label}: readout "${live.textContent}" != drawing "${drawn.textContent}"`,
-          );
+    const root = page.locator('[data-figure]'),
+      findings = [],
+      depthFaults = new Map();
+    const plan = await root.evaluate(el => {
+      const controller = el.__craftedController;
+      if (controller.stage?.renderer) controller.stage.renderer.verifyOrder = true;
+      return {
+        poses: controller.setPose ? controller.poseNames : [],
+        inputs: [...el.querySelectorAll('[data-controls] input[type=range]')].map(input => ({
+          min: Number(input.min),
+          max: Number(input.max),
+          name: input.labels?.[0]?.textContent ?? input.id,
+        })),
       };
-      const poses = controller.poseNames.filter(() => controller.setPose);
-      for (const pose of poses) {
-        controller.setPose(pose, { immediate: true });
-        inspect(`pose ${pose}`);
-      }
-      const inputs = /** @type {HTMLInputElement[]} */ ([
-        ...root.querySelectorAll('[data-controls] input[type=range]'),
-      ]);
-      let samples = 0;
-      for (const input of inputs)
-        for (let i = 0; i <= 8; i++) {
-          const min = Number(input.min),
-            max = Number(input.max);
-          input.value = String(min + ((max - min) * i) / 8);
-          input.dispatchEvent(new Event('input', { bubbles: true }));
-          samples++;
-          inspect(
-            `input ${/** @type {HTMLInputElement} */ (input).labels?.[0]?.textContent ?? input.id} = ${input.value}`,
-          );
-          if (controller.getStats?.().error)
-            findings.push(`input ${input.id} = ${input.value}: ${controller.getStats().error}`);
-        }
-      return { poses: poses.length, inputs: inputs.length, samples, findings };
     });
-    const sweepErrors = [...sweep.findings, ...errors];
+    let depth = null,
+      samples = 0;
+    const inspect = async label => {
+      const seen = await root.evaluate(el => ({
+        live: el.querySelector('[data-live-readout]').textContent,
+        drawn: el.querySelector('[data-part="static-readout"]')?.textContent,
+        error: el.__craftedController.getStats?.().error,
+      }));
+      if (seen.live && seen.drawn !== undefined && seen.live !== seen.drawn)
+        findings.push(`${label}: readout "${seen.live}" != drawing "${seen.drawn}"`);
+      if (seen.error) findings.push(`${label}: ${seen.error}`);
+      const order = await root.evaluate(zBufferOrder, { control: depth === null });
+      if (depth === null)
+        depth = {
+          status: order.status,
+          states: 0,
+          control: order.control,
+          reason: order.reason,
+        };
+      depth.states++;
+      for (const f of order.findings || []) {
+        const subject = f.part ?? (f.painted && `${f.painted} over ${f.expected}`),
+          key = subject ? `${f.code} ${subject}` : f.code;
+        depthFaults.set(key, {
+          ...f,
+          state: depthFaults.get(key)?.state ?? label,
+          pixels: Math.max(f.pixels ?? 0, depthFaults.get(key)?.pixels ?? 0),
+        });
+      }
+    };
+    await inspect('initial state');
+    for (const pose of plan.poses) {
+      await root.evaluate(
+        (el, name) => el.__craftedController.setPose(name, { immediate: true }),
+        pose,
+      );
+      await inspect(`pose ${pose}`);
+    }
+    for (const [index, input] of plan.inputs.entries())
+      for (let i = 0; i <= 8; i++) {
+        const value = input.min + ((input.max - input.min) * i) / 8;
+        await root.evaluate(
+          (el, [n, v]) => {
+            const control = el.querySelectorAll('[data-controls] input[type=range]')[n];
+            control.value = String(v);
+            control.dispatchEvent(new Event('input', { bubbles: true }));
+          },
+          [index, value],
+        );
+        samples++;
+        await inspect(`input ${input.name} = ${value}`);
+      }
+    for (const [key, f] of depthFaults)
+      findings.push(`${key} at ${f.state}${f.pixels ? ` (${f.pixels} px)` : ''}: ${f.message}`);
+    if (depth) {
+      if (depth.status === 'passed' || depth.status === 'failed')
+        depth.status = depthFaults.size ? 'failed' : 'passed';
+      depth.faults = [...depthFaults.values()];
+    }
+    const sweepErrors = [...findings, ...errors];
     report.errors.push(...sweepErrors.map(e => `sweep: ${e}`));
-    return { status: sweepErrors.length ? 'failed' : 'passed', ...sweep, errors };
+    return {
+      status: sweepErrors.length ? 'failed' : 'passed',
+      poses: plan.poses.length,
+      inputs: plan.inputs.length,
+      samples,
+      findings,
+      zbuffer: depth,
+      errors,
+    };
   } catch (e) {
     report.errors.push(`sweep: ${e.message}`);
     return { status: 'failed', errors: [e.message] };
@@ -142,6 +187,7 @@ export async function checkOutput(dir, reportDir) {
     if (!outputs.includes('figure.html')) report.interaction = 'not applicable: static SVG only';
     browser = await launchBrowser();
     report.environment.browser = browser.version();
+    report.environment.browserSource = browser.craftedSource;
     server = await preview(dir, 0);
     for (const name of outputs)
       for (const protocol of ['file', 'http'])

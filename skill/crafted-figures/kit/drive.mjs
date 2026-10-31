@@ -8,6 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { launchChromium, waitForFigure } from './browser.mjs';
 import { readJSON } from './config.mjs';
 import { escapeText } from './text.mjs';
+import { zBufferOrder } from './order-check.mjs';
 const object = (properties, required = []) => ({
     type: 'object',
     properties,
@@ -98,6 +99,10 @@ export const driveSchema = object(
             ['name'],
           ),
           action('order'),
+          action('zbuffer', {
+            scale: { type: 'number', minimum: 1, maximum: 4 },
+            control: { type: 'boolean' },
+          }),
           action(
             'crop',
             {
@@ -122,6 +127,7 @@ export const driveSchema = object(
               visibility: { type: 'boolean' },
               allowVisibilityChanges: { type: 'array', items: str },
               fidelity: { type: 'boolean' },
+              zbuffer: { type: 'boolean' },
             },
             ['name', 'states'],
           ),
@@ -262,6 +268,7 @@ export async function drive(options) {
   try {
     browser = await launchChromium({ headless: true });
     report.environment.browser = browser.version();
+    report.environment.browserSource = browser.craftedSource;
     const page = await browser.newPage({
       viewport: scenario.viewport || { width: 960, height: 850 },
       reducedMotion: scenario.reducedMotion ? 'reduce' : 'no-preference',
@@ -381,6 +388,19 @@ export async function drive(options) {
             ),
           );
       }
+      let zbuffer;
+      if (a.type === 'zbuffer') {
+        zbuffer = await page
+          .locator(root)
+          .evaluate(zBufferOrder, { scale: a.scale, control: a.control });
+        if (zbuffer.status !== 'passed')
+          report.errors.push(
+            ...(zbuffer.findings.length
+              ? zbuffer.findings
+              : [{ code: 'ZBUFFER_NOT_RUN', message: zbuffer.reason }]
+            ).map(f => `${f.code}: ${f.message}`),
+          );
+      }
       let effects;
       if (['effects', 'contextLoss'].includes(a.type)) {
         effects = await (a.type === 'contextLoss' ? loseEffectsContext : inspectEffects)(page, a);
@@ -416,6 +436,7 @@ export async function drive(options) {
         ...(capture ? { capture } : {}),
         ...(lines ? { lines } : {}),
         ...(order ? { order } : {}),
+        ...(zbuffer ? { zbuffer } : {}),
         ...(sampling ? { sampling } : {}),
         ...(effects ? { effects } : {}),
       });

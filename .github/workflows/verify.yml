@@ -71,6 +71,7 @@ jobs:
       - run: node skill/crafted-figures/runtime/playwright-core/cli.js install --with-deps chromium
       - run: npm run test:browser
       - run: npm run test:interaction
+      - run: npm run test:zbuffer
       - run: npm run test:owned
       - run: npm run test:gaps
       - run: npm run test:migration

@@ -284,6 +284,20 @@ class Pass {
 /** A browser keeps a limited number of WebGL contexts and drops the oldest when more are
  * created, so a figure only holds its contexts while it is on or near the screen. */
 const NEAR_VIEWPORT = '100%';
+const MIN_VIEWPORT = 40;
+/** Resizing or capturing can report a viewport a few pixels tall for one frame, and a figure
+ * outside it would look scrolled away. Trust only a measurement against a usable viewport
+ * at least as large as the present one. Cross-origin frames report no bounds.
+ * @param {IntersectionObserverEntry} entry
+ */
+function measuredInFullViewport({ rootBounds }) {
+  if (!rootBounds) return true;
+  return (
+    Math.min(rootBounds.width, rootBounds.height) >= 3 * MIN_VIEWPORT &&
+    rootBounds.width >= innerWidth &&
+    rootBounds.height >= innerHeight
+  );
+}
 /** Multiple transparent canvases share exactly one authoritative scene/camera.
  * The caller owns the clock and calls render after model updates; no private RAF.
  * `stats.mode` is `webgl`, `vector` (fallback) or `suspended` (offscreen, holding no context).
@@ -429,8 +443,10 @@ export function mountEffects(root, stage, config) {
     // A context lost while on screen stays in the fallback; returning to the figure retries.
     watching = new IntersectionObserver(
       entries => {
-        if (entries.at(-1).isIntersecting) activate();
-        else if (!unavailable) {
+        const entry = entries.at(-1);
+        if (entry.isIntersecting) {
+          if (stats.mode === 'suspended') activate();
+        } else if (!unavailable && measuredInFullViewport(entry)) {
           teardown();
           stats.mode = 'suspended';
         }

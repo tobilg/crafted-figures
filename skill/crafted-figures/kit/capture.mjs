@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { writeFile } from 'node:fs/promises';
+import { zBufferOrder } from './order-check.mjs';
 /** Deterministic clip evidence for the common runner. State changes are immediate;
  * screen displacement is checked separately from a known intentional state jump. */
 export async function sampleStates(page, action, reportDir) {
@@ -78,6 +79,12 @@ export async function sampleStates(page, action, reportDir) {
             frame: index,
             message: 'Unexpected appearance/disappearance between deterministic samples',
           });
+    }
+    if (action.zbuffer) {
+      const depth = await page.locator('[data-figure]').evaluate(zBufferOrder, {});
+      if (depth.status !== 'passed')
+        findings.push(...depth.findings.map(f => ({ ...f, frame: index })));
+      snapshot.zbuffer = depth;
     }
     if (action.fidelity) {
       const fidelity = await page

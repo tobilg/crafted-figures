@@ -53,7 +53,8 @@
     "evidence:pack": "node scripts/evaluation-evidence.mjs",
     "test:print:references": "node tests/print-references.mjs",
     "test:interaction": "node tests/interaction-browser.mjs",
-    "test:wasm": "node tests/wasm-independence.mjs"
+    "test:wasm": "node tests/wasm-independence.mjs",
+    "test:zbuffer": "node tests/zbuffer-browser.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",

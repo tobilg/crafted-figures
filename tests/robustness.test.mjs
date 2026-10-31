@@ -7,6 +7,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import * as kit from '../skill/crafted-figures/kit/index.mjs';
 import { bindKit } from '../skill/crafted-figures/kit/bind.mjs';
+import { installedBrowserCandidates } from '../skill/crafted-figures/kit/browser.mjs';
 import { buildFigure } from '../skill/crafted-figures/kit/build.mjs';
 import { bundleFigure } from '../skill/crafted-figures/kit/bundle.mjs';
 import { resolveConfig } from '../skill/crafted-figures/kit/config.mjs';
@@ -336,4 +337,26 @@ test('a sphere is a sphere: curved tone bands and no dot at its pole', () => {
     'a zero-radius ring draws nothing',
   );
   stage.dispose();
+});
+test('browser candidates cover each platform without running anything', () => {
+  const mac = installedBrowserCandidates({ platform: 'darwin', env: {}, home: '/Users/a' });
+  assert.ok(mac.includes('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'));
+  assert.ok(mac.includes('/Users/a/Applications/Chromium.app/Contents/MacOS/Chromium'));
+  const windows = installedBrowserCandidates({
+    platform: 'win32',
+    env: { PROGRAMFILES: 'C:\\Program Files', LOCALAPPDATA: 'C:\\Users\\a\\AppData\\Local' },
+    home: 'C:\\Users\\a',
+  });
+  assert.ok(windows.includes('C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'));
+  assert.ok(
+    windows.includes('C:\\Users\\a\\AppData\\Local\\Microsoft\\Edge\\Application\\msedge.exe'),
+  );
+  const linux = installedBrowserCandidates({
+    platform: 'linux',
+    env: { PATH: '/usr/bin:/opt/x' },
+    home: '/h',
+  });
+  assert.ok(linux.includes('/usr/bin/google-chrome'));
+  assert.ok(linux.includes('/opt/x/chromium'));
+  assert.ok(linux.includes('/snap/bin/chromium'));
 });
