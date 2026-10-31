@@ -1,6 +1,6 @@
 # Three.js prototype decision
 
-Historical M2 evidence. The subsequent packaged migration is documented in [the M3 report](three-migration-report.md); revision-2 production parity is tracked separately.
+Historical M2 evidence. The subsequent packaged migration is documented in [the M3 report](history/three-migration-report.md); revision-2 production parity is tracked separately.
 
 **Recommendation: proceed with a separately scoped migration for the supported primitive/camera contract.** One Three.js hierarchy and camera drive both render paths, and matching solid geometry correctly occludes the marker in the tested poses. Three.js supplies transforms, projection, mesh raycasting and WebGL management; the SVG adapter retains illustration styling and checked ordering. The user has explicitly deferred the 33 ms diagnostic budget, so local timing does not block this recommendation. The production baseline remains intact under the PRD's phase boundary while that migration is scoped; this experiment is not advertised as a second production engine.
 

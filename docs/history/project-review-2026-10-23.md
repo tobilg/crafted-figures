@@ -2,7 +2,7 @@
 
 **Conclusion: crafted-figures 0.6.0 is a substantial, usable local skill, but needs corrections before a fully qualified public release.** The Three.js authoring pipeline, owned SVG renderer, effects, configuration, interaction, framework adapters, printing and portable packaging are implemented. This review found a silent print defect, reconfirmed that full release/parity checks cannot run from a fresh source checkout, and identified weaknesses in generated-file handling and release-test coverage.
 
-This is a review of the current implementation against revision 2 of [the PRD](../plan/PRD.md) and the owner's subsequent renderer, Vite, packaging and timing-budget decisions. It does not reopen the completed migration or require a new rendering architecture. Production code was not changed. Destructive packaging probes ran only in a disposable copy.
+This is a review of the current implementation against revision 2 of [the PRD](../../plan/PRD.md) and the owner's subsequent renderer, Vite, packaging and timing-budget decisions. It does not reopen the completed migration or require a new rendering architecture. Production code was not changed. Destructive packaging probes ran only in a disposable copy.
 
 ## Findings
 
@@ -10,7 +10,7 @@ Priorities: **P1** should be resolved before claiming a fully qualified release;
 
 ### R1 — P1: print can silently discard artwork using local SVG references
 
-**Locations:** [capture.mjs](../skill/crafted-figures/kit/print/capture.mjs), line 33; [print/index.mjs](../skill/crafted-figures/kit/print/index.mjs), line 6. **Requirements:** FR-04, FR-18; G06/G11.
+**Locations:** [capture.mjs](../../skill/crafted-figures/kit/print/capture.mjs), line 33; [print/index.mjs](../../skill/crafted-figures/kit/print/index.mjs), line 6. **Requirements:** FR-04, FR-18; G06/G11.
 
 The public figure contract accepts generated SVG children. A valid figure using `<defs><path id="block-shape" …/></defs><use href="#block-shape"/>` renders correctly on screen. During print capture, IDs receive a view prefix, but the code looks for a *quoted* fragment inside each DOM attribute value. The actual `href` value has no quotes. The print layout prefixes IDs a second time without updating `href` either.
 
@@ -22,7 +22,7 @@ Evidence: probe report (local evidence: `out/reports/project-review-2026-10-23/p
 
 ### R2 — P1: full release/parity verification requires ignored local history
 
-**Location:** [release-evidence.mjs](../tests/release-evidence.mjs), line 25; consumers [release.mjs](../tests/release.mjs) and [parity.mjs](../tests/parity.mjs). **Requirements:** FR-08/20; G01/G07/G12. **Previously documented; reconfirmed.**
+**Location:** [release-evidence.mjs](../../tests/release-evidence.mjs), line 25; consumers [release.mjs](../../tests/release.mjs) and [parity.mjs](../../tests/parity.mjs). **Requirements:** FR-08/20; G01/G07/G12. **Previously documented; reconfirmed.**
 
 `releaseIdentity()` unconditionally walks three directories under ignored `out/reports/`: the corrected R09 source, the construction evaluation source and an observed verification failure. These are absent from a fresh checkout. Both the selected release `unit` step and parity command fail with `ENOENT` on `out/reports/replacement-evals/R09-corrected` before they can qualify the package.
 
@@ -34,7 +34,7 @@ Evidence: isolated-copy report (local evidence: `out/reports/project-review-2026
 
 ### R3 — P2: obsolete generated recipe files can ship in the next package
 
-**Locations:** [sync-templates.mjs](../scripts/sync-templates.mjs), lines 3–6; [package-files.mjs](../skill/crafted-figures/kit/package-files.mjs), lines 25–34. **Requirements:** FR-06/08; A05/A12.
+**Locations:** [sync-templates.mjs](../../scripts/sync-templates.mjs), lines 3–6; [package-files.mjs](../../skill/crafted-figures/kit/package-files.mjs), lines 25–34. **Requirements:** FR-06/08; A05/A12.
 
 Template synchronization copies the current expected files into existing directories but never reconciles obsolete files. The package collector then recursively includes those directories. Because generated recipe copies are ignored by Git, an ordinary obsolete `.mjs` file can be invisible to source review while still appearing in the distributable.
 
@@ -47,7 +47,7 @@ Evidence: packaging probe (local evidence: `out/reports/project-review-2026-10-2
 
 ### R4 — P2: the full-release test registry has drifted from current tests
 
-**Locations:** [release-evidence.mjs](../tests/release-evidence.mjs), lines 4–20; [parity.mjs](../tests/parity.mjs), line 3; [fixture manifest](../tests/fixtures/manifest.json), line 3. **Requirements:** G01/G07/G12. **Source inspection and inventory.**
+**Locations:** [release-evidence.mjs](../../tests/release-evidence.mjs), lines 4–20; [parity.mjs](../../tests/parity.mjs), line 3; [fixture manifest](../../tests/fixtures/manifest.json), line 3. **Requirements:** G01/G07/G12. **Source inspection and inventory.**
 
 `npm test` discovers 13 unit-test files. The release runner hardcodes 11 and omits `owned-renderer.test.mjs` and `package-files.test.mjs`. Its registry also has no direct step for the newer owned-renderer browser suite or distribution/source-package/offline-runtime suites. Compatibility exercises some related behavior, but does not substitute for every new regression.
 
@@ -59,7 +59,7 @@ Evidence: inventory (local evidence: `out/reports/project-review-2026-10-23/inve
 
 ### R5 — P3: package rebuild treats a generator marker as permission to delete all contents
 
-**Location:** [package-skill.mjs](../scripts/package-skill.mjs), line 14. **Scope:** generated `dist/crafted-figures/` only.
+**Location:** [package-skill.mjs](../../scripts/package-skill.mjs), line 14. **Scope:** generated `dist/crafted-figures/` only.
 
 The packager accepts an existing directory when its manifest has the expected `generator`, then removes the entire directory without checking recorded hashes or unknown files. **Reproduced:** an edited `SKILL.md` and an unrelated `local-note.txt` both disappeared on a successful rebuild.
 

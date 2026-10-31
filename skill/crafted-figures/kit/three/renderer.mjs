@@ -174,6 +174,34 @@ function popRank(heap) {
 function joinedPaths(polygons, screen) {
   return polygons.map(poly => pathOf(poly.map(p => screen([p.x, p.y, p.z])))).join('');
 }
+/** One path covering the same region as a set of polygons. Neighbours walk a shared edge in
+ * opposite directions, which adds nothing to the winding number anywhere, so only the outer edges
+ * are kept. A PDF repeats a clip path for every piece it applies to, and repeating every
+ * tessellated polygon made these clips most of the bytes of a printed figure.
+ * @param {number[][][]} polygons vertex lists in screen units
+ */
+export function outlineOf(polygons) {
+  const next = new Map();
+  for (const polygon of polygons) {
+    const vertices = polygon.map(p => `${num(p[0])} ${num(p[1])}`);
+    for (const [i, from] of vertices.entries()) {
+      const to = vertices[(i + 1) % vertices.length];
+      if (from === to) continue;
+      const opposite = next.get(to)?.lastIndexOf(from) ?? -1;
+      if (opposite >= 0) next.get(to).splice(opposite, 1);
+      else if (next.has(from)) next.get(from).push(to);
+      else next.set(from, [to]);
+    }
+  }
+  let path = '';
+  for (const [start, targets] of next)
+    while (targets.length) {
+      path += `M${start}`;
+      for (let at = targets.shift(); at !== start; at = next.get(at).shift()) path += `L${at}`;
+      path += 'Z';
+    }
+  return path;
+}
 /** Finite SVG illustration renderer. Pure serialization works without a DOM.
  * Uses Three.js world/camera matrices and mesh raycasting; no scene-language layer.
  * The overlap probes diagnose observed interleaving, not arbitrary mesh correctness.
@@ -347,7 +375,7 @@ export class IllustrationSVGRenderer {
         }
         if (crossing.length === 2) smoothOutline.push(pathOf(crossing, false));
         if (poly.length < 3) continue;
-        if (this.printMode) coverage.push(pathOf(poly.map(p => screen([p.x, p.y, p.z]))));
+        if (this.printMode) coverage.push(poly.map(p => screen([p.x, p.y, p.z])));
         const cap = clipScore(poly, 'up', 0.9);
         if (cap.length > 2) regions.get('top').push(cap);
         const side = clipScore(poly, 'up', 0.9, false);
@@ -461,12 +489,14 @@ export class IllustrationSVGRenderer {
       details,
       fillContent: faces.join(''),
       coverage: this.printMode
-        ? coverage.join('') +
-          (visible(topN) && m.boundaryTop !== false ? pathOf(top.map(screen)) : '') +
-          (visible(bottomN) && m.boundaryBottom !== false
-            ? pathOf([...bottom].reverse().map(screen))
-            : '')
-        : '',
+        ? [
+            ...coverage,
+            ...(visible(topN) && m.boundaryTop !== false ? [top.map(screen)] : []),
+            ...(visible(bottomN) && m.boundaryBottom !== false
+              ? [[...bottom].reverse().map(screen)]
+              : []),
+          ]
+        : [],
       bounds: [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)],
     };
     this.cache.set(mesh, result);
@@ -717,7 +747,7 @@ export class IllustrationSVGRenderer {
       }
       for (const group of joined.values()) {
         const id = `${this.idPrefix || ''}surface-${group[0].mesh.name}`,
-          clip = `<defs><clipPath id="${esc(id)}"><path d="${group.map(p => p.coverage).join('')}"/></clipPath></defs>`;
+          clip = `<defs><clipPath id="${esc(id)}"><path d="${outlineOf(group.flatMap(p => p.coverage))}"/></clipPath></defs>`;
         for (const [j, item] of group.entries())
           contents.set(
             item.mesh,

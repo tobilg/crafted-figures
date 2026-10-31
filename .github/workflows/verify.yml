@@ -41,14 +41,21 @@ jobs:
       - run: npm run test:types
       - run: npm run test:audit
       - run: npm run test:construction
+      # A passing run keeps its reports and logs; any other run also keeps screenshots and outputs.
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        if: always()
+        if: success()
         with:
           retention-days: 7
           name: fast-evidence
           path: |
-            out/reports/
-            out/three-hybrid/
+            out/reports/**/*.json
+            out/reports/**/*.log
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !success() }}
+        with:
+          retention-days: 7
+          name: fast-evidence
+          path: out/reports/
   browser-effects:
     name: Browser, interaction and effects
     runs-on: ubuntu-24.04
@@ -83,14 +90,21 @@ jobs:
       - run: node tests/spring-browser.mjs
       - run: node tests/drive-suite.mjs
       - run: node tests/diagnostics-browser.mjs
+      # A passing run keeps its reports and logs; any other run also keeps screenshots and outputs.
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        if: always()
+        if: success()
         with:
           retention-days: 7
           name: browser-effects-evidence
           path: |
-            out/reports/
-            out/three-hybrid/
+            out/reports/**/*.json
+            out/reports/**/*.log
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !success() }}
+        with:
+          retention-days: 7
+          name: browser-effects-evidence
+          path: out/reports/
   framework-print:
     name: React, print and capacity
     runs-on: ubuntu-24.04
@@ -116,14 +130,21 @@ jobs:
       - run: npm run test:print
       - run: npm run test:print:references
       - run: npm run bench:capacity
+      # A passing run keeps its reports and logs; any other run also keeps screenshots and outputs.
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        if: always()
+        if: success()
         with:
           retention-days: 7
           name: framework-print-evidence
           path: |
-            out/reports/
-            out/three-hybrid/
+            out/reports/**/*.json
+            out/reports/**/*.log
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !success() }}
+        with:
+          retention-days: 7
+          name: framework-print-evidence
+          path: out/reports/
   package-compatibility:
     name: Build and verify candidate
     runs-on: ubuntu-24.04
@@ -146,13 +167,22 @@ jobs:
       - run: node skill/crafted-figures/runtime/playwright-core/cli.js install --with-deps chromium
       - run: npm run test:distribution
       - run: npm run test:source-package
-      - run: npm run test:bundled
       - run: npm run test:compat
       - run: npm run test:release -- gap-followups source-migration
       - run: npm run prototype:build
       - run: npm run test:prototype
+      # A passing run keeps its reports and logs; any other run also keeps screenshots and outputs.
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        if: always()
+        if: success()
+        with:
+          retention-days: 7
+          name: package-compatibility-evidence
+          path: |
+            out/reports/**/*.json
+            out/reports/**/*.log
+            out/three-hybrid/**/*.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !success() }}
         with:
           retention-days: 7
           name: package-compatibility-evidence
@@ -166,11 +196,10 @@ jobs:
         with:
           name: crafted-figures-candidate
           path: |
-            dist/crafted-figures/
             dist/crafted-figures-*.zip
             dist/crafted-figures-*.zip.sha256
-          include-hidden-files: true
           if-no-files-found: error
+          compression-level: 0
           retention-days: 7
 
   portable-runtime:
@@ -197,14 +226,21 @@ jobs:
         with:
           name: crafted-figures-candidate
           path: dist
+      - run: node scripts/unpack-release.mjs
       - run: node tests/wasm-independence.mjs
       - run: node tests/bundled-runtime.mjs
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        if: always()
+        if: success()
         with:
           retention-days: 7
           name: portable-${{ matrix.os }}-${{ matrix.node }}
-          path: out/reports/bundled-runtime/
+          path: out/reports/**/*.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !success() }}
+        with:
+          retention-days: 7
+          name: portable-${{ matrix.os }}-${{ matrix.node }}
+          path: out/reports/
 
   skill-artifact:
     name: Verified skill artifact

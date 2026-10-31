@@ -1,3 +1,4 @@
+import { runReport } from './report.mjs';
 import { bundleModule } from '../skill/crafted-figures/kit/bundler.mjs';
 // Maintainer regressions from independently preserved frozen-package findings.
 // Never edit or reinterpret the fresh-agent trial's source/reports.
@@ -26,7 +27,7 @@ const report = {
   errors: [],
   environment: { node: process.version },
 };
-try {
+await runReport(out, report, async () => {
   const audit = await auditFigure({
     entry: `${source}/figure.mjs`,
     config: `${source}/figure.config.json`,
@@ -110,12 +111,4 @@ try {
       });
     }
   }
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

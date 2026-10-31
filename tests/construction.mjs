@@ -1,9 +1,10 @@
+import { runReport } from './report.mjs';
 import * as kit from '../skill/crafted-figures/kit/index.mjs';
 import figure from '../examples/construction-details/figure.mjs';
 import { resolveConfig } from '../skill/crafted-figures/kit/config.mjs';
 import { auditScene } from '../skill/crafted-figures/kit/audit/geometry.mjs';
 import { runtimeIdentity } from '../skill/crafted-figures/kit/provenance.mjs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const out = 'out/reports/construction';
 await mkdir(out, { recursive: true });
@@ -15,7 +16,7 @@ const report = {
   errors: [],
   environment: { node: process.version },
 };
-try {
+await runReport(out, report, async () => {
   for (const camera of figure.capabilities.camera.views)
     for (const detail of ['compact', 'standard', 'detailed']) {
       const args = await resolveConfig({
@@ -38,12 +39,4 @@ try {
         s.dispose();
       }
     }
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

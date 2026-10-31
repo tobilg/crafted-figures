@@ -1,6 +1,6 @@
 # Vite 8 portable distribution — 0.4.0
 
-This report records the historical 0.4.0 Vite increment. Its package and reports are preserved at `out/history/pre-legacy-removal-0.4.0/`; see [legacy removal](legacy-removal.md) for current 0.5.0 evidence.
+This report records the historical 0.4.0 Vite increment. Its package and reports are preserved at `out/history/pre-legacy-removal-0.4.0/`; see [legacy removal](history/legacy-removal.md) for current 0.5.0 evidence.
 
 The skill now builds new figures without npm installation. Copy [skill/crafted-figures](../skill/crafted-figures/SKILL.md) or dist/crafted-figures (local evidence: `out/history/pre-legacy-removal-0.4.0/package/SKILL.md`), retaining `runtime/`, and invoke its Node CLI. The generated HTML/SVG still opens offline in an existing browser, with no Node requirement for viewers. The source folder includes the generated runtime so a GitHub subdirectory installation can work without a build step. Nothing was pushed, published or installed globally.
 

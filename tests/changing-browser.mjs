@@ -1,7 +1,7 @@
+import { runBrowserReport } from './report.mjs';
 import { buildFigure } from '../skill/crafted-figures/kit/build.mjs';
-import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 const out = 'out/reports/changing-geometry';
@@ -12,10 +12,7 @@ const report = {
   cases: [],
   errors: [],
 };
-let browser;
-try {
-  browser = await chromium.launch();
-  report.environment.browser = browser.version();
+await runBrowserReport(out, report, async browser => {
   for (const [dir, key, values] of [
     ['spring', 'compression', [0, 3.5, 7, 10.5, 14, 7, 0]],
     ['merging', 'separation', [50, 40, 32, 30, 25, 15, 0, 30, 50]],
@@ -87,14 +84,4 @@ try {
     report.cases.push({ dir, cleanup });
     await page.close();
   }
-  assert.deepEqual(report.errors, []);
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await browser?.close();
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

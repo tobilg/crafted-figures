@@ -3,7 +3,7 @@ import path from 'node:path';
 import { digest } from './hash.mjs';
 const directories = ['agents', 'licenses', 'references', 'assets', 'scripts', 'kit', 'types'];
 /** Files that never belong in an installed skill or a portable source bundle. */
-export function localArtifact(name) {
+function localArtifact(name) {
   return name
     .split('/')
     .some(

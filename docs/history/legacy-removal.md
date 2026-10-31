@@ -1,12 +1,12 @@
 # Retiring the prototype implementation — 0.5.0
 
-This document records the completed 0.5.0 increment. Its package and reports were frozen at `out/history/pre-artifact-packaging-0.5.0/` before the [0.6.0 packaging change](artifact-packaging.md); current output paths may contain newer executions.
+This document records the completed 0.5.0 increment. Its package and reports were frozen at `out/history/pre-artifact-packaging-0.5.0/` before the [0.6.0 packaging change](../artifact-packaging.md); current output paths may contain newer executions.
 
 The stable skill now uses only our Three.js-based illustration implementation. The owner explicitly requested deleting the retained legacy implementation and supplying any missing capabilities in ours. This is an intentional retirement of the early prototype source API under FR-20, not a change to configuration schema 1 or the public figure/model/client contract.
 
 Deleted: `kit/anatomy/iso-kit.mjs`, its root reexports, the `solidSvg` and `lineSvg` wrappers, and `types/anatomy/iso-kit.d.mts`. Regenerated declarations and package contents contain no compatibility aliases or alternate projection implementation. Current examples already used `kit.illustration`; no model migration was needed. Historical M1 output, evaluation sources, upstream MIT notices and the read-only reference remain preserved. The entire 0.4.0 package, reports, docs and canonical dial were cloned to `out/history/pre-legacy-removal-0.4.0/` before edits.
 
-The capability audit found one gap: the current tick helper supported only full circles. `illustration.ticks` now supports `from` and signed `span` in radians, bounded to one revolution. Partial sweeps retain both endpoints; full circles omit the duplicate endpoint. Compact mode retains partial endpoints even when the last tick is not a major division. Invalid options fail before adding any marks. The [sector-gauge example](../examples/sector-gauge/figure.mjs) and shipped template demonstrate the new behavior with a pure percentage model and shared pointer/readout state.
+The capability audit found one gap: the current tick helper supported only full circles. `illustration.ticks` now supports `from` and signed `span` in radians, bounded to one revolution. Partial sweeps retain both endpoints; full circles omit the duplicate endpoint. Compact mode retains partial endpoints even when the last tick is not a major division. Invalid options fail before adding any marks. The [sector-gauge example](../../examples/sector-gauge/figure.mjs) and shipped template demonstrate the new behavior with a pure percentage model and shared pointer/readout state.
 
 | Retired helper capability | Current implementation |
 | --- | --- |
@@ -25,7 +25,7 @@ The capability audit found one gap: the current tick helper supported only full 
 | `haloOf` | A normal rounded box rendered with scoped flat surface/top/side colors and hidden edge strokes supplies a decorative projected silhouette; no alternate geometry/projection engine |
 | `pathOf`, `joinPaths`, `solidSvg`, `lineSvg` | The renderer owns solid path generation/shading. `mark` owns surface paths. The existing figure contract still accepts authored 2D SVG for captions/framing; string concatenation needs no toolkit renderer |
 
-No old function is reintroduced under another name. Construct geometry in local coordinates, attach surface details to their host, and let Three.js transforms and the illustration renderer determine projection and ordering. The [installed migration reference](../skill/crafted-figures/references/migration.md) explains these mappings for authors. Schema 1, schema 2, model states, poses and cleanup remain supported; a source using removed prototype helper names must migrate explicitly.
+No old function is reintroduced under another name. Construct geometry in local coordinates, attach surface details to their host, and let Three.js transforms and the illustration renderer determine projection and ordering. The [installed migration reference](../../skill/crafted-figures/references/migration.md) explains these mappings for authors. Schema 1, schema 2, model states, poses and cleanup remain supported; a source using removed prototype helper names must migrate explicitly.
 
 New build manifests identify `crafted-figures` as the implementation and Anatomy as a design reference only. They no longer list a copied `kit/iso-kit.mjs` runtime path. The wrapper no longer inserts Anatomy attribution into every newly generated SVG. Historical adapted sources/artifacts retain their notices, and the package retains the historical MIT text. Actual Three.js, Vite/Rolldown, Ajv and Playwright notices remain intact. Authors independently reusing third-party source remain responsible for its notices.
 

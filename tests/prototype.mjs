@@ -1,4 +1,4 @@
-import { chromium } from 'playwright';
+import { openBrowser } from './report.mjs';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -66,8 +66,7 @@ try {
       ]),
     ),
   );
-  browser = await chromium.launch({ headless: true, args: report.environment.launchArgs });
-  report.environment.browser = browser.version();
+  browser = await openBrowser(report, { args: report.environment.launchArgs });
   for (const width of [390, 960])
     for (const dpr of [1, 2]) {
       const { page, context } = await open('light', {

@@ -19,7 +19,7 @@ const obj = (properties, required = []) => ({
   num = { type: 'number' },
   point = { type: 'array', items: num, minItems: 3, maxItems: 3 },
   list = items => ({ type: 'array', items });
-export const auditSchema = obj(
+const auditSchema = obj(
   {
     schemaVersion: { const: 1 },
     poses: list(str),

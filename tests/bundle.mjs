@@ -1,24 +1,20 @@
+import { runReport, capture } from './report.mjs';
 import { tempDir } from './temp.mjs';
 import { bundleFigure } from '../skill/crafted-figures/kit/bundle.mjs';
-import { readFile, mkdir, cp, writeFile } from 'node:fs/promises';
+import { readFile, mkdir, cp } from 'node:fs/promises';
 import path from 'node:path';
-import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
 const out = 'out/reports/sharing';
 await mkdir(out, { recursive: true });
 const report = { status: 'running', environment: { node: process.version }, cases: [], errors: [] };
-const run = (cmd, args, cwd) =>
-  new Promise((resolve, reject) => {
-    const env = { ...process.env };
-    delete env.NODE_PATH;
-    const c = spawn(cmd, args, { cwd, env, stdio: ['ignore', 'pipe', 'pipe'] });
-    let log = '';
-    c.stdout.on('data', d => (log += d));
-    c.stderr.on('data', d => (log += d));
-    c.on('error', reject);
-    c.on('exit', code => (code ? reject(new Error(log)) : resolve(log)));
-  });
-try {
+const run = async (cmd, args, cwd) => {
+  const env = { ...process.env };
+  delete env.NODE_PATH;
+  const { code, output } = await capture(cmd, args, { cwd, env });
+  if (code) throw new Error(output);
+  return output;
+};
+await runReport(out, report, async () => {
   for (const name of ['dial-indicator', 'exploded-assembly']) {
     const dir = `out/share/${name}`;
     await bundleFigure({
@@ -53,12 +49,4 @@ try {
           : null,
     });
   }
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.errors);
-}
+});

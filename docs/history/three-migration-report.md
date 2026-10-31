@@ -5,7 +5,7 @@ The full dial and three additional mechanisms now use the installed Three.js sce
 | ID | Executed evidence |
 | --- | --- |
 | M01 | Full dial, same pure model, 21 sampled poses with exact probe contact; original browser matrix and A01–A13 regression checks pass. Completion run (local evidence: `out/reports/migration-completion.json`). |
-| M02 | Shared Three geometry/camera, actual vertex correspondence, immutable source annotations, interleaving and unsupported-mesh diagnostics; DOM-free static exports. [Tests](../tests/migration.test.mjs). |
+| M02 | Shared Three geometry/camera, actual vertex correspondence, immutable source annotations, interleaving and unsupported-mesh diagnostics; DOM-free static exports. [Tests](../../tests/migration.test.mjs). |
 | M03 | Valve/pipe, cutaway cabinet/wiring and articulated arm. 24 browser cases cover presets/themes/widths, real controls, positions, no-JS, offline files and disposal. Report (local evidence: `out/reports/migration-browser/report.json`). |
 | M04 | Static and interactive copied starters build and run in isolated directories after their own dependency installation; Three resolves there. Package report (local evidence: `out/reports/package/report.json`). |
 | M05 | Two fresh independent agents created unfamiliar figures with a frozen package. Torque trial (local evidence: `out/reports/migration-evals/leverage/trial.json`), admission gate trial (local evidence: `out/reports/migration-evals/queue/trial.json`). |

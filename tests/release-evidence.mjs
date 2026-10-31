@@ -140,7 +140,7 @@ export const releaseSteps = [
     id: 'compat',
     commands: [['tests/compat.mjs']],
     reports: [
-      evidence('compat', 'steps', 5),
+      evidence('compat', 'steps', 3),
       evidence('package', 'steps', 9),
       evidence('react-package', 'steps', 4),
       evidence('sharing', 'cases', 2),

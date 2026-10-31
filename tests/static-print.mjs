@@ -1,3 +1,4 @@
+import { runReport } from './report.mjs';
 import { printSheet } from '../skill/crafted-figures/kit/print/index.mjs';
 import { runtimeIdentity } from '../skill/crafted-figures/kit/provenance.mjs';
 import { getDocument, OPS } from 'pdfjs-dist/legacy/build/pdf.mjs';
@@ -40,7 +41,7 @@ async function inspectPDF(file, stem, expectedPages) {
   await task.destroy();
   return pages;
 }
-try {
+await runReport(out, report, async () => {
   await writeFile(
     `${out}/static.mjs`,
     "import figure from '../../../examples/construction-details/figure.mjs';export default {...figure,clientEntry:undefined};\n",
@@ -92,12 +93,4 @@ try {
       });
     }
   }
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

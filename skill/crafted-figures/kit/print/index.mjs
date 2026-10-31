@@ -17,7 +17,7 @@ const esc = escapeText;
 /** Layouts a sheet has the content for: a drawing needs an inset, a handout a second page.
  * @param {{details?:unknown[],assemblies?:unknown[],steps:unknown[]}} spec
  */
-export function availableFormats(spec) {
+function availableFormats(spec) {
   const notes = [...spec.steps, ...(spec.assemblies || [])];
   return [
     'poster',

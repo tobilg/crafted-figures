@@ -45,7 +45,6 @@ export async function preview(dir, port = 4173) {
       new Promise((resolve, reject) => server.close(e => (e ? reject(e) : resolve(undefined)))),
   };
 }
-export const launchBrowser = launchChromium;
 /** Drive every named pose and range input through its span in the real page. Loading a figure
  * says nothing about the poses a reader can reach: an order failure or a readout that stops
  * following its control only shows up here. Each state is also compared with a depth buffer. */
@@ -185,7 +184,7 @@ export async function checkOutput(dir, reportDir) {
     const outputs = ['figure.html', 'figure.svg'].filter(name => manifest.outputHashes[name]);
     if (!outputs.length) throw new Error('No deliverables in manifest');
     if (!outputs.includes('figure.html')) report.interaction = 'not applicable: static SVG only';
-    browser = await launchBrowser();
+    browser = await launchChromium();
     report.environment.browser = browser.version();
     report.environment.browserSource = browser.craftedSource;
     server = await preview(dir, 0);

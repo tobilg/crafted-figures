@@ -1,6 +1,6 @@
+import { runBrowserReport } from './report.mjs';
 import { buildFigure } from '../skill/crafted-figures/kit/build.mjs';
-import { chromium } from 'playwright';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
@@ -12,10 +12,7 @@ const report = {
   cases: [],
   errors: [],
 };
-let browser;
-try {
-  browser = await chromium.launch();
-  report.environment.browser = browser.version();
+await runBrowserReport(out, report, async browser => {
   for (const name of ['exploded-assembly', 'ripple-tank', 'turning-mechanism'])
     for (const theme of ['light', 'dark']) {
       const dir = `out/effects/${name}-${theme}`;
@@ -175,14 +172,4 @@ try {
       report.cases.push({ name, theme, initializationFallback: fallback });
       await page.close();
     }
-  assert.deepEqual(report.errors, []);
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await browser?.close();
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

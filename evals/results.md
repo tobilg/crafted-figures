@@ -35,4 +35,4 @@ Visual review separately improved the dark needle's contrast. These are bounded 
 
 ## M3 unfamiliar authoring trials
 
-Two additional fresh agents executed torque and admission-gate requests against the frozen 0.2.0 package. Their sources, screenshots, failures, corrections and environment records are archived under `out/reports/migration-evals/`. See the [migration report](../docs/three-migration-report.md). These trials establish M05 only; the new revision-2 R01–R10 tasks remain distinct and are not inferred from these outcomes.
+Two additional fresh agents executed torque and admission-gate requests against the frozen 0.2.0 package. Their sources, screenshots, failures, corrections and environment records are archived under `out/reports/migration-evals/`. See the [migration report](../docs/history/three-migration-report.md). These trials establish M05 only; the new revision-2 R01–R10 tasks remain distinct and are not inferred from these outcomes.

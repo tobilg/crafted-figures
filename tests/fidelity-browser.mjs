@@ -1,5 +1,5 @@
+import { runBrowserReport } from './report.mjs';
 import { buildFigure } from '../skill/crafted-figures/kit/build.mjs';
-import { chromium } from 'playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
@@ -17,10 +17,7 @@ const report = {
   acceptance:
     'Exact initial static/live SVG geometry, clipping, text and style after canonical cyclic polygon starts/subpath order; only the interaction-state attribute is excluded. Raster differences are recorded and reviewed, not claimed identical.',
 };
-let browser;
-try {
-  browser = await chromium.launch();
-  report.environment.browser = browser.version();
+await runBrowserReport(out, report, async browser => {
   for (const name of [
     'terminal-cabinet',
     'valve-assembly',
@@ -138,14 +135,4 @@ try {
       await live.close();
       await still.close();
     }
-  assert.deepEqual(report.errors, []);
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await browser?.close();
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

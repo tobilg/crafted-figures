@@ -1,4 +1,4 @@
-import { spawn } from 'node:child_process';
+import { capture } from './report.mjs';
 import { mkdir, writeFile } from 'node:fs/promises';
 const out = 'out/reports/compat';
 await mkdir(out, { recursive: true });
@@ -7,25 +7,14 @@ const report = {
   environment: { node: process.version, platform: process.platform },
   steps: [],
 };
+// The v1/v2 contract tests and the consumer type check run in `npm test` and `test:types`.
 for (const [name, args] of [
-  [
-    'v1-v2',
-    ['--test', 'tests/config.test.mjs', 'tests/export.test.mjs', 'tests/geometry.test.mjs'],
-  ],
-  ['types', ['node_modules/typescript/bin/tsc', '-p', 'tsconfig.consumer.json']],
   ['isolated-standalone', ['tests/package.mjs']],
   ['isolated-framework', ['tests/react-package.mjs']],
   ['isolated-source-bundles', ['tests/bundle.mjs']],
 ]) {
-  let log = '';
-  const code = await new Promise((resolve, reject) => {
-    const p = spawn(process.execPath, args, { stdio: ['ignore', 'pipe', 'pipe'] });
-    p.stdout.on('data', d => (log += d));
-    p.stderr.on('data', d => (log += d));
-    p.on('error', reject);
-    p.on('exit', resolve);
-  });
-  await writeFile(`${out}/${name}.log`, log);
+  const { code, output } = await capture(process.execPath, args);
+  await writeFile(`${out}/${name}.log`, output);
   report.steps.push({
     name,
     command: [process.execPath, ...args],

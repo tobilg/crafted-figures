@@ -1,16 +1,13 @@
+import { runBrowserReport } from './report.mjs';
 import { buildFigure } from '../skill/crafted-figures/kit/build.mjs';
-import { chromium } from 'playwright';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 const dir = 'out/reports/effect-registration';
 await mkdir(dir, { recursive: true });
 const report = { status: 'running', cases: [], errors: [], environment: { node: process.version } };
-let browser;
-try {
-  browser = await chromium.launch();
-  report.environment.browser = browser.version();
+await runBrowserReport(dir, report, async browser => {
   for (const theme of ['light', 'dark']) {
     await buildFigure({
       entry: 'tests/fixtures/effect-depth-figure.mjs',
@@ -96,14 +93,4 @@ try {
         await page.close();
       }
   }
-  assert.deepEqual(report.errors, []);
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await browser?.close();
-  await writeFile(`${dir}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.errors);
-}
+});

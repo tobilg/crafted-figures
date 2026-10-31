@@ -1,10 +1,10 @@
+import { runReport, openBrowser } from './report.mjs';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
 import { getDocument, OPS } from 'pdfjs-dist/legacy/build/pdf.mjs';
 import { printSheet } from '../skill/crafted-figures/kit/print/index.mjs';
-import { launchBrowser } from '../skill/crafted-figures/kit/verify.mjs';
 
 const out = 'out/reports/print-references';
 await mkdir(out, { recursive: true });
@@ -85,81 +85,81 @@ async function inspectPDF(file, stem) {
   }
   return pages;
 }
-try {
-  const spec = await fixture('valid', body);
-  browser = await launchBrowser();
-  report.environment.browser = browser.version();
-  const page = await browser.newPage({ viewport: { width: 1000, height: 1300 } });
-  for (const paper of ['a4', 'letter']) {
-    const dir = path.join(out, paper);
-    await printSheet({ spec, paper, format: 'all', out: dir, png: true });
-    for (const format of ['poster', 'drawing', 'detailed']) {
-      const stem = path.join(dir, `${format}-${paper}`);
-      await page.goto(pathToFileURL(path.resolve(stem + '.html')).href);
-      const checked = await page.locator('figure > svg').evaluateAll(svgs =>
-        svgs.map(svg => ({
-          ids: [...svg.querySelectorAll('[id]')].map(n => n.id),
-          uses: [...svg.querySelectorAll('use')].map(n => {
-            const href =
-                n.getAttribute('href') || n.getAttributeNS('http://www.w3.org/1999/xlink', 'href'),
-              box = n.getBBox();
-            return {
-              href,
-              resolves: [...svg.querySelectorAll('[id]')].some(t => t.id === href.slice(1)),
-              width: box.width,
-              height: box.height,
-            };
-          }),
-        })),
-      );
-      assert.ok(checked.length >= (format === 'poster' ? 1 : 3));
-      const ids = checked.flatMap(v => v.ids);
-      assert.equal(new Set(ids).size, ids.length);
-      for (const view of checked) {
-        assert.equal(view.uses.length, 2);
-        assert.ok(view.uses.every(u => u.resolves && u.width > 50 && u.height > 50));
+await runReport(
+  out,
+  report,
+  async () => {
+    const spec = await fixture('valid', body);
+    browser = await openBrowser(report);
+    const page = await browser.newPage({ viewport: { width: 1000, height: 1300 } });
+    for (const paper of ['a4', 'letter']) {
+      const dir = path.join(out, paper);
+      await printSheet({ spec, paper, format: 'all', out: dir, png: true });
+      for (const format of ['poster', 'drawing', 'detailed']) {
+        const stem = path.join(dir, `${format}-${paper}`);
+        await page.goto(pathToFileURL(path.resolve(stem + '.html')).href);
+        const checked = await page.locator('figure > svg').evaluateAll(svgs =>
+          svgs.map(svg => ({
+            ids: [...svg.querySelectorAll('[id]')].map(n => n.id),
+            uses: [...svg.querySelectorAll('use')].map(n => {
+              const href =
+                  n.getAttribute('href') ||
+                  n.getAttributeNS('http://www.w3.org/1999/xlink', 'href'),
+                box = n.getBBox();
+              return {
+                href,
+                resolves: [...svg.querySelectorAll('[id]')].some(t => t.id === href.slice(1)),
+                width: box.width,
+                height: box.height,
+              };
+            }),
+          })),
+        );
+        assert.ok(checked.length >= (format === 'poster' ? 1 : 3));
+        const ids = checked.flatMap(v => v.ids);
+        assert.equal(new Set(ids).size, ids.length);
+        for (const view of checked) {
+          assert.equal(view.uses.length, 2);
+          assert.ok(view.uses.every(u => u.resolves && u.width > 50 && u.height > 50));
+        }
+        report.cases.push({
+          kind: 'resolved-local-references',
+          paper,
+          format,
+          views: checked,
+          pages: await inspectPDF(stem + '.pdf', stem + '-pdf'),
+        });
       }
-      report.cases.push({
-        kind: 'resolved-local-references',
-        paper,
-        format,
-        views: checked,
-        pages: await inspectPDF(stem + '.pdf', stem + '-pdf'),
-      });
     }
-  }
-  for (const [name, markup, code] of [
-    ['missing-href', body.replace('href="#support"', 'href="#missing"'), 'UNRESOLVED_REFERENCE'],
-    ['missing-url', body.replace('url(#shade)', 'url(#missing)'), 'UNRESOLVED_REFERENCE'],
-    [
-      'missing-aria',
-      body.replace('support-title support-desc', 'support-title missing'),
-      'UNRESOLVED_REFERENCE',
-    ],
-    [
-      'duplicate-id',
-      body.replace('</defs>', '<path id="window" d="M0 0L1 1"/></defs>'),
-      'PRINT_DUPLICATE_ID',
-    ],
-  ]) {
-    const invalid = await fixture(name, markup),
-      dir = path.join(out, name, 'print');
-    await assert.rejects(
-      printSheet({ spec: invalid, paper: 'a4', format: 'poster', out: dir }),
-      new RegExp(code),
-    );
-    const failure = JSON.parse(await readFile(path.join(dir, 'print-report.json')));
-    assert.equal(failure.status, 'failed');
-    await assert.rejects(readFile(path.join(dir, 'poster-a4.pdf')), /ENOENT/);
-    report.cases.push({ kind: name, diagnostic: code, status: 'rejected-before-writing-pdf' });
-  }
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await browser?.close();
-  await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+    for (const [name, markup, code] of [
+      ['missing-href', body.replace('href="#support"', 'href="#missing"'), 'UNRESOLVED_REFERENCE'],
+      ['missing-url', body.replace('url(#shade)', 'url(#missing)'), 'UNRESOLVED_REFERENCE'],
+      [
+        'missing-aria',
+        body.replace('support-title support-desc', 'support-title missing'),
+        'UNRESOLVED_REFERENCE',
+      ],
+      [
+        'duplicate-id',
+        body.replace('</defs>', '<path id="window" d="M0 0L1 1"/></defs>'),
+        'PRINT_DUPLICATE_ID',
+      ],
+    ]) {
+      const invalid = await fixture(name, markup),
+        dir = path.join(out, name, 'print');
+      await assert.rejects(
+        printSheet({ spec: invalid, paper: 'a4', format: 'poster', out: dir }),
+        new RegExp(code),
+      );
+      const failure = JSON.parse(await readFile(path.join(dir, 'print-report.json')));
+      assert.equal(failure.status, 'failed');
+      await assert.rejects(readFile(path.join(dir, 'poster-a4.pdf')), /ENOENT/);
+      report.cases.push({ kind: name, diagnostic: code, status: 'rejected-before-writing-pdf' });
+    }
+  },
+  {
+    cleanup: async () => {
+      await browser?.close();
+    },
+  },
+);

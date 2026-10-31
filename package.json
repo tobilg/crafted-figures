@@ -64,12 +64,10 @@
     "fflate": "0.8.3",
     "next": "16.4.2",
     "pdfjs-dist": "6.4.299",
-    "playwright": "1.64.1",
     "pngjs": "7.0.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "three": "0.186.1",
-    "typescript": "7.0.2",
-    "vite": "8.3.5"
+    "typescript": "7.0.2"
   }
 }

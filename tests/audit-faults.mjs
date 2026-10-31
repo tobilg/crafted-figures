@@ -1,6 +1,7 @@
+import { runReport } from './report.mjs';
 import * as k from '../skill/crafted-figures/kit/three/index.mjs';
 import { auditScene } from '../skill/crafted-figures/kit/audit/geometry.mjs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const out = 'out/reports/audit-faults';
 await mkdir(out, { recursive: true });
@@ -28,7 +29,7 @@ function check(kind, build, expected) {
     s.dispose();
   }
 }
-try {
+await runReport(out, report, async () => {
   check(
     'solid penetration',
     s => {
@@ -136,12 +137,4 @@ try {
   );
   // Existing geometry unit fixtures also exercise projected crowding, meridian
   // wobble and the fault present only in the middle of a transition.
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.checks.length, report.errors);
-}
+});

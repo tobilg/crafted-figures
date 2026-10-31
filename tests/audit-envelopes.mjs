@@ -1,12 +1,13 @@
+import { runReport } from './report.mjs';
 import { auditScene } from '../skill/crafted-figures/kit/audit/geometry.mjs';
 import { resolveConfig, readJSON } from '../skill/crafted-figures/kit/config.mjs';
 import * as kit from '../skill/crafted-figures/kit/index.mjs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const out = 'out/reports/audit-envelopes';
 await mkdir(out, { recursive: true });
 const report = { status: 'running', environment: { node: process.version }, cases: [], errors: [] };
-try {
+await runReport(out, report, async () => {
   for (const name of ['valve-assembly', 'exploded-assembly', 'turning-mechanism']) {
     const figure = (await import(`../examples/${name}/figure.mjs`)).default;
     for (const camera of figure.capabilities.camera.views) {
@@ -52,12 +53,4 @@ try {
       }
     }
   }
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

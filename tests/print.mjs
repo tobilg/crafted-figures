@@ -1,3 +1,4 @@
+import { runReport } from './report.mjs';
 import { tempDir } from './temp.mjs';
 import { printSheet } from '../skill/crafted-figures/kit/print/index.mjs';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
@@ -6,13 +7,28 @@ import assert from 'node:assert/strict';
 import { getDocument, OPS } from 'pdfjs-dist/legacy/build/pdf.mjs';
 const out = 'out/reports/print-suite';
 await mkdir(out, { recursive: true });
+/** A PDF repeats a clip path for every piece it applies to, so one must hold only outer edges. */
+function assertMergedClips(html, label) {
+  const clips = [...html.matchAll(/<clipPath[^>]*>\s*<path[^>]*\sd="([^"]*)"/g)].map(m => m[1]);
+  for (const d of clips) {
+    const edges = new Set();
+    for (const loop of d.split('Z').filter(Boolean)) {
+      const vertices = loop.slice(1).split('L');
+      for (const [i, from] of vertices.entries())
+        edges.add(`${from}>${vertices[(i + 1) % vertices.length]}`);
+    }
+    for (const edge of edges)
+      assert.ok(!edges.has(edge.split('>').reverse().join('>')), `${label}: unmerged clip edge`);
+  }
+  return clips.length;
+}
 const report = {
   status: 'running',
   environment: { node: process.version, pdfjs: '6.4.299' },
   cases: [],
   errors: [],
 };
-try {
+await runReport(out, report, async () => {
   for (const name of ['dial-indicator', 'control-cabinet', 'exploded-assembly', 'ripple-tank'])
     for (const paper of ['a4', 'letter']) {
       const dir = `out/print/${name}-${paper}`;
@@ -24,8 +40,13 @@ try {
         out: dir,
       });
       for (const format of ['poster', 'drawing', 'detailed']) {
+        const pdf = await readFile(`${dir}/${format}-${paper}.pdf`),
+          html = await readFile(`${dir}/${format}-${paper}.html`, 'utf8'),
+          clipPaths = assertMergedClips(html, `${name} ${paper} ${format}`);
+        // Without this the merge check could pass by finding no clips at all.
+        if (name === 'exploded-assembly') assert.ok(clipPaths > 0, 'smooth surfaces are clipped');
         const task = getDocument({
-          data: new Uint8Array(await readFile(`${dir}/${format}-${paper}.pdf`)),
+          data: new Uint8Array(pdf),
           useSystemFonts: true,
           isEvalSupported: false,
         });
@@ -61,7 +82,15 @@ try {
           report.deterministicPDF = true;
         }
         assert.equal(doc.numPages, format === 'detailed' ? 2 : 1);
-        report.cases.push({ name, paper, format, pages });
+        report.cases.push({
+          name,
+          paper,
+          format,
+          pdfBytes: pdf.length,
+          htmlBytes: Buffer.byteLength(html),
+          clipPaths,
+          pages,
+        });
         await task.destroy();
       }
     }
@@ -77,12 +106,4 @@ try {
     /overflow/i,
   );
   report.overflowDetected = true;
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

@@ -33,7 +33,7 @@ const view = {
   ],
 };
 const note = obj({ view: str, title: str, text: str }, ['view', 'title', 'text']);
-export const sheetSchema = {
+const sheetSchema = {
   ...obj(
     {
       schemaVersion: { const: 1 },

@@ -1,7 +1,7 @@
-import { chromium } from 'playwright';
+import { runBrowserReport } from './report.mjs';
 import { inspectLines } from '../skill/crafted-figures/kit/drive.mjs';
 import { sampleStates } from '../skill/crafted-figures/kit/capture.mjs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
@@ -13,10 +13,7 @@ const report = {
   errors: [],
   environment: { node: process.version },
 };
-let browser;
-try {
-  browser = await chromium.launch();
-  report.environment.browser = browser.version();
+await runBrowserReport(out, report, async browser => {
   const page = await browser.newPage({ viewport: { width: 960, height: 1050 } });
   await page.goto(pathToFileURL(path.resolve('out/drive/exploded-assembly/figure.html')).href);
   await page.locator('[data-ready=true]').waitFor();
@@ -83,13 +80,4 @@ try {
   const joined = await inspectLines(page);
   assert.equal(joined.status, 'passed', JSON.stringify(joined));
   report.checks.push({ kind: 'host boundary and genuinely clipped endpoints', joined });
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await browser?.close();
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.errors);
-}
+});

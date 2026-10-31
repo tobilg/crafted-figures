@@ -1,8 +1,8 @@
-import { chromium } from 'playwright';
+import { launchChromium } from '../skill/crafted-figures/kit/browser.mjs';
 import { writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
-const browser = await chromium.launch({
+const browser = await launchChromium({
   args: ['--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
 });
 try {

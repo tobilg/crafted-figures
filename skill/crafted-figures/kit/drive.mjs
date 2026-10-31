@@ -24,7 +24,7 @@ const object = (properties, required = []) => ({
   };
 const action = (type, properties = {}, required = []) =>
   object({ type: { const: type }, ...properties }, ['type', ...required]);
-export const driveSchema = object(
+const driveSchema = object(
   {
     schemaVersion: { const: 1 },
     viewport: object(

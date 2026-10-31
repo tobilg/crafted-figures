@@ -1,17 +1,14 @@
+import { runBrowserReport } from './report.mjs';
 import { buildFigure } from '../skill/crafted-figures/kit/build.mjs';
-import { launchBrowser } from '../skill/crafted-figures/kit/verify.mjs';
 import { captureCrop } from '../skill/crafted-figures/kit/capture.mjs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 const out = 'out/reports/spring-refinement';
 await mkdir(out, { recursive: true });
 const report = { status: 'running', environment: { node: process.version }, cases: [], errors: [] };
-let browser;
-try {
-  browser = await launchBrowser();
-  report.environment.browser = browser.version();
+await runBrowserReport(out, report, async browser => {
   for (const theme of ['light', 'dark'])
     for (const elevation of [30, 44]) {
       const dir = path.resolve(out, `${theme}-${elevation}`);
@@ -60,14 +57,4 @@ try {
         await page.close();
       }
     }
-  assert.deepEqual(report.errors, []);
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await browser?.close();
-  await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.cases.length, report.errors);
-}
+});

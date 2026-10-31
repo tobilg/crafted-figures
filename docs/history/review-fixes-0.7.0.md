@@ -1,6 +1,6 @@
 # Review corrections: crafted-figures 0.7.0
 
-This increment addresses the whole-project review of 0.6.1 and adds Biome. The hosted CI result that prompted findings 1 and 2 is [run 41101188344](https://github.com/tobilg/crafted-figures/actions/runs/41101188344). Figure, model and configuration contracts are preserved, except where [compatibility](compatibility.md) lists a deliberate change. The numeric timing budget stays deferred.
+This increment addresses the whole-project review of 0.6.1 and adds Biome. The hosted CI result that prompted findings 1 and 2 is [run 41101188344](https://github.com/tobilg/crafted-figures/actions/runs/41101188344). Figure, model and configuration contracts are preserved, except where [compatibility](../compatibility.md) lists a deliberate change. The numeric timing budget stays deferred.
 
 **Not resolved here:**
 
@@ -10,26 +10,26 @@ This increment addresses the whole-project review of 0.6.1 and adds Biome. The h
 | # | Finding | Correction | Regression coverage |
 | --- | --- | --- | --- |
 | 1 | CI browser job read `dist/` without building it | The job now runs `package:skill`; `lint` and the new suites were added | Simulated from a clean copy, then passed on hosted CI at 0.7.1 |
-| 2 | Every build failed on Windows | Modules resolve and load in JavaScript, never through the WASM file system | [wasm-independence](../tests/wasm-independence.mjs) builds with that file system blinded, and proves a plain Vite build then fails the way Windows did; builds passed on hosted Windows at 0.7.1 |
-| 3 | Dragging froze under default motion | A retarget keeps the displayed value and velocity; pointer gestures use a short span; the cubic never overshoots | [interaction](../tests/interaction-browser.mjs): mid-gesture drag, held keys, reversal |
-| 4 | One unorderable pose froze a live figure and split its readout | Live drawing records a diagnostic and draws its best order; a failed draw reverts to the last painted value; builds stay strict | Interaction suite; [robustness](../tests/robustness.test.mjs) |
+| 2 | Every build failed on Windows | Modules resolve and load in JavaScript, never through the WASM file system | [wasm-independence](../../tests/wasm-independence.mjs) builds with that file system blinded, and proves a plain Vite build then fails the way Windows did; builds passed on hosted Windows at 0.7.1 |
+| 3 | Dragging froze under default motion | A retarget keeps the displayed value and velocity; pointer gestures use a short span; the cubic never overshoots | [interaction](../../tests/interaction-browser.mjs): mid-gesture drag, held keys, reversal |
+| 4 | One unorderable pose froze a live figure and split its readout | Live drawing records a diagnostic and draws its best order; a failed draw reverts to the last painted value; builds stay strict | Interaction suite; [robustness](../../tests/robustness.test.mjs) |
 | 5 | React `state` plus `onState` looped forever | The adapter recognizes echoes of what it displayed; external state still applies | Interaction suite, with identity and copied state |
-| 6 | Painter order dominated performance | See [capacity](capacity.md) | Incremental versus fresh rendering at sampled states of every example; ray test versus native rays |
+| 6 | Painter order dominated performance | See [capacity](../capacity.md) | Incremental versus fresh rendering at sampled states of every example; ray test versus native rays |
 | 7 | Tests missed real interaction | `check` now sweeps poses and range inputs; a new suite covers gestures | The suites above |
-| 8 | Clearance audit could falsely pass | Exact triangle distance and surface samples clipped to the shared region; a scenario adds to declared checks unless `replaceDeclared` says otherwise | Robustness tests; [gap contract](../tests/gap-contract.test.mjs) |
+| 8 | Clearance audit could falsely pass | Exact triangle distance and surface samples clipped to the shared region; a scenario adds to declared checks unless `replaceDeclared` says otherwise | Robustness tests; [gap contract](../../tests/gap-contract.test.mjs) |
 | 10 | Bundling and printing gaps | Sheets keep their paper and layout; npm dependencies travel with notices; `print` accepts presets and materials | Interaction and robustness suites |
 | 11 | Config silently ignored; manifest could be wrong | The injected kit binds configuration; a false camera claim fails the build; `material()` under schema 1 warns | Robustness tests |
 | 12 | WebGL contexts ran out on busy pages | Contexts are held only near the viewport and retried on return; a layer renders only the depth it needs | Interaction suite, 12 figures; effects suites |
 | 13 | Curved outlines looked broken | Each band redraws the outlines of its earlier neighbours, so a fill cannot cover them | Inspected crops, below |
 | 14 | Code was hard to review | Biome 2.6.4 formats and lints; formatting alone was proven to change no output | `npm run lint` |
-| 15 | Types were never checked | `checkJs` runs over the kit in `test:types`; `resolveConfig`, `Figure` and `Controller` types corrected | [types](../tests/types.mts) |
+| 15 | Types were never checked | `checkJs` runs over the kit in `test:types`; `resolveConfig`, `Figure` and `Controller` types corrected | [types](../../tests/types.mts) |
 | 16 | Controller design too narrow | `mountStateScene`, built-in effect wiring, and `controller.stage`/`effects` | Examples moved to them; effects and browser suites |
 | 17 | `check` hid the real error | Mount failures report the page's own error at once; the drawn readout is optional | Interaction suite |
 | 18 | Standalone SVGs were unsafe to inline | Styles and IDs are scoped per figure | Interaction suite, in a host page |
 | 19 | React ID namespacing was regex-based | Attribute-aware rewriting of references in markup only; unresolved references fail | Robustness tests |
 | 20 | Hard-coded branding and language | No product name by default; `eyebrow`, `language`, `control.help` and `clipControls({labels})` | Interaction suite |
 | 21 | Playback overrode the user | Touching another control pauses playback | Interaction suite |
-| 22 | Docs had drifted | 244 dead evidence links became plain paths; status pages say what is current | [docs-links](../tests/docs-links.test.mjs) |
+| 22 | Docs had drifted | 244 dead evidence links became plain paths; status pages say what is current | [docs-links](../../tests/docs-links.test.mjs) |
 
 Smaller items also fixed: all three kit writers share one interruptible owned-output path (`scripts/generated-tree.mjs` remains, since it replaces whole directories at development time); notices are mandatory for shipped dependencies; pointer-to-world helpers exist; spheres read as round and cones and spheres draw no dot at a collapsed ring; spring sampling resumes from checkpoints; `rendering.quality` and effect themes follow the configuration; WASI warnings no longer print; the reading appears once; suites clean up temp folders; and figures without effects no longer bundle the WebGL renderer (the dial's HTML fell from 810 KB to 590 KB).
 
@@ -41,7 +41,7 @@ Running `check` over every example also exposed something the review had missed:
 
 | Check | Result |
 | --- | --- |
-| Hosted CI | Not run for this record: nothing had been pushed. The workflow parses, and the first steps of the fast and browser jobs passed in their exact order from a clean copy of the Git-eligible files, including `test:owned`, the step that failed on GitHub. Pushed later: `ebc287a` failed on a lazy-context bug ([order verification](order-verification.md)), and `2225bf8` at 0.7.1 passed all 11 jobs in [run 41189536149](https://github.com/tobilg/crafted-figures/actions/runs/41189536149) |
+| Hosted CI | Not run for this record: nothing had been pushed. The workflow parses, and the first steps of the fast and browser jobs passed in their exact order from a clean copy of the Git-eligible files, including `test:owned`, the step that failed on GitHub. Pushed later: `ebc287a` failed on a lazy-context bug ([order verification](../order-verification.md)), and `2225bf8` at 0.7.1 passed all 11 jobs in [run 41189536149](https://github.com/tobilg/crafted-figures/actions/runs/41189536149) |
 | Windows | Not run for this record. Builds pass with the WASM file system blinded, where a plain Vite build fails with the same `UNRESOLVED_ENTRY` error Windows reported. At 0.7.1, builds and source bundling passed on hosted Windows; browser checks and printing do not run there |
 | `npm run test:parity` | Exit 2, `technicalStatus: "passed"`. Four items stay pending because the historical evaluation archive was not supplied: G09, and C01, C15 and C16 through F12. This is the documented result without that archive |
 | Reproducible package | The clean copy reproduced the same ZIP, byte for byte |

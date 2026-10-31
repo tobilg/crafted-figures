@@ -1,10 +1,10 @@
+import { runBrowserReport } from './report.mjs';
 import { performance } from 'node:perf_hooks';
 import { buildFigure } from '../skill/crafted-figures/kit/build.mjs';
 import { resolveConfig, readJSON } from '../skill/crafted-figures/kit/config.mjs';
 import { auditScene } from '../skill/crafted-figures/kit/audit/geometry.mjs';
 import * as kit from '../skill/crafted-figures/kit/index.mjs';
-import { chromium } from 'playwright';
-import { mkdir, writeFile, stat } from 'node:fs/promises';
+import { mkdir, stat } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import os from 'node:os';
@@ -24,10 +24,7 @@ const report = {
   workloads: [],
   errors: [],
 };
-let browser;
-try {
-  browser = await chromium.launch();
-  report.environment.browser = browser.version();
+await runBrowserReport(out, report, async browser => {
   for (const [name, key, max] of [
     ['dial-indicator', 'displacementMm', 10],
     ['dense-cutaway', null, 0],
@@ -210,14 +207,4 @@ try {
     });
     await page.close();
   }
-  assert.deepEqual(report.errors, []);
-  report.status = 'passed';
-} catch (e) {
-  report.status = 'failed';
-  report.errors.push(e.stack);
-  process.exitCode = 1;
-} finally {
-  await browser?.close();
-  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
-  console.log(report.status, report.errors);
-}
+});

@@ -69,6 +69,6 @@ npm run test:browser
 npm run test:compat
 ```
 
-CI now prepares generated components before development checks, uploads the built folder and ZIP/checksum, and feeds that artifact into the Node/OS no-install consumer matrix. The clean-source test is also configured. Remote CI and other OS/browser/GPU environments have not been executed here. Fresh agent trials and the full 16-step release qualification were not rerun for this packaging increment. The numeric timing budget remains deferred.
+CI now prepares generated components before development checks, uploads the ZIP and checksum, and feeds them into the Node/OS no-install consumer matrix, which unpacks the ZIP with `scripts/unpack-release.mjs` so it tests exactly what users install. The clean-source test is also configured. Remote CI and other OS/browser/GPU environments have not been executed here. Fresh agent trials and the full 16-step release qualification were not rerun for this packaging increment. The numeric timing budget remains deferred.
 
 The [public-release audit](public-release-audit.md) retains separate outstanding items: historical full-release/parity checks require ignored frozen evaluation inputs, historical evidence links are local, and the owner has not selected a root license. Those do not block building or using this ZIP. The pre-change 0.5.0 package, reports, documentation and packaging inputs are preserved in `out/history/pre-artifact-packaging-0.5.0/`.

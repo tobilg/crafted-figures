@@ -70,7 +70,7 @@ const schemas = {
   preview: ['dir', 'port'],
   check: ['dir', 'report'],
 };
-export function parseArgs(args) {
+function parseArgs(args) {
   const [command, ...rest] = args;
   if (!schemas[command])
     throw new Error('Use build, preview, check, audit, drive, print, or bundle');

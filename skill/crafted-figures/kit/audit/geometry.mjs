@@ -4,7 +4,7 @@ import { assertGeometry, anchor } from '../three/primitives.mjs';
 const v = p => (p instanceof Vector3 ? p.clone() : new Vector3(...p));
 const direction = new Vector3(0.827, 0.331, 0.455).normalize();
 /** Actual transformed triangles; no separately authored collision proxy. */
-export function trianglesOf(mesh) {
+function trianglesOf(mesh) {
   const p = mesh.geometry.getAttribute('position'),
     index = mesh.geometry.index,
     result = [];
@@ -18,7 +18,7 @@ export function trianglesOf(mesh) {
   }
   return result;
 }
-export function signedDistance(point, triangles) {
+function signedDistance(point, triangles) {
   const p = v(point),
     ray = new Ray(p, direction),
     hit = new Vector3(),

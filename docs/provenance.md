@@ -2,7 +2,7 @@
 
 Reference: https://github.com/wheresryan22/anatomy.git at `1482e8469b0a9e0d8cc18ea2740a01423d29ae80`; parent gitlink records this exact analyzed baseline. No baseline difference. Reference files are unmodified. Builds do not import from reference/.
 
-In 0.5.0, the owner authorized removing the retained prototype implementation. The stable source, types and assembled package now contain only our Three.js-based illustration implementation. The former helper module and its string-rendering wrappers are deleted, not hidden behind aliases. The following table records historical provenance; it is not a list of current runtime imports. [Capability mapping and evidence](legacy-removal.md) documents the transition. New build manifests identify Anatomy as a design reference only. Historical packages, fixtures and evaluation sources retain their original notices.
+In 0.5.0, the owner authorized removing the retained prototype implementation. The stable source, types and assembled package now contain only our Three.js-based illustration implementation. The former helper module and its string-rendering wrappers are deleted, not hidden behind aliases. The following table records historical provenance; it is not a list of current runtime imports. [Capability mapping and evidence](history/legacy-removal.md) documents the transition. New build manifests identify Anatomy as a design reference only. Historical packages, fixtures and evaluation sources retain their original notices.
 
 | Upstream path | Local destination | Adaptation |
 | --- | --- | --- |
