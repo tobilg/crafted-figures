@@ -6,7 +6,7 @@ Item 3 of the post-review plan: find a browser automatically, add a z-buffer che
 
 `launchChromium` tries the pinned Chromium, then Chrome, Chromium and Edge in their usual locations. An explicit `CRAFTED_CHROMIUM_EXECUTABLE` is tried alone, so a mistaken path fails and names itself rather than falling back. Reports record `environment.browserSource`.
 
-Executed: with no pinned build and no variable, `check` ran on installed Chrome 156.0.8078.74 (`installed`). A bogus configured path failed and named the path. Candidate lists for macOS, Windows and Linux have a unit test. Only the macOS path has run on real hardware.
+Executed: with no pinned build and no variable, `check` ran on installed Chrome 156.0.8078.74 (`installed`). A bogus configured path failed and named the path. The same case found and ran installed Chrome on hosted Linux (156.0.8078.47). Candidate lists for all three platforms have a unit test, which is the only coverage of the Windows paths.
 
 ## Depth-buffer check
 
@@ -56,4 +56,4 @@ Near-viewport tracking now ignores measurements against a collapsed viewport, an
 
 ## Release evidence
 
-On an Apple M2 with Node 24.22.1 and pinned Chromium 156.0.8078.4: `npm run test:release` passed all 24 groups in one run bound to this package (15.4 minutes), including the new `zbuffer` group and a 16-case interaction suite. `npm run lint` and `npm run test:types` passed. `npm run test:parity` exits 2 as before: technical checks pass, and the four pending requirements (G09, C01, C15, C16) all wait on the historical evaluation archive. None of this has run on hosted CI yet.
+On an Apple M2 with Node 24.22.1 and pinned Chromium 156.0.8078.4: `npm run test:release` passed all 24 groups in one run bound to this package (15.4 minutes), including the new `zbuffer` group and a 16-case interaction suite. `npm run lint` and `npm run test:types` passed. `npm run test:parity` exits 2 as before: technical checks pass, and the four pending requirements (G09, C01, C15, C16) all wait on the historical evaluation archive. Hosted CI [run 41189536149](https://github.com/tobilg/crafted-figures/actions/runs/41189536149) of `2225bf8` then passed all 11 jobs on these changes, including the `gap-followups` step that failed before and all 10 `zbuffer` cases on Linux x64.

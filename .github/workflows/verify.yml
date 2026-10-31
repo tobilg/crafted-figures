@@ -2,6 +2,7 @@ name: Test and build skill
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 

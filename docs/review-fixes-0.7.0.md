@@ -5,12 +5,12 @@ This increment addresses the whole-project review of 0.6.1 and adds Biome. The h
 **Not resolved here:**
 
 - **Fresh agent trials (finding 9).** None ran. G09 is open for 0.7.0; the last trials were against 0.3.x.
-- **Hosted confirmation (findings 1 and 2).** Nothing was pushed, so the workflow fix and the Windows fix have not run on GitHub. Windows remains unverified until they do.
+- **Hosted confirmation (findings 1 and 2).** Nothing had been pushed when this record was written. Both fixes have since passed on GitHub in [run 41189536149](https://github.com/tobilg/crafted-figures/actions/runs/41189536149), at 0.7.1. On Windows that covers builds and source bundling, not browser checks or printing.
 
 | # | Finding | Correction | Regression coverage |
 | --- | --- | --- | --- |
-| 1 | CI browser job read `dist/` without building it | The job now runs `package:skill`; `lint` and the new suites were added | Simulated from a clean copy; hosted run pending |
-| 2 | Every build failed on Windows | Modules resolve and load in JavaScript, never through the WASM file system | [wasm-independence](../tests/wasm-independence.mjs) builds with that file system blinded, and proves a plain Vite build then fails the way Windows did |
+| 1 | CI browser job read `dist/` without building it | The job now runs `package:skill`; `lint` and the new suites were added | Simulated from a clean copy, then passed on hosted CI at 0.7.1 |
+| 2 | Every build failed on Windows | Modules resolve and load in JavaScript, never through the WASM file system | [wasm-independence](../tests/wasm-independence.mjs) builds with that file system blinded, and proves a plain Vite build then fails the way Windows did; builds passed on hosted Windows at 0.7.1 |
 | 3 | Dragging froze under default motion | A retarget keeps the displayed value and velocity; pointer gestures use a short span; the cubic never overshoots | [interaction](../tests/interaction-browser.mjs): mid-gesture drag, held keys, reversal |
 | 4 | One unorderable pose froze a live figure and split its readout | Live drawing records a diagnostic and draws its best order; a failed draw reverts to the last painted value; builds stay strict | Interaction suite; [robustness](../tests/robustness.test.mjs) |
 | 5 | React `state` plus `onState` looped forever | The adapter recognizes echoes of what it displayed; external state still applies | Interaction suite, with identity and copied state |
@@ -41,8 +41,8 @@ Running `check` over every example also exposed something the review had missed:
 
 | Check | Result |
 | --- | --- |
-| Hosted CI | Not run: nothing was pushed. The workflow parses, and the first steps of the fast and browser jobs passed in their exact order from a clean copy of the Git-eligible files, including `test:owned`, the step that failed on GitHub |
-| Windows | Not run. Builds pass with the WASM file system blinded, where a plain Vite build fails with the same `UNRESOLVED_ENTRY` error Windows reported |
+| Hosted CI | Not run for this record: nothing had been pushed. The workflow parses, and the first steps of the fast and browser jobs passed in their exact order from a clean copy of the Git-eligible files, including `test:owned`, the step that failed on GitHub. Pushed later: `ebc287a` failed on a lazy-context bug ([order verification](order-verification.md)), and `2225bf8` at 0.7.1 passed all 11 jobs in [run 41189536149](https://github.com/tobilg/crafted-figures/actions/runs/41189536149) |
+| Windows | Not run for this record. Builds pass with the WASM file system blinded, where a plain Vite build fails with the same `UNRESOLVED_ENTRY` error Windows reported. At 0.7.1, builds and source bundling passed on hosted Windows; browser checks and printing do not run there |
 | `npm run test:parity` | Exit 2, `technicalStatus: "passed"`. Four items stay pending because the historical evaluation archive was not supplied: G09, and C01, C15 and C16 through F12. This is the documented result without that archive |
 | Reproducible package | The clean copy reproduced the same ZIP, byte for byte |
 | Dependency advisories | `npm audit` was clean on both lockfiles at review time; only Biome has been added since |
