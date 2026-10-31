@@ -10,6 +10,9 @@
     "build": "node skill/crafted-figures/scripts/figures.mjs build",
     "preview": "node skill/crafted-figures/scripts/figures.mjs preview",
     "check": "node skill/crafted-figures/scripts/figures.mjs check",
+    "lint": "biome ci .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "node tests/browser.mjs",
     "package:skill": "node scripts/package-skill.mjs",
@@ -28,7 +31,7 @@
     "test:react": "next build tests/fixtures/next --webpack && node tests/react.mjs",
     "bundle": "node skill/crafted-figures/scripts/figures.mjs bundle",
     "types:build": "tsc -p tsconfig.declarations.json",
-    "test:types": "tsc -p tsconfig.consumer.json",
+    "test:types": "tsc -p tsconfig.consumer.json && tsc -p tsconfig.check.json",
     "test:print": "node tests/print.mjs && node tests/render-pdfs.mjs",
     "test:compat": "node tests/compat.mjs",
     "test:parity": "node tests/parity.mjs",
@@ -48,9 +51,13 @@
     "test:distribution": "node tests/distribution.mjs",
     "test:source-package": "node tests/source-package.mjs",
     "evidence:pack": "node scripts/evaluation-evidence.mjs",
-    "test:print:references": "node tests/print-references.mjs"
+    "test:print:references": "node tests/print-references.mjs",
+    "test:interaction": "node tests/interaction-browser.mjs",
+    "test:wasm": "node tests/wasm-independence.mjs",
+    "test:zbuffer": "node tests/zbuffer-browser.mjs"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.4",
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
     "@types/three": "0.186.0",

@@ -1,3 +1,33 @@
-import {prepareFigure} from 'crafted-figures/react/server';import probe from '../figures/spring-probe/figure.mjs';import drops from '../figures/merging-surfaces/figure.mjs';import Live from './live.jsx';import Link from 'next/link';
-export const dynamic='force-dynamic';
-export default async function Page(){const figures=await Promise.all([['probe-a','probe',probe,'light'],['probe-b','probe',probe,'dark'],['drops-a','drops',drops,'light']].map(async([id,kind,figure,theme])=><Live key={id} kind={kind} {...await prepareFigure({id,figure,pose:'mid',config:{schemaVersion:2,theme,motion:{enabled:false}}})}/>));return <main><h1>Independent figures</h1><Link href="/away">Navigate away</Link>{figures}</main>;}
+import { prepareFigure } from 'crafted-figures/react/server';
+import probe from '../figures/spring-probe/figure.mjs';
+import drops from '../figures/merging-surfaces/figure.mjs';
+import Live from './live.jsx';
+import Link from 'next/link';
+export const dynamic = 'force-dynamic';
+export default async function Page() {
+  const figures = await Promise.all(
+    [
+      ['probe-a', 'probe', probe, 'light'],
+      ['probe-b', 'probe', probe, 'dark'],
+      ['drops-a', 'drops', drops, 'light'],
+    ].map(async ([id, kind, figure, theme]) => (
+      <Live
+        key={id}
+        kind={kind}
+        {...(await prepareFigure({
+          id,
+          figure,
+          pose: 'mid',
+          config: { schemaVersion: 2, theme, motion: { enabled: false } },
+        }))}
+      />
+    )),
+  );
+  return (
+    <main>
+      <h1>Independent figures</h1>
+      <Link href="/away">Navigate away</Link>
+      {figures}
+    </main>
+  );
+}

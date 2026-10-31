@@ -1,7 +1,63 @@
-import {auditScene} from '../skill/crafted-figures/kit/audit/geometry.mjs';import {resolveConfig,readJSON} from '../skill/crafted-figures/kit/config.mjs';import * as kit from '../skill/crafted-figures/kit/index.mjs';import {mkdir,writeFile} from 'node:fs/promises';import assert from 'node:assert/strict';
-const out='out/reports/audit-envelopes';await mkdir(out,{recursive:true});const report={status:'running',environment:{node:process.version},cases:[],errors:[]};
-try{for(const name of ['valve-assembly','exploded-assembly','turning-mechanism']){const figure=(await import(`../examples/${name}/figure.mjs`)).default;
-for(const camera of figure.capabilities.camera.views){const {config,tokens}=await resolveConfig({layers:[{label:'config',value:await readJSON(`examples/${name}/figure.config.json`)},{label:'camera',value:{schemaVersion:2,camera}}],capabilities:figure.capabilities}),s=figure.createScene({kit,config,tokens});
-const states=name==='valve-assembly'?Object.values(figure.poses): (name==='exploded-assembly'?[0,.28,.5,.65,.72,1.4,1.5,2.2,2.3,3.5,4,4.2,5,7]:[0,.5,1.4,2,2.99,3,3.01,3.5,4,4.5,5,6]).map(time=>({time}));
-try{for(const state of states){s.update(state);const contacts=[];if(name==='exploded-assembly')for(const sign of [-1,1])contacts.push({a:'chamber',b:'chamber-rail-'+sign,atA:[sign*18,0,0],atB:[-sign*18.5,0,0]});if(name==='turning-mechanism'&&state.time>=5)contacts.push({a:'tool',b:'landing-pad',atA:[0,0,-3],atB:[0,0,1.5]});const r=auditScene(s,{contacts,context:{state,camera}});report.cases.push({name,state,camera,...r});assert.equal(r.status,'passed',`${name} ${JSON.stringify(state)} ${JSON.stringify(camera)}: ${JSON.stringify(r.findings.slice(0,5))}`);}}finally{s.dispose();}
-}}report.status='passed';}catch(e){report.status='failed';report.errors.push(e.stack);process.exitCode=1;}finally{await writeFile(`${out}/report.json`,JSON.stringify(report,null,2)+'\n');console.log(report.status,report.cases.length,report.errors);}
+import { auditScene } from '../skill/crafted-figures/kit/audit/geometry.mjs';
+import { resolveConfig, readJSON } from '../skill/crafted-figures/kit/config.mjs';
+import * as kit from '../skill/crafted-figures/kit/index.mjs';
+import { mkdir, writeFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const out = 'out/reports/audit-envelopes';
+await mkdir(out, { recursive: true });
+const report = { status: 'running', environment: { node: process.version }, cases: [], errors: [] };
+try {
+  for (const name of ['valve-assembly', 'exploded-assembly', 'turning-mechanism']) {
+    const figure = (await import(`../examples/${name}/figure.mjs`)).default;
+    for (const camera of figure.capabilities.camera.views) {
+      const { config, tokens } = await resolveConfig({
+          layers: [
+            { label: 'config', value: await readJSON(`examples/${name}/figure.config.json`) },
+            { label: 'camera', value: { schemaVersion: 2, camera } },
+          ],
+          capabilities: figure.capabilities,
+        }),
+        s = figure.createScene({ kit, config, tokens });
+      const states =
+        name === 'valve-assembly'
+          ? Object.values(figure.poses)
+          : (name === 'exploded-assembly'
+              ? [0, 0.28, 0.5, 0.65, 0.72, 1.4, 1.5, 2.2, 2.3, 3.5, 4, 4.2, 5, 7]
+              : [0, 0.5, 1.4, 2, 2.99, 3, 3.01, 3.5, 4, 4.5, 5, 6]
+            ).map(time => ({ time }));
+      try {
+        for (const state of states) {
+          s.update(state);
+          const contacts = [];
+          if (name === 'exploded-assembly')
+            for (const sign of [-1, 1])
+              contacts.push({
+                a: 'chamber',
+                b: 'chamber-rail-' + sign,
+                atA: [sign * 18, 0, 0],
+                atB: [-sign * 18.5, 0, 0],
+              });
+          if (name === 'turning-mechanism' && state.time >= 5)
+            contacts.push({ a: 'tool', b: 'landing-pad', atA: [0, 0, -3], atB: [0, 0, 1.5] });
+          const r = auditScene(s, { contacts, context: { state, camera } });
+          report.cases.push({ name, state, camera, ...r });
+          assert.equal(
+            r.status,
+            'passed',
+            `${name} ${JSON.stringify(state)} ${JSON.stringify(camera)}: ${JSON.stringify(r.findings.slice(0, 5))}`,
+          );
+        }
+      } finally {
+        s.dispose();
+      }
+    }
+  }
+  report.status = 'passed';
+} catch (e) {
+  report.status = 'failed';
+  report.errors.push(e.stack);
+  process.exitCode = 1;
+} finally {
+  await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
+  console.log(report.status, report.cases.length, report.errors);
+}

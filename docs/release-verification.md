@@ -1,5 +1,7 @@
 # Reproducing release verification
 
+`npm run test:release` must run through npm, because the clean-source step needs npm's own executable path. Hosted CI runs the same suites by job and adds `npm run lint`; it does not run `test:parity`, whose result depends on the historical archive described below.
+
 Current automated regression inputs live in `tests/fixtures/regressions/`. Their provenance manifest binds every extracted file to its original historical source hash. They include the two R09 migration figures, the construction scene/sheet and the particle fallback scenarios/model. They do not include upstream engines, frozen toolkits, screenshots, account state or session logs. Production and regression builds require no `reference/` checkout.
 
 From a fresh source checkout with Node 22.13+ or Node 24+:

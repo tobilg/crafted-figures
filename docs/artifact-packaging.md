@@ -42,18 +42,18 @@ The package's **80 authored/generated asset files total only 140,449 bytes**. Th
 
 ## Executed verification
 
-Current evidence uses Node 22.13.0, Darwin x64 and Chromium 156.0.8078.4. The [machine-readable packaging report](../out/reports/artifact-packaging.json) binds the package/archive hashes to the executed reports. Evidence is local and ignored by Git.
+Current evidence uses Node 22.13.0, Darwin x64 and Chromium 156.0.8078.4. The machine-readable packaging report (local evidence: `out/reports/artifact-packaging.json`) binds the package/archive hashes to the executed reports. Evidence is local and ignored by Git.
 
 | Check | Result / evidence |
 | --- | --- |
-| Deterministic archive, exact manifest/hashes, excluded UI files, extracted no-install figure build, installer asset resolution | Four checks passed in [distribution report](../out/reports/distribution/report.json); byte-identical builds under UTC and Pacific/Honolulu. Installer resolution is a dry run, not a new browser download |
-| Clean source snapshot | Five steps passed in [source-package report](../out/reports/source-package/report.json): clear raw-source error, both fresh locked installs, package build, real HTML/SVG build; ZIP identical to the working-tree ZIP. Temporary source and dependencies removed |
+| Deterministic archive, exact manifest/hashes, excluded UI files, extracted no-install figure build, installer asset resolution | Four checks passed in distribution report (local evidence: `out/reports/distribution/report.json`); byte-identical builds under UTC and Pacific/Honolulu. Installer resolution is a dry run, not a new browser download |
+| Clean source snapshot | Five steps passed in source-package report (local evidence: `out/reports/source-package/report.json`): clear raw-source error, both fresh locked installs, package build, real HTML/SVG build; ZIP identical to the working-tree ZIP. Temporary source and dependencies removed |
 | Unit suite | 38 tests passed in `out/artifact-unit.log`, including local-file exclusion, runtime tampering and symlink rejection |
-| Browser suite | 14 cases passed in [browser report](../out/reports/browser/report.json), including controls, poses, motion/cleanup, no-JavaScript output, typography and offline exports |
-| Guarded artifact consumers | Six cases passed in [bundled runtime report](../out/reports/bundled-runtime/report.json), with network/npm/native-addon/repository-import guards, fresh authored modules, deterministic outputs and relocated source-bundle rebuild |
-| Compatibility, isolated package, React and print | All five stages passed in [compatibility report](../out/reports/compat/report.json), including strict consumer types, nine independent package smoke steps, a real Next/React build with hydration/control/unmount checks and two source-bundle rebuilds. Hybrid A4 poster/drawing/two-page detailed PDF/HTML/PNG output passed without overflow |
-| Visual comparison | All eight dial matrix screenshots have zero changed pixels against 0.5.0 in [comparison report](../out/reports/artifact-visual-comparison.json). Current technical-light desktop, editorial-dark mobile and hybrid A4 poster images inspected; no new visual defect observed |
-| Git selection | [Selection report](../out/reports/artifact-source-selection.json) confirms generated components are excluded, authored assets remain selected, and no already tracked file is ignored |
+| Browser suite | 14 cases passed in browser report (local evidence: `out/reports/browser/report.json`), including controls, poses, motion/cleanup, no-JavaScript output, typography and offline exports |
+| Guarded artifact consumers | Six cases passed in bundled runtime report (local evidence: `out/reports/bundled-runtime/report.json`), with network/npm/native-addon/repository-import guards, fresh authored modules, deterministic outputs and relocated source-bundle rebuild |
+| Compatibility, isolated package, React and print | All five stages passed in compatibility report (local evidence: `out/reports/compat/report.json`), including strict consumer types, nine independent package smoke steps, a real Next/React build with hydration/control/unmount checks and two source-bundle rebuilds. Hybrid A4 poster/drawing/two-page detailed PDF/HTML/PNG output passed without overflow |
+| Visual comparison | All eight dial matrix screenshots have zero changed pixels against 0.5.0 in comparison report (local evidence: `out/reports/artifact-visual-comparison.json`). Current technical-light desktop, editorial-dark mobile and hybrid A4 poster images inspected; no new visual defect observed |
+| Git selection | Selection report (local evidence: `out/reports/artifact-source-selection.json`) confirms generated components are excluded, authored assets remain selected, and no already tracked file is ignored |
 | Skill metadata | `quick_validate.py` passed |
 
 Archive SHA-256: `d939a15b0430020c7e7597133ad724b22c3955bd9f4f929c232dfc1dc2ab7e5e`. Package-manifest SHA-256: `526e2ed7cea367df5a1fdd459ee50b30b1265a60fdd0082c21d1326e42635ea3`.

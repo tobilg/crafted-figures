@@ -1,1 +1,48 @@
-export default {schemaVersion:1,figure:'figure.mjs',config:'figure.config.json',title:'Construction details',description:'Surface marks stay on their hosts. Slots and bores remain open geometry.',maxPages:2,views:{main:{pose:'mid'},rest:{pose:'rest'},max:{pose:'max'},coupling:{pose:'mid',around:['coupling','striped-inlet','striped-outlet']}},parts:[{id:'bevel',label:'Beveled slab',description:'Three matching solid bands and a bounded weld bead.'},{id:'vent',label:'Open vents',description:'Real rails separate six open slots.'},{id:'housing',label:'Profile',description:'Seams and grooves follow sampled meridians.'},{id:'coupling',label:'Coupling',description:'An actual bore joins matching pipe rims.'}],details:[{view:'coupling',title:'Mating rims',text:'Pipe end radii match the coupling bore; no hidden continuous solid fills the opening.'}],steps:[{view:'rest',title:'Authored view',text:'Initial construction at zero assembly rotation.'},{view:'main',title:'Eight degree turn',text:'All details remain attached to their hosts.'},{view:'max',title:'Sixteen degree turn',text:'All details stay attached and the matching contacts remain seated.'}]};
+export default {
+  schemaVersion: 1,
+  figure: 'figure.mjs',
+  config: 'figure.config.json',
+  title: 'Construction details',
+  description: 'Surface marks stay on their hosts. Slots and bores remain open geometry.',
+  maxPages: 2,
+  views: {
+    main: { pose: 'mid' },
+    rest: { pose: 'rest' },
+    max: { pose: 'max' },
+    coupling: { pose: 'mid', around: ['coupling', 'striped-inlet', 'striped-outlet'] },
+  },
+  parts: [
+    {
+      id: 'bevel',
+      label: 'Beveled slab',
+      description: 'Three matching solid bands and a bounded weld bead.',
+    },
+    { id: 'vent', label: 'Open vents', description: 'Real rails separate six open slots.' },
+    { id: 'housing', label: 'Profile', description: 'Seams and grooves follow sampled meridians.' },
+    { id: 'coupling', label: 'Coupling', description: 'An actual bore joins matching pipe rims.' },
+  ],
+  details: [
+    {
+      view: 'coupling',
+      title: 'Mating rims',
+      text: 'Pipe end radii match the coupling bore; no hidden continuous solid fills the opening.',
+    },
+  ],
+  steps: [
+    {
+      view: 'rest',
+      title: 'Authored view',
+      text: 'Initial construction at zero assembly rotation.',
+    },
+    {
+      view: 'main',
+      title: 'Eight degree turn',
+      text: 'All details remain attached to their hosts.',
+    },
+    {
+      view: 'max',
+      title: 'Sixteen degree turn',
+      text: 'All details stay attached and the matching contacts remain seated.',
+    },
+  ],
+};

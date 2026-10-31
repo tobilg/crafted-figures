@@ -1,3 +1,25 @@
-import {poses} from './model.mjs';
-import {createValve} from './scene.mjs';
-export default {id:'lift-valve',capabilities:{detail:['compact','standard']},initialState:poses.rest,poses,clientEntry:new URL('./client.mjs',import.meta.url),render({kit,config,state}){const stage=createValve({kit,config});try{const m=stage.update(state);return {renderer:'three-illustration',viewBox:[0,0,600,400],title:'A valve opens by lifting',description:'The front wall is cut away to reveal the poppet and its seat. Lift opens a visible gap; the percentage is relative travel, not a flow-rate prediction.',body:`<g data-scene="three">${stage.render()}</g><text class="reading" data-part="static-readout" x="28" y="360">${m.reading}</text><text class="caption" x="28" y="384">0–12 mm travel · closed seat to full lift</text>`};}finally{stage.dispose();}}};
+import { poses } from './model.mjs';
+import { createValve } from './scene.mjs';
+export default {
+  id: 'lift-valve',
+  capabilities: { detail: ['compact', 'standard'] },
+  initialState: poses.rest,
+  poses,
+  clientEntry: new URL('./client.mjs', import.meta.url),
+  render({ kit, config, state }) {
+    const stage = createValve({ kit, config });
+    try {
+      const m = stage.update(state);
+      return {
+        renderer: 'three-illustration',
+        viewBox: [0, 0, 600, 400],
+        title: 'A valve opens by lifting',
+        description:
+          'The front wall is cut away to reveal the poppet and its seat. Lift opens a visible gap; the percentage is relative travel, not a flow-rate prediction.',
+        body: `<g data-scene="three">${stage.render()}</g><text class="reading" data-part="static-readout" x="28" y="360">${m.reading}</text><text class="caption" x="28" y="384">0–12 mm travel · closed seat to full lift</text>`,
+      };
+    } finally {
+      stage.dispose();
+    }
+  },
+};

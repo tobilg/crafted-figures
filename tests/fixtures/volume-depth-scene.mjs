@@ -1,1 +1,25 @@
-export function createScene({kit,config,tokens}){const k=kit.illustration,s=k.createStage({width:600,height:400,bounds:k.boxBounds([-50,-50,-20],[50,50,70]),config,tokens}),view=s.camera.position.clone().normalize();const support=k.box('support',{width:40,depth:40,height:40});support.position.z=25;s.scene.add(support);const volume=kit.effects.effect('volume',{kind:config.theme==='light'?'fire':'steam',size:[16,16,16],theme:config.theme});s.scene.add(volume);function update({time}){volume.position.set(0,0,25).addScaledVector(view,(time-1)*50);return {reading:`Depth slice ${time.toFixed(2)}`};}return {...s,update,volume,support};}
+export function createScene({ kit, config, tokens }) {
+  const k = kit.illustration,
+    s = k.createStage({
+      width: 600,
+      height: 400,
+      bounds: k.boxBounds([-50, -50, -20], [50, 50, 70]),
+      config,
+      tokens,
+    }),
+    view = s.camera.position.clone().normalize();
+  const support = k.box('support', { width: 40, depth: 40, height: 40 });
+  support.position.z = 25;
+  s.scene.add(support);
+  const volume = kit.effects.effect('volume', {
+    kind: config.theme === 'light' ? 'fire' : 'steam',
+    size: [16, 16, 16],
+    theme: config.theme,
+  });
+  s.scene.add(volume);
+  function update({ time }) {
+    volume.position.set(0, 0, 25).addScaledVector(view, (time - 1) * 50);
+    return { reading: `Depth slice ${time.toFixed(2)}` };
+  }
+  return { ...s, update, volume, support };
+}

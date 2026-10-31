@@ -14,7 +14,7 @@ Generated ownership manifests are ignored development metadata and excluded from
 
 ## Verification
 
-**All 21 current release groups passed**, including 46 unit tests and strict types. [The aggregate evidence](../out/reports/review-fixes-0.6.1/report.json) binds every command log and report to the exact package/runtime/verification inputs. The [final run log](../out/reports/review-fixes-0.6.1/release-final.log) and [individual receipts](../out/reports/release/) retain the executed results.
+**All 21 current release groups passed**, including 46 unit tests and strict types. The aggregate evidence (local evidence: `out/reports/review-fixes-0.6.1/report.json`) binds every command log and report to the exact package/runtime/verification inputs. The final run log (local evidence: `out/reports/review-fixes-0.6.1/release-final.log`) and individual receipts (local evidence: `out/reports/release`) retain the executed results.
 
 | Executed verification | Result |
 | --- | --- |
@@ -22,11 +22,11 @@ Generated ownership manifests are ignored development metadata and excluded from
 | Existing print output | The 32 standard and ten static PDF pages, plus four enlarged PDF crops, remain pixel-identical to the preserved baseline. Final regenerated PNG hashes match the reviewed files. |
 | Browser, geometry, effects and integration | All registered groups passed, including production/development React, changing geometry, diagnostics, both-theme effects/fallbacks, source migration and original evaluation-source follow-ups. Representative current follow-up figures and the actual construction PDF were inspected. |
 | Portable delivery | Nine independent package steps, four distribution cases, six guarded offline cases and seven clean-source steps passed. The clean source copy ran both locked installs, built without `reference/` or generated inputs, reproduced the exact ZIP and executed the release unit step. Expected nonzero results for an unbuilt checkout and missing evidence were checked explicitly. |
-| Parity without history | Exit 2, explicitly pending historical evidence; all 21 current technical groups passed. [Report](../out/reports/review-fixes-0.6.1/parity-without-history.json). |
-| Parity with explicit archive | Exit 0, zero unmet aggregate rows; ten original trials verified against their frozen hashes and version. These remain historical 0.3.0 trials. [Report](../out/reports/review-fixes-0.6.1/parity-with-history.json). |
+| Parity without history | Exit 2, explicitly pending historical evidence; all 21 current technical groups passed. Report (local evidence: `out/reports/review-fixes-0.6.1/parity-without-history.json`). |
+| Parity with explicit archive | Exit 0, zero unmet aggregate rows; ten original trials verified against their frozen hashes and version. These remain historical 0.3.0 trials. Report (local evidence: `out/reports/review-fixes-0.6.1/parity-with-history.json`). |
 | Metadata and preservation | actionlint 1.7.12, skill metadata validation and Git whitespace checks passed. The reference checkout remains clean at `1482e8469b0a9e0d8cc18ea2740a01423d29ae80`. |
 
-The [assembled folder](../dist/crafted-figures/) contains 259 manifest-listed files / 25,422,400 bytes. The [ZIP](../dist/crafted-figures-0.6.1.zip) is 6,965,756 bytes. Package-manifest SHA-256: `81d605b499c6dbfe18a517a95b62eb9b303b583430b1a3687a442b92a697fb8c`. ZIP SHA-256: `f5f1c184d7eced6ea6d8ef9d306ff1fda586c2f2619420da0cadf4436b869ea9`.
+The assembled folder (local evidence: `dist/crafted-figures`) contains 259 manifest-listed files / 25,422,400 bytes. The ZIP (local evidence: `dist/crafted-figures-0.6.1.zip`) is 6,965,756 bytes. Package-manifest SHA-256: `81d605b499c6dbfe18a517a95b62eb9b303b583430b1a3687a442b92a697fb8c`. ZIP SHA-256: `f5f1c184d7eced6ea6d8ef9d306ff1fda586c2f2619420da0cadf4436b869ea9`.
 
 Verification ran on Node 22.13.0, Darwin x64, Chromium 156.0.8078.4 and software ANGLE/SwiftShader. The pinned dependency versions are recorded in the aggregate report; no dependency version changed. Earlier attempts remain preserved: a temporary Node executable disappeared before distribution could start, and a report-key typo initially rejected six successful offline cases. The executable was restored, the key corrected, and the entire final 21-group run completed against the corrected verification identity.
 

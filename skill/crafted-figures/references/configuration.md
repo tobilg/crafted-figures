@@ -2,7 +2,7 @@
 
 The executable sources of truth are `kit/config.mjs` (public JSON Schema and canonical defaults), `assets/presets/*.json` (preset defaults/palettes) and `kit/styles.mjs` (CSS token generation). Do not maintain independent copies of defaults.
 
-Inputs are partial JSON objects. Priority: toolkit defaults → selected preset defaults → explicit `--project-config` → `--config` → CLI flags. Select the highest-priority supplied preset first, then merge layers. Nested objects merge by key; arrays replace; null, unknown keys and unsupported figure detail modes fail. No implicit home or parent config search.
+Inputs are partial JSON objects. Priority: toolkit defaults → selected preset defaults → explicit `--project-config` → `--config` → CLI flags. Select the highest-priority supplied preset first, then merge layers. The last layer that states a schema version selects the version for the resolved result. Nested objects merge by key; arrays replace; null, unknown keys and unsupported figure detail modes fail. No implicit home or parent config search.
 
 Public fields: schemaVersion (1), preset, theme (light/dark), accent (six-digit hex), detail (compact/standard), frame (card/minimal), typography.body/mono (ordinary local font-family lists), stroke.width (0.25..2), motion.enabled, motion.idleTour, motion.durationMs (integer 0..2000), output (html/svg/both). No camera settings or environment-selected theme. Typography rejects declarations, controls, functions, URL expressions, braces and angle brackets. Use installed/system fonts; external fonts are outside the contract.
 
@@ -21,8 +21,12 @@ The preceding fixed-camera contract remains schema 1. Version 2 is an opt-in (`"
 - `detail:"detailed"` when declared by the figure.
 - `camera:{azimuth,elevation,padding}`: azimuth [0,360), elevation (0,90), nonnegative padding. Omitted values come from `capabilities.camera.default`; the exact azimuth/elevation pair must be in `capabilities.camera.views`. Pass resolved config/tokens into createStage. One fixed view is selected per build; no interactive free orbit or gesture refitting.
 - `materials:{overrides:{role:"material-id"}}`: roles come from capabilities.materials. Nearest part assignment wins its ancestor; an explicit part-name/role override wins that node's authored material. Unknown roles/material IDs fail. Built-ins: paper, steel, chrome, gunmetal, gold, brass, copper, rubber.
+- `eyebrow`: optional label above the HTML title, up to 80 characters. No product name is added to a figure unless you set one here (or return `eyebrow` from `render`).
+- `language`: BCP 47 language of the authored text, for the HTML page's `lang` attribute. Interface text comes from `control.help` and `clipControls({labels})`.
 - `rendering:{effects:"auto"|"off",pixelRatioCap:1..3,quality:"draft"|"standard"}`. The default cap is 1.5. Off uses vector fallback; auto does not invent an effect. Draft volume sampling is identified in the manifest and is not final parity evidence.
 
 Custom materials use repeatable `--material-file path` and schemaVersion 1 data: `{schemaVersion:1,id,themes:{light,dark}}`. Both themes require exactly surface/top/side0/side1/side2/side3/stroke/ink, each a six-digit color. IDs cannot replace a built-in silently. Material files require a version-2 figure request.
 
 A version-2 preset declares `schemaVersion:2` at its top level; its defaults can include advanced v2 fields. The version-1 preset data format remains valid. Full assignment/camera/effect policy and model state are recorded in new build manifests; historical reports are not rewritten. See [migration.md](migration.md) for compatibility and current support limits.
+
+A figure calling `material()` under schema 1 still builds, without the material: the build prints a warning and records it in `build-manifest.json` under `warnings`. A `camera` value that no rendered stage used fails the build, because the manifest would otherwise record a view that was never drawn.

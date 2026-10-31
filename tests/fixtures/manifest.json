@@ -3,28 +3,11 @@
   "fixtures": [
     {
       "id": "F01",
-      "capabilities": [
-        "C01",
-        "C04",
-        "C06",
-        "C12",
-        "C13",
-        "C15"
-      ],
-      "entries": [
-        "examples/dial-indicator/figure.mjs"
-      ],
-      "shapes": [
-        "prism",
-        "cylinder",
-        "surface marks"
-      ],
-      "materials": [
-        "preset surface and semantic accent"
-      ],
-      "cameras": [
-        "fixed authored -42/30"
-      ],
+      "capabilities": ["C01", "C04", "C06", "C12", "C13", "C15"],
+      "entries": ["examples/dial-indicator/figure.mjs"],
+      "shapes": ["prism", "cylinder", "surface marks"],
+      "materials": ["preset surface and semantic accent"],
+      "cameras": ["fixed authored -42/30"],
       "poses": [
         {
           "name": "rest",
@@ -46,58 +29,23 @@
         }
       ],
       "clipTimes": [],
-      "controls": [
-        "displacementMm: 0..10 mm; pointer drag, range, rest/mid/max"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "controls": ["displacementMm: 0..10 mm; pointer drag, range, rest/mid/max"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
-      "positiveTests": [
-        "tests/model.test.mjs",
-        "tests/export.test.mjs",
-        "tests/browser.mjs"
-      ],
-      "negativeTests": [
-        "tests/config.test.mjs"
-      ],
-      "reports": [
-        "out/reports/browser/report.json",
-        "out/reports/package/report.json"
-      ],
+      "positiveTests": ["tests/model.test.mjs", "tests/export.test.mjs", "tests/browser.mjs"],
+      "negativeTests": ["tests/config.test.mjs"],
+      "reports": ["out/reports/browser/report.json", "out/reports/package/report.json"],
       "visualReview": "docs/visual-review.md"
     },
     {
       "id": "F02",
-      "capabilities": [
-        "C02",
-        "C03",
-        "C06",
-        "C09"
-      ],
-      "entries": [
-        "examples/terminal-cabinet/figure.mjs"
-      ],
-      "shapes": [
-        "concave assembly",
-        "tubes",
-        "tilted clipped display"
-      ],
-      "materials": [
-        "preset surface and semantic accent"
-      ],
-      "cameras": [
-        "fixed authored -48/30"
-      ],
+      "capabilities": ["C02", "C03", "C06", "C09"],
+      "entries": ["examples/terminal-cabinet/figure.mjs"],
+      "shapes": ["concave assembly", "tubes", "tilted clipped display"],
+      "materials": ["preset surface and semantic accent"],
+      "cameras": ["fixed authored -48/30"],
       "poses": [
         {
           "name": "rest",
@@ -124,35 +72,14 @@
           }
         }
       ],
-      "clipTimes": [
-        0,
-        0.3,
-        0.6,
-        0.9,
-        1
-      ],
-      "controls": [
-        "temperatureC: 10..50 \u00b0C; time: 0..2 s; text: up to 64 characters"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "clipTimes": [0, 0.3, 0.6, 0.9, 1],
+      "controls": ["temperatureC: 10..50 \u00b0C; time: 0..2 s; text: up to 64 characters"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
-      "positiveTests": [
-        "tests/drive-suite.mjs"
-      ],
-      "negativeTests": [
-        "tests/diagnostics-browser.mjs"
-      ],
+      "positiveTests": ["tests/drive-suite.mjs"],
+      "negativeTests": ["tests/diagnostics-browser.mjs"],
       "reports": [
         "out/reports/drive/terminal-cabinet/report.json",
         "out/reports/fidelity/report.json"
@@ -161,16 +88,8 @@
     },
     {
       "id": "F03",
-      "capabilities": [
-        "C02",
-        "C03",
-        "C04",
-        "C08"
-      ],
-      "entries": [
-        "examples/valve-assembly/figure.mjs",
-        "examples/construction-details/figure.mjs"
-      ],
+      "capabilities": ["C02", "C03", "C04", "C08"],
+      "entries": ["examples/valve-assembly/figure.mjs", "examples/construction-details/figure.mjs"],
       "shapes": [
         "revolved bonnet",
         "annular seat",
@@ -232,32 +151,17 @@
         }
       ],
       "clipTimes": [],
-      "controls": [
-        "liftMm: 0..12 mm; pointer/range and Closed/Half/Open"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard",
-        "detailed"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "controls": ["liftMm: 0..12 mm; pointer/range and Closed/Half/Open"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard", "detailed"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
       "positiveTests": [
         "tests/audit-envelopes.mjs",
         "tests/construction.mjs",
         "tests/gap-browser.mjs"
       ],
-      "negativeTests": [
-        "tests/geometry.test.mjs",
-        "tests/gap-contract.test.mjs"
-      ],
+      "negativeTests": ["tests/geometry.test.mjs", "tests/gap-contract.test.mjs"],
       "reports": [
         "out/reports/audit-envelopes/report.json",
         "out/reports/fidelity/report.json",
@@ -273,23 +177,9 @@
     },
     {
       "id": "F04",
-      "capabilities": [
-        "C02",
-        "C06",
-        "C07",
-        "C08",
-        "C09"
-      ],
-      "entries": [
-        "examples/exploded-assembly/figure.mjs"
-      ],
-      "shapes": [
-        "analytic waist",
-        "flanges",
-        "bolts",
-        "tube",
-        "fire/steam volumes"
-      ],
+      "capabilities": ["C02", "C06", "C07", "C08", "C09"],
+      "entries": ["examples/exploded-assembly/figure.mjs"],
+      "shapes": ["analytic waist", "flanges", "bolts", "tube", "fire/steam volumes"],
       "materials": [
         {
           "role": "stand",
@@ -350,33 +240,11 @@
           }
         }
       ],
-      "clipTimes": [
-        0,
-        0.28,
-        0.65,
-        0.72,
-        1.4,
-        2.2,
-        3.5,
-        4,
-        7
-      ],
-      "controls": [
-        "time: 0..7 s; Assembled/Reversal/Apart/Seated; play/pause/reset"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard",
-        "detailed"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "clipTimes": [0, 0.28, 0.65, 0.72, 1.4, 2.2, 3.5, 4, 7],
+      "controls": ["time: 0..7 s; Assembled/Reversal/Apart/Seated; play/pause/reset"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard", "detailed"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
       "positiveTests": [
         "tests/motion.test.mjs",
@@ -384,10 +252,7 @@
         "tests/effects.mjs",
         "tests/drive-suite.mjs"
       ],
-      "negativeTests": [
-        "tests/volume-depth.mjs",
-        "tests/diagnostics-browser.mjs"
-      ],
+      "negativeTests": ["tests/volume-depth.mjs", "tests/diagnostics-browser.mjs"],
       "reports": [
         "out/reports/production-effects/report.json",
         "out/reports/audit-envelopes/report.json",
@@ -402,19 +267,9 @@
     },
     {
       "id": "F05",
-      "capabilities": [
-        "C07",
-        "C11"
-      ],
-      "entries": [
-        "examples/ripple-tank/figure.mjs"
-      ],
-      "shapes": [
-        "sphere",
-        "receiving plane",
-        "water/caustics/shadow",
-        "interleaved SVG"
-      ],
+      "capabilities": ["C07", "C11"],
+      "entries": ["examples/ripple-tank/figure.mjs"],
+      "shapes": ["sphere", "receiving plane", "water/caustics/shadow", "interleaved SVG"],
       "materials": [
         {
           "role": "tank",
@@ -455,39 +310,14 @@
           }
         }
       ],
-      "clipTimes": [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "controls": [
-        "time: 0..6 s; play/pause/reset"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "clipTimes": [0, 1, 2, 3, 4, 5, 6],
+      "controls": ["time: 0..6 s; play/pause/reset"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
-      "positiveTests": [
-        "tests/effects.mjs",
-        "tests/print.mjs",
-        "tests/optics.mjs"
-      ],
-      "negativeTests": [
-        "tests/effect-registration.mjs"
-      ],
+      "positiveTests": ["tests/effects.mjs", "tests/print.mjs", "tests/optics.mjs"],
+      "negativeTests": ["tests/effect-registration.mjs"],
       "reports": [
         "out/reports/production-effects/report.json",
         "out/reports/print-suite/report.json",
@@ -502,21 +332,9 @@
     },
     {
       "id": "F06",
-      "capabilities": [
-        "C06",
-        "C07",
-        "C08",
-        "C09"
-      ],
-      "entries": [
-        "examples/turning-mechanism/figure.mjs"
-      ],
-      "shapes": [
-        "hierarchical links",
-        "local/world anchors",
-        "detached rigid tool",
-        "glow/sparks"
-      ],
+      "capabilities": ["C06", "C07", "C08", "C09"],
+      "entries": ["examples/turning-mechanism/figure.mjs"],
+      "shapes": ["hierarchical links", "local/world anchors", "detached rigid tool", "glow/sparks"],
       "materials": [
         {
           "role": "base",
@@ -567,32 +385,11 @@
           }
         }
       ],
-      "clipTimes": [
-        0,
-        1.4,
-        2,
-        2.99,
-        3,
-        3.01,
-        4,
-        5,
-        6
-      ],
-      "controls": [
-        "time: 0..6 s; hinges, detach at 3 s, seat at 5 s; play/pause/reset"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "clipTimes": [0, 1.4, 2, 2.99, 3, 3.01, 4, 5, 6],
+      "controls": ["time: 0..6 s; hinges, detach at 3 s, seat at 5 s; play/pause/reset"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
       "positiveTests": [
         "tests/audit-envelopes.mjs",
@@ -600,9 +397,7 @@
         "tests/effects.mjs",
         "tests/gap-browser.mjs"
       ],
-      "negativeTests": [
-        "tests/diagnostics-browser.mjs"
-      ],
+      "negativeTests": ["tests/diagnostics-browser.mjs"],
       "reports": [
         "out/reports/audit-envelopes/report.json",
         "out/reports/production-effects/report.json",
@@ -618,20 +413,10 @@
     },
     {
       "id": "F07",
-      "capabilities": [
-        "C02",
-        "C06",
-        "C10"
-      ],
-      "entries": [
-        "examples/merging-surfaces/figure.mjs"
-      ],
-      "shapes": [
-        "analytic merging profiles"
-      ],
-      "materials": [
-        "preset surface and semantic accent"
-      ],
+      "capabilities": ["C02", "C06", "C10"],
+      "entries": ["examples/merging-surfaces/figure.mjs"],
+      "shapes": ["analytic merging profiles"],
+      "materials": ["preset surface and semantic accent"],
       "cameras": [
         {
           "azimuth": 45,
@@ -669,30 +454,13 @@
         }
       ],
       "clipTimes": [],
-      "controls": [
-        "separation: 0..50; Separate/Neck/Merged"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "controls": ["separation: 0..50; Separate/Neck/Merged"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
-      "positiveTests": [
-        "tests/changing-browser.mjs",
-        "tests/react.mjs",
-        "tests/react-package.mjs"
-      ],
-      "negativeTests": [
-        "tests/types.mts"
-      ],
+      "positiveTests": ["tests/changing-browser.mjs", "tests/react.mjs", "tests/react-package.mjs"],
+      "negativeTests": ["tests/types.mts"],
       "reports": [
         "out/reports/react-package/report.json",
         "out/reports/react-dev/report.json",
@@ -709,19 +477,9 @@
     },
     {
       "id": "F08",
-      "capabilities": [
-        "C03",
-        "C06",
-        "C10"
-      ],
-      "entries": [
-        "examples/spring-probe/figure.mjs"
-      ],
-      "shapes": [
-        "helix",
-        "split annular platen",
-        "probe"
-      ],
+      "capabilities": ["C03", "C06", "C10"],
+      "entries": ["examples/spring-probe/figure.mjs"],
+      "shapes": ["helix", "split annular platen", "probe"],
       "materials": [
         {
           "role": "metal",
@@ -759,21 +517,10 @@
         }
       ],
       "clipTimes": [],
-      "controls": [
-        "compression: 0..14 mm; Free/Middle/Compressed"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "controls": ["compression: 0..14 mm; Free/Middle/Compressed"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
       "positiveTests": [
         "tests/changing-browser.mjs",
@@ -781,9 +528,7 @@
         "tests/react-package.mjs",
         "tests/spring-browser.mjs"
       ],
-      "negativeTests": [
-        "tests/types.mts"
-      ],
+      "negativeTests": ["tests/types.mts"],
       "reports": [
         "out/reports/react-package/report.json",
         "out/reports/react-dev/report.json",
@@ -801,16 +546,8 @@
     },
     {
       "id": "F09",
-      "capabilities": [
-        "C03",
-        "C04",
-        "C05",
-        "C13"
-      ],
-      "entries": [
-        "examples/material-sheet/figure.mjs",
-        "examples/construction-details/figure.mjs"
-      ],
+      "capabilities": ["C03", "C04", "C05", "C13"],
+      "entries": ["examples/material-sheet/figure.mjs", "examples/construction-details/figure.mjs"],
       "shapes": [
         "all eight materials",
         "knurl",
@@ -898,28 +635,12 @@
         }
       ],
       "clipTimes": [],
-      "controls": [
-        "turnDeg: -30..30\u00b0; Left/Front/Right"
-      ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "compact",
-        "standard",
-        "detailed"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "controls": ["turnDeg: -30..30\u00b0; Left/Front/Right"],
+      "themes": ["light", "dark"],
+      "detail": ["compact", "standard", "detailed"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
-      "positiveTests": [
-        "tests/materials.mjs",
-        "tests/construction.mjs",
-        "tests/gap-browser.mjs"
-      ],
+      "positiveTests": ["tests/materials.mjs", "tests/construction.mjs", "tests/gap-browser.mjs"],
       "negativeTests": [
         "tests/geometry.test.mjs",
         "tests/diagnostics-browser.mjs",
@@ -940,22 +661,15 @@
     },
     {
       "id": "F10",
-      "capabilities": [
-        "C11"
-      ],
+      "capabilities": ["C11"],
       "entries": [
         "examples/dial-indicator/sheet.mjs",
         "examples/control-cabinet/sheet.mjs",
         "examples/exploded-assembly/sheet.mjs",
         "examples/ripple-tank/sheet.mjs"
       ],
-      "shapes": [
-        "vector PDF",
-        "bounded effect rasters"
-      ],
-      "materials": [
-        "preset surface/accent; gunmetal/steel/rubber on F04"
-      ],
+      "shapes": ["vector PDF", "bounded effect rasters"],
+      "materials": ["preset surface/accent; gunmetal/steel/rubber on F04"],
       "cameras": [
         {
           "sheet": "examples/dial-indicator/sheet.mjs",
@@ -997,13 +711,8 @@
             },
             "detail": {
               "pose": "mid",
-              "around": [
-                "gauge"
-              ],
-              "focus": [
-                "gauge",
-                "needle-hub"
-              ]
+              "around": ["gauge"],
+              "focus": ["gauge", "needle-hub"]
             }
           }
         },
@@ -1021,19 +730,9 @@
             },
             "detail": {
               "pose": "mid",
-              "focus": [
-                "relay-1",
-                "bridge-1",
-                "pusher-1"
-              ],
-              "around": [
-                "relay-1",
-                "bridge-1",
-                "pusher-1"
-              ],
-              "hide": [
-                "left-wall"
-              ]
+              "focus": ["relay-1", "bridge-1", "pusher-1"],
+              "around": ["relay-1", "bridge-1", "pusher-1"],
+              "hide": ["left-wall"]
             }
           }
         },
@@ -1066,14 +765,8 @@
             },
             "detail": {
               "pose": "mid",
-              "around": [
-                "chamber",
-                "nozzle"
-              ],
-              "focus": [
-                "chamber",
-                "nozzle"
-              ],
+              "around": ["chamber", "nozzle"],
+              "focus": ["chamber", "nozzle"],
               "effects": true
             }
           }
@@ -1096,21 +789,15 @@
             "detail": {
               "pose": "mid",
               "effects": true,
-              "around": [
-                "float"
-              ]
+              "around": ["float"]
             }
           }
         }
       ],
       "clipTimes": [],
       "controls": [],
-      "themes": [
-        "light print"
-      ],
-      "detail": [
-        "standard"
-      ],
+      "themes": ["light print"],
+      "detail": ["standard"],
       "outputs": [
         "a4/letter poster",
         "a4/letter drawing",
@@ -1126,9 +813,7 @@
         "tests/gap-browser.mjs",
         "tests/static-print.mjs"
       ],
-      "negativeTests": [
-        "tests/print.mjs"
-      ],
+      "negativeTests": ["tests/print.mjs"],
       "reports": [
         "out/reports/print-suite/report.json",
         "out/reports/gap-closure/report.json",
@@ -1138,9 +823,7 @@
     },
     {
       "id": "F11",
-      "capabilities": [
-        "C14"
-      ],
+      "capabilities": ["C14"],
       "entries": [
         "examples/dense-cutaway/figure.mjs",
         "examples/dense-rack/figure.mjs",
@@ -1153,11 +836,7 @@
         "50 static routes",
         "Next: one static server dial and four independent live React figures, two WebGL passes"
       ],
-      "materials": [
-        "steel terminals",
-        "copper jumpers",
-        "preset surface/accent"
-      ],
+      "materials": ["steel terminals", "copper jumpers", "preset surface/accent"],
       "cameras": [
         {
           "workload": "dense-cutaway/dense-rack",
@@ -1185,22 +864,11 @@
         "dense rack time 0..3",
         "Next page: two compression controls, separation, articulated clip"
       ],
-      "themes": [
-        "light",
-        "dark"
-      ],
-      "detail": [
-        "standard"
-      ],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "themes": ["light", "dark"],
+      "detail": ["standard"],
+      "outputs": ["html", "svg"],
       "exceptions": [],
-      "positiveTests": [
-        "tests/capacity.mjs",
-        "tests/react.mjs"
-      ],
+      "positiveTests": ["tests/capacity.mjs", "tests/react.mjs"],
       "negativeTests": [],
       "reports": [
         "out/reports/capacity/report.json",
@@ -1211,37 +879,21 @@
     },
     {
       "id": "F12",
-      "capabilities": [
-        "C01",
-        "C15",
-        "C16"
-      ],
-      "entries": [
-        "evals/replacement-results.md"
-      ],
-      "shapes": [
-        "unfamiliar authored and migrated scenes"
-      ],
+      "capabilities": ["C01", "C15", "C16"],
+      "entries": ["evals/replacement-results.md"],
+      "shapes": ["unfamiliar authored and migrated scenes"],
       "materials": [
         "teal accent (R01)",
         "supplied copper override (R07)",
         "trial-authored palettes in archived figure.config.json"
       ],
       "cameras": [],
-      "poses": [
-        "trial-authored pose states in archived source"
-      ],
+      "poses": ["trial-authored pose states in archived source"],
       "clipTimes": [],
       "controls": [],
-      "themes": [
-        "light",
-        "dark"
-      ],
+      "themes": ["light", "dark"],
       "detail": [],
-      "outputs": [
-        "html",
-        "svg"
-      ],
+      "outputs": ["html", "svg"],
       "exceptions": [],
       "positiveTests": [
         "tests/bundle.mjs",
