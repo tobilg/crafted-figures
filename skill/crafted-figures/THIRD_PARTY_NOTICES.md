@@ -1,0 +1,7 @@
+# Third-party notices
+
+Three.js 0.186.1 supplies scene transforms, camera, mesh geometry and raycasting. Its complete MIT notice is in [licenses/three-MIT.txt](licenses/three-MIT.txt) and is included in generated browser bundles. The illustration adapter is independently authored; Three.js internals are not patched.
+
+The shipped runtime is built with Vite 8.3.5 and Rolldown 1.2.15, including the portable WASI binding. It also embeds Ajv 8.20.0 and Playwright Core 1.64.1. Their notices and those of the locked build dependency closure are preserved in [runtime/licenses](runtime/licenses/); Playwright's original notices also remain inside `runtime/playwright-core/`. [runtime/manifest.json](runtime/manifest.json) records versions and file hashes. The Vite API bundle converts two literal `createRequire` loader sites for picomatch to static imports and selects the local WASI binding; the WASI worker similarly imports its bundled runtime. The upstream WASM binary and selected Playwright runtime assets are copied unchanged. Unused Playwright UI assets (`lib/vite`) and separate skill guides (`lib/tools/skills`) are excluded; notices and supported browser automation assets are retained. No native compiler is distributed. esbuild is no longer used by this package.
+
+Crafted Figures' own code is under the MIT license in [LICENSE](LICENSE). The third-party code above keeps its own notices and terms.

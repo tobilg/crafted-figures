@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "scope": "Immutable minimal regression inputs extracted from historical trials. Running these is maintainer regression verification, not a fresh agent evaluation.",
+  "files": [
+    {
+      "file": "construction/figure.mjs",
+      "source": "out/reports/gap-evals/construction/source/figure.mjs",
+      "sha256": "2137a645c01f13b8ce3c4f194b55b7dcf6c70147bc890d0eccbbab5ff1b0b2d0"
+    },
+    {
+      "file": "construction/scene.mjs",
+      "source": "out/reports/gap-evals/construction/source/scene.mjs",
+      "sha256": "434d50681e5de1e227c4c1539e5063f58ab8504b24da73e22e240c88eac91882"
+    },
+    {
+      "file": "construction/client.mjs",
+      "source": "out/reports/gap-evals/construction/source/client.mjs",
+      "sha256": "d9309543a8f2bf1dec4918247e5f9545dfc23903882b06ce2f266c1f8fb2174a"
+    },
+    {
+      "file": "construction/model.mjs",
+      "source": "out/reports/gap-evals/construction/source/model.mjs",
+      "sha256": "373a29183a801c6cc307aaf242e2a32f939cca16512973d26011ebf6444078df"
+    },
+    {
+      "file": "construction/figure.config.json",
+      "source": "out/reports/gap-evals/construction/source/figure.config.json",
+      "sha256": "d9763f2a29b4e3293ad08177c3e40d2b749db260e9accf05543c4a66d712b9bf"
+    },
+    {
+      "file": "construction/static-figure.mjs",
+      "source": "out/reports/gap-evals/construction/source/static-figure.mjs",
+      "sha256": "3d48668059f7526927971f04dc00de3324b2016b5b531aaa8acb64dfd6ac1037"
+    },
+    {
+      "file": "construction/print.config.json",
+      "source": "out/reports/gap-evals/construction/source/print.config.json",
+      "sha256": "506bf8c73880ca0855d381ecee28a2f53a6a50f85bdce56501b4deaf55cfa78c"
+    },
+    {
+      "file": "construction/sheet.mjs",
+      "source": "out/reports/gap-evals/construction/source/sheet.mjs",
+      "sha256": "e662ec4bdb6d3767e46e12bc5071860b4736ca6a3d111a2508a77ea8349c5300"
+    },
+    {
+      "file": "construction/audit.json",
+      "source": "out/reports/gap-evals/construction/source/audit.json",
+      "sha256": "99fd5bac797dfb29ee95b5b6619d5302ecff7ee6c308d60af3e16dae1c3226c1"
+    },
+    {
+      "file": "particles/unavailable.json",
+      "source": "out/reports/gap-evals/verification/reports/observed-failure-t231/unavailable.json",
+      "sha256": "2df25a59260ffd06b740defad759f8e6aad6a1f316ff418e7f14fac695f9d110"
+    },
+    {
+      "file": "particles/context-loss.json",
+      "source": "out/reports/gap-evals/verification/reports/observed-failure-t231/context-loss.json",
+      "sha256": "28554a41b0046713105bf93a374b7e1c58ad3b297ad4a1cc07c068a74fdce28d"
+    },
+    {
+      "file": "particles/model.mjs",
+      "source": "out/reports/gap-evals/verification/figure/model.mjs",
+      "sha256": "dae91c90c743e998627b792bcb641116153d09ad01d3af5e277bd8a133b87b13"
+    }
+  ]
+}

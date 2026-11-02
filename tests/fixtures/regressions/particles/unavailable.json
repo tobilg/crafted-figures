@@ -1,0 +1,19 @@
+{"schemaVersion":1,"viewport":{"width":960,"height":1050},"reducedMotion":true,"webgl":false,"actions":[
+{"type":"move","selector":"svg.crafted","to":[0.65,0.4],"steps":8},
+{"type":"time","value":2.31},
+{"type":"effects","mode":"vector","requiredFallbacks":["lamp","light-pool","spark-0","spark-1","spark-2","spark-3","spark-4","spark-5"]},
+{"type":"capture","name":"all-particles"},
+{"type":"key","selector":"input[type=range]","key":"End"},
+{"type":"wait","state":{"time":6},"readout":"6.00 s · seated tool"},
+{"type":"key","selector":"input[type=range]","key":"Home"},
+{"type":"wait","state":{"time":0},"readout":"0.00 s · attached tool"},
+{"type":"drag","selector":"input[type=range]","from":[0.01,0.5],"to":[0.75,0.5],"steps":12},
+{"type":"capture","name":"pointer-control"},
+{"type":"playback","name":"release-slow","from":2.8,"to":3.2,"rate":0.25,"fps":5,"maxStep":12},
+{"type":"time","value":3},
+{"type":"crop","name":"release-close-up","region":[0.45,0.1,0.34,0.48],"scale":4},
+{"type":"effects","mode":"vector","requiredFallbacks":["lamp","light-pool","spark-3","spark-4","spark-5"]},
+{"type":"order"},
+{"type":"capture","name":"release-whole"},
+{"type":"dispose"}
+]}

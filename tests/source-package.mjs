@@ -1,0 +1,109 @@
+import { runReport, capture } from './report.mjs';
+import { tempDir } from './temp.mjs';
+import { execFileSync } from 'node:child_process';
+import { mkdir, copyFile, lstat, readFile, access, rm } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+import path from 'node:path';
+const out = 'out/reports/source-package';
+await mkdir(out, { recursive: true });
+const report = {
+  status: 'failed',
+  environment: { node: process.version, platform: process.platform, arch: process.arch },
+  steps: [],
+};
+const temp = await tempDir('crafted-source-build-');
+async function run(args, expected = 0) {
+  const result = await capture(process.execPath, args, {
+    cwd: temp,
+    env: { ...process.env, NODE_PATH: '', NEXT_TELEMETRY_DISABLED: '1' },
+  });
+  report.steps.push({
+    args,
+    exitCode: result.code,
+    expected,
+    output: result.output.replaceAll(temp, '<clean-source>'),
+  });
+  assert.equal(result.code, expected, result.output);
+  return result.output;
+}
+await runReport(
+  out,
+  report,
+  async () => {
+    assert.ok(process.env.npm_execpath, 'Run this check with npm run test:source-package');
+    // The candidate is the working tree, so a tracked file deleted before a commit is not in it.
+    const listed = (...args) =>
+        execFileSync('git', ['ls-files', ...args, '-z'], { encoding: 'utf8' })
+          .split('\0')
+          .filter(Boolean),
+      deleted = new Set(listed('--deleted')),
+      names = [...new Set(listed('--cached', '--others', '--exclude-standard'))].filter(
+        name => !deleted.has(name),
+      );
+    let count = 0,
+      bytes = 0;
+    for (const name of names) {
+      const s = await lstat(name);
+      if (s.isDirectory()) continue;
+      assert.ok(s.isFile() && !s.isSymbolicLink(), name);
+      await mkdir(path.dirname(path.join(temp, name)), { recursive: true });
+      await copyFile(name, path.join(temp, name));
+      count++;
+      bytes += s.size;
+    }
+    report.sourceFiles = count;
+    report.sourceBytes = bytes;
+    for (const name of [
+      'node_modules',
+      'skill/crafted-figures/runtime',
+      'skill/crafted-figures/types',
+      'skill/crafted-figures/assets/templates/dial-indicator',
+      'skill/crafted-figures/assets/templates/react-next/figures',
+    ])
+      await assert.rejects(access(path.join(temp, name)), /ENOENT/);
+    assert.match(
+      await run(['skill/crafted-figures/scripts/figures.mjs', 'build'], 1),
+      /unbuilt skill source checkout/,
+    );
+    await run([process.env.npm_execpath, 'ci', '--no-audit', '--no-fund']);
+    await run([
+      process.env.npm_execpath,
+      '--prefix',
+      'skill/crafted-figures',
+      'ci',
+      '--no-audit',
+      '--no-fund',
+    ]);
+    await run(['scripts/package-skill.mjs']);
+    const version = JSON.parse(await readFile('skill/crafted-figures/package.json')).version,
+      name = `dist/crafted-figures-${version}.zip`;
+    const actual = await readFile(path.join(temp, name));
+    assert.deepEqual(
+      actual,
+      await readFile(name),
+      'clean-source archive must match working-tree archive',
+    );
+    report.archiveSHA256 = createHash('sha256').update(actual).digest('hex');
+    await run(['tests/release.mjs', 'unit']);
+    report.cleanReleaseUnit = 'passed';
+    await run([
+      'dist/crafted-figures/scripts/figures.mjs',
+      'build',
+      '--entry',
+      'examples/sector-gauge/figure.mjs',
+      '--config',
+      'examples/sector-gauge/figure.config.json',
+      '--output',
+      'both',
+      '--out',
+      'out/smoke',
+    ]);
+  },
+  {
+    cleanup: async () => {
+      await rm(temp, { recursive: true, force: true });
+      report.temporarySourceAndDependenciesRemoved = true;
+    },
+  },
+);

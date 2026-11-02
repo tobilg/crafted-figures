@@ -1,0 +1,42 @@
+import { runReport } from './report.mjs';
+import * as kit from '../skill/crafted-figures/kit/index.mjs';
+import figure from '../examples/construction-details/figure.mjs';
+import { resolveConfig } from '../skill/crafted-figures/kit/config.mjs';
+import { auditScene } from '../skill/crafted-figures/kit/audit/geometry.mjs';
+import { runtimeIdentity } from '../skill/crafted-figures/kit/provenance.mjs';
+import { mkdir } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const out = 'out/reports/construction';
+await mkdir(out, { recursive: true });
+const report = {
+  schemaVersion: 1,
+  ...(await runtimeIdentity()),
+  status: 'running',
+  cases: [],
+  errors: [],
+  environment: { node: process.version },
+};
+await runReport(out, report, async () => {
+  for (const camera of figure.capabilities.camera.views)
+    for (const detail of ['compact', 'standard', 'detailed']) {
+      const args = await resolveConfig({
+          layers: [{ label: 'fixture', value: { schemaVersion: 2, camera, detail } }],
+          capabilities: figure.capabilities,
+        }),
+        s = figure.createScene({ kit, ...args });
+      try {
+        for (const [pose, state] of Object.entries(figure.poses)) {
+          s.update(state);
+          const result = auditScene(s, {
+            contacts: s.contacts,
+            connections: s.connections,
+            context: { camera, pose },
+          });
+          assert.equal(result.status, 'passed', JSON.stringify(result.findings.slice(0, 8)));
+          report.cases.push({ camera, detail, pose, ...result });
+        }
+      } finally {
+        s.dispose();
+      }
+    }
+});

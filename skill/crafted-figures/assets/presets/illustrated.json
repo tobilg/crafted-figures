@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "id": "illustrated",
+  "defaults": {
+    "detail": "standard",
+    "frame": "minimal",
+    "stroke": {
+      "width": 1
+    },
+    "accent": "#e3563a",
+    "motion": {
+      "idleTour": false
+    },
+    "finish": {
+      "contour": 2,
+      "groundShadow": true,
+      "light": "view",
+      "shading": "smooth"
+    }
+  },
+  "themes": {
+    "light": {
+      "page": "#ece7db",
+      "card": "#ece7db",
+      "text": "#211c17",
+      "muted": "#5c5247",
+      "surface": "#e3d8c0",
+      "top": "#f7f0e0",
+      "side0": "#8d7f69",
+      "side1": "#b0a187",
+      "side2": "#cfc2a8",
+      "side3": "#e3d8c0",
+      "accent": "#e3563a",
+      "stroke": "#1d1915",
+      "halo": "#dcd5c5",
+      "shadow": "#2f4ea3"
+    },
+    "dark": {
+      "page": "#191a24",
+      "card": "#191a24",
+      "text": "#f3ecdf",
+      "muted": "#b9afa0",
+      "surface": "#97928a",
+      "top": "#b9b3a6",
+      "side0": "#3a3833",
+      "side1": "#55524b",
+      "side2": "#77736a",
+      "side3": "#97928a",
+      "accent": "#ef6b47",
+      "stroke": "#0c0b0a",
+      "halo": "#24252f",
+      "shadow": "#0b0d1a"
+    }
+  }
+}
